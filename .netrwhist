@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/alvaro_fe/.vim/.git/modules'
+let g:netrw_dirhist_2='/Users/alvaro_fe/.vim/.git/modules/bundle'
+let g:netrw_dirhist_3='/Users/alvaro_fe/.vim/.git/modules/bundle/ag'
