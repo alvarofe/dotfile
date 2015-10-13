@@ -7,3 +7,9 @@
 [submodule "bundle/ctrlp"]
 	path = bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
+[submodule "bundle/fugitive-git-plugin"]
+	path = bundle/fugitive-git-plugin
+	url = git://github.com/tpope/vim-fugitive.git
+[submodule "bundle/rust"]
+	path = bundle/rust
+	url = https://github.com/rust-lang/rust.vim.git

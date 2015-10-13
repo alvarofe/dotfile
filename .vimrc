@@ -53,7 +53,6 @@ au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
 colorscheme darkZ
-set foldmethod=marker
 set hlsearch
 set paste
 syntax enable
@@ -62,12 +61,12 @@ set mouse=a
 set colorcolumn=80
 set vb t_vb="."
 highlight Comment ctermfg=green
-set cursorline
 set wildmenu            " visual autocomplete for command menu
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
+set foldmethod=marker
 set foldenable          " enable folding
-set foldmethod=indent   " fold based on indent level
+"set foldmethod=indent   " fold based on indent level
 
 execute pathogen#infect()
 syntax on
