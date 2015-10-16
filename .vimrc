@@ -41,10 +41,10 @@ map <C-L> 2<C-W>>
 map <C-H> 2<C-W><
 
 " fine frame moving
-map <C-Y> <C-W>h
+map <C-Y> <C-W>l
 map <C-U> <C-W>j
 map <C-I> <C-W>k
-map <C-O> <C-W>l
+map <C-O> <C-W>h
 
 au BufNewFile,BufRead *.vala setf cs
 au BufNewFile,BufRead *.vapi setf cs
