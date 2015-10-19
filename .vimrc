@@ -22,7 +22,7 @@ map <leader>w :w<CR>
 map <leader>q :q<CR>
 map <leader>v :vsp<CR>
 map <leader>h :sp<CR>
-map <leader>n :vsp<CR>:e .<CR>
+map <leader>n :NERDTreeToggle<CR>
 map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
 map <leader>m :colorscheme PaperColor<CR>
