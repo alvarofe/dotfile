@@ -58,7 +58,7 @@ set paste
 syntax enable
 set nu
 set mouse=a
-set colorcolumn=80
+au BufNewFile,BufRead *.c set colorcolumn=80
 set vb t_vb="."
 highlight Comment ctermfg=green
 set wildmenu            " visual autocomplete for command menu
