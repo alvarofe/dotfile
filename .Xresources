@@ -1,0 +1,8 @@
+XTerm*background:       black
+XTerm*foreground:       white
+XTerm*cursorColor:      white
+XTerm.vt100.geometry:   80x35
+xterm*rightScrollBar: 	true
+XTerm*scrollTtyOutput:  false
+xterm*faceName:         Terminus:style=Regular:size=12
+XTerm*selectToClipboard: true
