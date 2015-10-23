@@ -1,8 +1,75 @@
-XTerm*background:       black
-XTerm*foreground:       white
-XTerm*cursorColor:      white
-XTerm.vt100.geometry:   80x35
-xterm*rightScrollBar: 	true
-XTerm*scrollTtyOutput:  false
-xterm*faceName:         Terminus:style=Regular:size=12
-XTerm*selectToClipboard: true
+*VT100.allowWindowOps : true
+*VT100.allowTitleOps  : true
+*VT100.allowFontOps   : true
+
+*customization: -color
+xterm*termName: xterm-256color
+
+nc.autoStart: True
+vncviewer.forceOwnCmap: true
+Xvnc.IdleTimeout: 0
+
+xterm*saveLines:        500
+! xterm*scrollBar:        true
+xterm*scrollBar:        false
+xterm*cursorColor:      white
+xterm*pointerColor:     white
+xterm*c132:             true
+xterm*loginShell:       false
+! xterm*loginshell: 1
+xterm*Foreground:       white
+xterm*Background:       black
+! xterm*Foreground:       black
+! xterm*Background:       white
+
+! Fonts
+! xterm*faceName: DejaVu Sans Mono
+! xterm*faceName: Inconsolata
+! xterm*faceName: Inconsolata\\-dz:style=dz
+! xterm*faceName: Inconsolata\\-g:style=g
+! xterm*faceName: Inconsolata\\-dz for Powerline
+xterm*faceName: Source Code Pro for Powerline
+! xterm*faceName: Envy Code R
+xterm*faceSize: 11
+
+! emacs*font: Envy Code R
+emacs*font: PragmataPro
+emacs*geometry: 80x24
+
+! Xft settings ---------------------------------------------------------------
+
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintslight
+
+xterm*fontMenu*fontdefault*Label: Default
+xterm*locale: 1
+xterm.utf8: 1
+xterm*utf8Title: 1
+
+xterm*bellIsUrgent: 1
+xterm*borderWidth: 0
+
+xterm*xftAntialias: 1
+xterm*cjkWidth: 0
+
+XLock.mode: random
+XLock.echokeys: on
+XLock.enablesaver: on
+XLock.usefirst: on
+XLock.allowroot: on
+
+Scrollbar.JumpCursor:   True
+
+AcroRead.Geometry: 800x900-0+0
+AcroRead.DefaultSplitterPos: 237
+
+cdsLibManager*textFontList:-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*
+
+emacs.toolBar: 0
+emacs.verticalScrollBars: off
+
+! Enable copying from tmux
+XTerm*disallowedWindowOps: 20,21,SetXprop
