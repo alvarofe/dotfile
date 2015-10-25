@@ -1,8 +1,11 @@
-screen -t bash1
-screen -t bash2
-screen -t bash3
+screen -t vim
+screen -t git
+screen -t compile
+screen -t test
 altscreen on
-term screen-256color
+term xterm-256color
+defscrollback 1000000
+startup_message off
 #
 #change the hardstatus settings to give an window list at the bottom of the
 #screen, with the time and date and with the current window highlighted
