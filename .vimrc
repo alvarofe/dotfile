@@ -85,3 +85,4 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 noremap % v%
 set listchars+=nbsp:.
+set clipboard=unnamed
