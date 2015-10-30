@@ -1,3 +1,4 @@
+set t_Co=256
 set noexpandtab
 set smartindent
 set cino=:0,+0,(2,J0,{1,}0,>4,)1,m2
@@ -52,7 +53,8 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
-colorscheme darkZ
+colorscheme colorful256
+set background=dark
 set hlsearch
 set paste
 syntax enable
