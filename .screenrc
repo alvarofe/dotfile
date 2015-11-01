@@ -1,10 +1,6 @@
-screen -t vim
-screen -t git
-screen -t compile
-screen -t test
 altscreen on
 term xterm-256color
-defscrollback 1000000
+defscrollback 100000
 startup_message off
 #
 #change the hardstatus settings to give an window list at the bottom of the
@@ -12,3 +8,7 @@ startup_message off
 hardstatus alwayslastline
 #hardstatus string '%{= kG}%-Lw%{= kW}%50> %n%f* %t%{= kG}%+Lw%< %{= kG}%-=%c:%s%{-}'
 hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{W}%c %{g}]'
+screen -t vim
+screen -t git
+screen -t compile
+screen -t test
