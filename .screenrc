@@ -1,6 +1,6 @@
 altscreen on
 term xterm-256color
-defscrollback 100000
+defscrollback 10000
 startup_message off
 #
 #change the hardstatus settings to give an window list at the bottom of the

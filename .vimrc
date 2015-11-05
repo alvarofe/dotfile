@@ -27,6 +27,7 @@ map <leader>n :NERDTreeToggle<CR>
 map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
 map <leader>m :colorscheme PaperColor<CR>
+map <leader>r :set omnifunc=racer#Complete<CR>
 
 autocmd BufWritePre * :%s/\s\+$//e
 map <F5> <C-W>=
@@ -88,3 +89,10 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 noremap % v%
 set listchars+=nbsp:.
 set clipboard=unnamed
+
+set hidden
+let g:racer_cmd = "/Users/alvaro_fe/racer/target/release/racer"
+let $RUST_SRC_PATH="/Users/alvaro_fe/projects/rust/rust/src"
+
+au BufNewFile,BufRead *.rs set omnifunc=racer#Complete
+au BufNewFile,BufRead *.rs nnoremap <buffer> gd :call racer#JumpToDefinition()<CR>
