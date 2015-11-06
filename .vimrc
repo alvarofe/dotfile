@@ -26,8 +26,8 @@ map <leader>h :sp<CR>
 map <leader>n :NERDTreeToggle<CR>
 map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
-map <leader>m :colorscheme PaperColor<CR>
-map <leader>r :set omnifunc=racer#Complete<CR>
+map <leader>b :bprev<CR>
+map <leader>f :bnext<CR>
 
 autocmd BufWritePre * :%s/\s\+$//e
 map <F5> <C-W>=
@@ -54,7 +54,7 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
-colorscheme colorful256
+colorscheme vividchalk
 set background=dark
 set hlsearch
 set paste
