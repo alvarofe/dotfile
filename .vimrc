@@ -26,8 +26,7 @@ map <leader>h :sp<CR>
 map <leader>n :NERDTreeToggle<CR>
 map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
-map <leader>b :bprev<CR>
-map <leader>f :bnext<CR>
+map <leader>b :e#<CR>
 
 autocmd BufWritePre * :%s/\s\+$//e
 map <F5> <C-W>=

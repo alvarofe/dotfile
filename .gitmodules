@@ -31,3 +31,6 @@
 [submodule "bundle/vim-racer"]
 	path = bundle/vim-racer
 	url = https://github.com/ebfe/vim-racer
+[submodule "bundle/010"]
+	path = bundle/010
+	url = https://github.com/d0c-s4vage/pfp-vim.git
