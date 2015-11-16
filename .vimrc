@@ -53,7 +53,7 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
-colorscheme vividchalk
+colorscheme pablo
 set background=dark
 set hlsearch
 set paste
