@@ -95,3 +95,7 @@ let $RUST_SRC_PATH="/Users/alvaro_fe/projects/rust/rust/src"
 
 au BufNewFile,BufRead *.rs set omnifunc=racer#Complete
 au BufNewFile,BufRead *.rs nnoremap <buffer> gd :call racer#JumpToDefinition()<CR>
+
+if has('gui_running')
+  set guifont=Inconsolata\ for\ Powerline:h16
+endif
