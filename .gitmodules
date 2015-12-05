@@ -34,3 +34,6 @@
 [submodule "bundle/010"]
 	path = bundle/010
 	url = https://github.com/d0c-s4vage/pfp-vim.git
+[submodule "bundle/clang-format"]
+	path = bundle/clang-format
+	url = https://github.com/rhysd/vim-clang-format.git

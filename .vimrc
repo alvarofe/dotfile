@@ -99,3 +99,25 @@ au BufNewFile,BufRead *.rs nnoremap <buffer> gd :call racer#JumpToDefinition()<C
 if has('gui_running')
   set guifont=Inconsolata\ for\ Powerline:h16
 endif
+
+
+
+"clang-format
+let g:clang_format#style_options = {
+	\ "Language": "Cpp",
+	\ "MaxEmptyLinesToKeep": "1",
+	\ "SpaceBeforeParens": "Always",
+	\ "SpaceInEmptyParentheses": "false",
+	\ "BasedOnStyle": "LLVM",
+	\ "ContinuationIndentWidth": 8,
+	\ "IndentCaseLabels": "false",
+	\ "IndentFunctionDeclarationAfterType": "false",
+	\ "IndentWidth": 8,
+	\ "UseTab": "Always",
+	\ "ColumnLimit": 78,
+	\ "BreakBeforeBraces": "Attach",
+	\ "BreakBeforeTernaryOperators": "false",
+	\ "AllowShortIfStatementsOnASingleLine": "true",
+	\ "AllowShortCaseLabelsOnASingleLine": "true",
+	\ "AllowShortFunctionsOnASingleLine": "Inline",
+	\ "AllowShortLoopsOnASingleLine": "true"}
