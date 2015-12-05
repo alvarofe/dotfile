@@ -27,6 +27,7 @@ map <leader>n :NERDTreeToggle<CR>
 map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
 map <leader>b :e#<CR>
+map <leader>f :ClangFormat<CR>
 
 autocmd BufWritePre * :%s/\s\+$//e
 map <F5> <C-W>=
