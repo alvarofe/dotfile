@@ -101,7 +101,8 @@ if has('gui_running')
   set guifont=Inconsolata\ for\ Powerline:h16
 endif
 
-
+highlight VertSplit cterm=none gui=none
+set laststatus=0
 
 "clang-format
 let g:clang_format#style_options = {
@@ -109,7 +110,7 @@ let g:clang_format#style_options = {
 	\ "MaxEmptyLinesToKeep": "1",
 	\ "SpaceBeforeParens": "Always",
 	\ "SpaceInEmptyParentheses": "false",
-	\ "BasedOnStyle": "LLVM",
+	\ "BasedOnStyle": "Google",
 	\ "ContinuationIndentWidth": 8,
 	\ "IndentCaseLabels": "false",
 	\ "IndentFunctionDeclarationAfterType": "false",
