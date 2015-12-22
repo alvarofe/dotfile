@@ -29,12 +29,11 @@ map <leader>o :set nopaste<CR>
 map <leader>b :e#<CR>
 map <leader>f :ClangFormat<CR>
 
-autocmd BufWritePre * :%s/\s\+$//e
+"autocmd BufWritePre * :%s/\s\+$//e
 map <F5> <C-W>=
 
-map <F9> :make<cr>
-map <C-F9> :cnext<cr>
-map <S-F9> :cprevious<cr>
+map <F9> :cnext<cr>
+map <F7> :cprevious<cr>
 
 " fine zooming
 map <C-J> 2<C-W>+
@@ -67,7 +66,6 @@ highlight Comment ctermfg=green
 set wildmenu            " visual autocomplete for command menu
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
-set foldmethod=marker
 set foldenable          " enable folding
 "set foldmethod=indent   " fold based on indent level
 
@@ -109,15 +107,15 @@ let g:clang_format#style_options = {
 	\ "Language": "Cpp",
 	\ "MaxEmptyLinesToKeep": "1",
 	\ "SpaceBeforeParens": "Always",
-	\ "SpaceInEmptyParentheses": "false",
 	\ "BasedOnStyle": "Google",
 	\ "ContinuationIndentWidth": 8,
 	\ "IndentCaseLabels": "false",
 	\ "IndentFunctionDeclarationAfterType": "false",
 	\ "IndentWidth": 8,
 	\ "UseTab": "Always",
-	\ "ColumnLimit": 78,
 	\ "BreakBeforeBraces": "Attach",
+	\ "AlignConsecutiveAssignments" : "true",
+	\ "AllowAllParametersOfDeclarationOnNextLine" : "true",
 	\ "BreakBeforeTernaryOperators": "false",
 	\ "AllowShortIfStatementsOnASingleLine": "true",
 	\ "AllowShortCaseLabelsOnASingleLine": "true",
