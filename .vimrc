@@ -16,6 +16,20 @@ else
 endif
 endfun
 
+let relativenumber=0
+fun NumberToggle()
+  if(g:relativenumber == 1)
+    set number
+    set norelativenumber
+    let g:relativenumber=0
+  else
+    set relativenumber
+    let g:relativenumber=1
+  endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+
 "some nice keymappings
 let mapleader=","
 map <leader>e :call Exposee()<CR>
