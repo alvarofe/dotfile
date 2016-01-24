@@ -17,9 +17,10 @@ endif
 endfun
 
 let relativenumber=0
+set number
+set relativenumber
 fun NumberToggle()
   if(g:relativenumber == 1)
-    set number
     set norelativenumber
     let g:relativenumber=0
   else
@@ -28,7 +29,7 @@ fun NumberToggle()
   endif
 endfunc
 
-nnoremap <C-n> :call NumberToggle()<cr>
+nnoremap <C-n> :call NumberToggle()<CR>
 
 "some nice keymappings
 let mapleader=","
@@ -42,8 +43,7 @@ map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
 map <leader>b :e#<CR>
 map <leader>f :ClangFormat<CR>
-
-"autocmd BufWritePre * :%s/\s\+$//e
+map <leader><Space> :%s/\s\+$//e<CR>
 map <F5> <C-W>=
 
 map <F9> :cnext<cr>
@@ -67,7 +67,7 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
-colorscheme colorful256 
+colorscheme colorful256
 set background=light
 set hlsearch
 set paste
