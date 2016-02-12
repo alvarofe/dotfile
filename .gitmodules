@@ -34,3 +34,9 @@
 [submodule "bundle/clang-format"]
 	path = bundle/clang-format
 	url = https://github.com/rhysd/vim-clang-format.git
+[submodule "bundle/vim-go"]
+	path = bundle/vim-go
+	url = https://github.com/fatih/vim-go.git
+[submodule "bundle/tagbar"]
+	path = bundle/tagbar
+	url = https://github.com/majutsushi/tagbar.git

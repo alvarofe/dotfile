@@ -2,6 +2,9 @@ set t_Co=256
 set noexpandtab
 set smartindent
 set cino=:0,+0,(2,J0,{1,}0,>4,)1,m2
+execute pathogen#infect()
+filetype plugin on
+
 
 " pancake's exposee for vim:
 let fs=0
@@ -43,6 +46,7 @@ map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
 map <leader>b :e#<CR>
 map <leader>f :ClangFormat<CR>
+map <leader>l :TagbarToggle<CR>
 map <leader><Space> :%s/\s\+$//e<CR>
 map <F5> <C-W>=
 
@@ -83,7 +87,6 @@ set showmatch           " highlight matching [{()}]
 set foldenable          " enable folding
 "set foldmethod=indent   " fold based on indent level
 
-execute pathogen#infect()
 syntax on
 
 " toggle gundo
@@ -135,3 +138,39 @@ let g:clang_format#style_options = {
 	\ "AllowShortCaseLabelsOnASingleLine": "true",
 	\ "AllowShortFunctionsOnASingleLine": "Inline",
 	\ "AllowShortLoopsOnASingleLine": "true"}
+
+"go
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
