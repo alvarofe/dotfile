@@ -71,8 +71,9 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
-colorscheme colorful256
 set background=light
+"colorscheme vibrantink
+colorscheme pablo
 set hlsearch
 set paste
 syntax enable
