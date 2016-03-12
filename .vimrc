@@ -71,9 +71,6 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
-set background=light
-"colorscheme vibrantink
-colorscheme pablo
 set hlsearch
 set paste
 syntax enable
@@ -175,3 +172,4 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
+colorscheme colorful256 
