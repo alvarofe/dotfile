@@ -106,6 +106,7 @@ set clipboard=unnamed
 set hidden
 let g:racer_cmd = "/Users/alvaro_fe/racer/target/release/racer"
 let $RUST_SRC_PATH="/Users/alvaro_fe/projects/rust/rust/src"
+let g:rustfmt_autosave = 1
 
 au BufNewFile,BufRead *.rs set omnifunc=racer#Complete
 au BufNewFile,BufRead *.rs nnoremap <buffer> gd :call racer#JumpToDefinition()<CR>
