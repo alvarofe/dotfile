@@ -174,3 +174,5 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 colorscheme colorful256 
+
+let g:rust_doc#downloaded_rust_doc_dir = '~/projects/rust/rust-docs/rust-docs'

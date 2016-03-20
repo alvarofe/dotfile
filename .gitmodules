@@ -49,3 +49,12 @@
 [submodule "bundle/pfp-vim"]
 	path = bundle/pfp-vim
 	url = https://github.com/d0c-s4vage/pfp-vim.git
+[submodule "bundle/webapi"]
+	path = bundle/webapi
+	url = https://github.com/mattn/webapi-vim.git
+[submodule "bundle/rustdoc"]
+	path = bundle/rustdoc
+	url = https://github.com/rhysd/rust-doc.vim.git
+[submodule "bundle/unite"]
+	path = bundle/unite
+	url = https://github.com/Shougo/unite.vim.git
