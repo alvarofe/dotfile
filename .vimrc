@@ -173,6 +173,6 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
-colorscheme colorful256 
+colorscheme vibrantink 
 
 let g:rust_doc#downloaded_rust_doc_dir = '~/projects/rust/rust-docs/rust-docs'
