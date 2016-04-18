@@ -1,6 +1,6 @@
 set t_Co=256
 set noexpandtab
-set smartindent
+"set smartindent
 set cino=:0,+0,(2,J0,{1,}0,>4,)1,m2
 execute pathogen#infect()
 filetype plugin on
@@ -72,7 +72,7 @@ au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
 set hlsearch
-set paste
+set nopaste
 syntax enable
 "set nu
 set mouse=a
@@ -173,6 +173,15 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
-colorscheme vibrantink 
+colorscheme pablo 
 
 let g:rust_doc#downloaded_rust_doc_dir = '~/projects/rust/rust-docs/rust-docs'
+
+"PERL
+" autoindent
+autocmd FileType perl set autoindent|set smartindent
+autocmd FileType perl set tabstop=4|set shiftwidth=4|set expandtab|set softtabstop=4
+
+"Python
+autocmd FileType python set autoindent|set smartindent
+autocmd Filetype python set expandtab | set tabstop=4 |set shiftwidth=4

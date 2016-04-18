@@ -58,3 +58,9 @@
 [submodule "bundle/unite"]
 	path = bundle/unite
 	url = https://github.com/Shougo/unite.vim.git
+[submodule "bundle/emmet-vim"]
+	path = bundle/emmet-vim
+	url = https://github.com/mattn/emmet-vim.git
+[submodule "bundle/vim-perl"]
+	path = bundle/vim-perl
+	url = https://github.com/vim-perl/vim-perl.git
