@@ -173,7 +173,7 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
-colorscheme pablo 
+colorscheme  pablo 
 
 let g:rust_doc#downloaded_rust_doc_dir = '~/projects/rust/rust-docs/rust-docs'
 
@@ -185,3 +185,7 @@ autocmd FileType perl set tabstop=4|set shiftwidth=4|set expandtab|set softtabst
 "Python
 autocmd FileType python set autoindent|set smartindent
 autocmd Filetype python set expandtab | set tabstop=4 |set shiftwidth=4
+
+
+autocmd FileType sh set autoindent|set smartindent
+autocmd Filetype sh set expandtab | set tabstop=4 |set shiftwidth=4
