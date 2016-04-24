@@ -67,6 +67,6 @@
 [submodule "bundle/bash-support.vim"]
 	path = vim/.vim/bundle/bash-support.vim
 	url = https://github.com/vim-scripts/bash-support.vim.git
-[submodule "irssi"]
-	path = irssi
+[submodule "irssi/.irssi"]
+	path = irssi/.irssi
 	url = https://github.com/alvarofe/irssi.git
