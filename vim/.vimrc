@@ -59,3 +59,5 @@ set paste
 sy on
 set mouse=a
 set clipboard=unnamed
+set vb t_vb="."
+
