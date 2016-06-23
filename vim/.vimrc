@@ -52,7 +52,6 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
-colorscheme pablo
 set foldmethod=marker
 set hlsearch
 set paste
@@ -61,3 +60,4 @@ set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
 
+autocmd FileType python setlocal smartindent shiftwidth=4 ts=4 et cinwords=if,elif,else,for,while,try,except,finally,def,class
