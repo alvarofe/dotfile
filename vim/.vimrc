@@ -65,5 +65,5 @@ set relativenumber
 set nu
 set background=light 
 set t_Co=256 " 256 Color Term
-set cc=80  " Show the line at 80ch
 set ic "case insensitive searches
+cmap w!! w !sudo tee % >/dev/null
