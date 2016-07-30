@@ -67,3 +67,5 @@ set background=light
 set t_Co=256 " 256 Color Term
 set ic "case insensitive searches
 cmap w!! w !sudo tee % >/dev/null
+"catch unicode annoying error
+set listchars+=nbsp:x
