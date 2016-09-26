@@ -69,3 +69,5 @@ set ic "case insensitive searches
 cmap w!! w !sudo tee % >/dev/null
 "catch unicode annoying error
 set listchars+=nbsp:x
+"colorscheme Tomorrow-Night-Bright
+colorscheme delek
