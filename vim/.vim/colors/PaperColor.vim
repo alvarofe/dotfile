@@ -108,7 +108,7 @@ let s:themes['default'].light = {
 let s:themes['default'].dark = {
       \     'TEST_256_COLOR_CONSISTENCY' : 1,
       \     'palette' : {
-      \       'color00' : ['#1c1c1c', '234'],
+      \       'color00' : ['#000000', '234'],
       \       'color01' : ['#af005f', '125'], 
       \       'color02' : ['#5faf00', '70'],
       \       'color03' : ['#d7af5f', '179'], 

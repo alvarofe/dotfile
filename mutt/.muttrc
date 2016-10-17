@@ -13,11 +13,13 @@ set message_cachedir = ~/.mutt/cache/bodies
 set certificate_file = ~/.mutt/certificates
 set move = no
 set smtp_authenticators = ‘gssapi:login’
-#set sort_aux = reverse-threads
-set sort = reverse-date-received
-bind index G imap-fetch-mail 
+set sort_aux=reverse-date-received       
+set sort = threads
 set sort_re
+set send_charset="us-ascii:utf-8
+bind index G imap-fetch-mail 
 auto_view text/html
+set editor=vi
 
 
 # }}}
