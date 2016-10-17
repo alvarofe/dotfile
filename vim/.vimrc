@@ -63,11 +63,12 @@ set vb t_vb="."
 autocmd FileType python setlocal smartindent shiftwidth=4 ts=4 et cinwords=if,elif,else,for,while,try,except,finally,def,class
 set relativenumber
 set nu
-set background=light 
 set t_Co=256 " 256 Color Term
 set ic "case insensitive searches
 cmap w!! w !sudo tee % >/dev/null
 "catch unicode annoying error
 set listchars+=nbsp:x
 "colorscheme Tomorrow-Night-Bright
-colorscheme delek
+"colorscheme delek
+set background=dark
+colorscheme PaperColor
