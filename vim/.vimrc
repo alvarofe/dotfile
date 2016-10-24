@@ -28,6 +28,7 @@ map <leader>h :sp<CR>
 map <leader>n :Vexplore<CR>
 map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
+map <leader>f :ClangFormat<CR>
 map <leader><Space> :%s/\s\+$//e<CR>
 
 " fine zooming
@@ -75,3 +76,22 @@ let g:netrw_winsize = 25
 set path+=**
 set wildmenu
 autocmd FileType python setlocal smartindent shiftwidth=4 ts=4 et cinwords=if,elif,else,for,while,try,except,finally,def,class
+
+let g:clang_format#style_options = {
+       \ "Language": "Cpp",
+       \ "MaxEmptyLinesToKeep": "1",
+       \ "SpaceBeforeParens": "Always",
+       \ "BasedOnStyle": "Google",
+       \ "ContinuationIndentWidth": 8,
+       \ "IndentCaseLabels": "false",
+       \ "IndentFunctionDeclarationAfterType": "false",
+       \ "IndentWidth": 8,
+       \ "UseTab": "Always",
+       \ "BreakBeforeBraces": "Attach",
+       \ "AlignConsecutiveAssignments" : "true",
+       \ "AllowAllParametersOfDeclarationOnNextLine" : "true",
+       \ "BreakBeforeTernaryOperators": "false",
+       \ "AllowShortIfStatementsOnASingleLine": "true",
+       \ "AllowShortCaseLabelsOnASingleLine": "true",
+       \ "AllowShortFunctionsOnASingleLine": "Inline",
+       \ "AllowShortLoopsOnASingleLine": "true"}
