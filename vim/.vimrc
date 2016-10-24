@@ -76,6 +76,7 @@ let g:netrw_winsize = 25
 set path+=**
 set wildmenu
 autocmd FileType python setlocal smartindent shiftwidth=4 ts=4 et cinwords=if,elif,else,for,while,try,except,finally,def,class
+set tags+=/usr/include/tags
 
 let g:clang_format#style_options = {
        \ "Language": "Cpp",
