@@ -25,12 +25,9 @@ map <leader>w :w<CR>
 map <leader>q :q<CR>
 map <leader>v :vsp<CR>
 map <leader>h :sp<CR>
-map <leader>n :NERDTreeToggle<CR>
+map <leader>n :Vexplore<CR>
 map <leader>p :set paste<CR>
 map <leader>o :set nopaste<CR>
-map <leader>b :e#<CR>
-map <leader>f :ClangFormat<CR>
-map <leader>l :TagbarToggle<CR>
 map <leader><Space> :%s/\s\+$//e<CR>
 
 " fine zooming
@@ -55,12 +52,10 @@ filetype indent on
 set foldmethod=marker
 set hlsearch
 set paste
-sy on
 set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
-
-autocmd FileType python setlocal smartindent shiftwidth=4 ts=4 et cinwords=if,elif,else,for,while,try,except,finally,def,class
+sy on
 set relativenumber
 set nu
 set t_Co=256 " 256 Color Term
@@ -68,12 +63,15 @@ set ic "case insensitive searches
 cmap w!! w !sudo tee % >/dev/null
 "catch unicode annoying error
 set listchars+=nbsp:x
-"colorscheme Tomorrow-Night-Bright
-"colorscheme delek
 set background=dark
 colorscheme PaperColor
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_winsize = 25
+set path+=**
+set wildmenu
+autocmd FileType python setlocal smartindent shiftwidth=4 ts=4 et cinwords=if,elif,else,for,while,try,except,finally,def,class
