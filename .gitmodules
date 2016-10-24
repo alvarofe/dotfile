@@ -1,9 +1,6 @@
 [submodule "vim/.vim/pack/plugins/start/vim-go"]
 	path = vim/.vim/pack/plugins/start/vim-go
 	url = https://github.com/fatih/vim-go.git
-[submodule "vim/.vim/pack/plugins/start/rust-vim"]
-	path = vim/.vim/pack/plugins/start/rust-vim
-	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/.vim/pack/plugins/start/vim-man"]
 	path = vim/.vim/pack/plugins/start/vim-man
 	url = https://github.com/vim-utils/vim-man.git
