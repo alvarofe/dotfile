@@ -10,3 +10,6 @@
 [submodule "irssi/.irssi"]
 	path = irssi/.irssi
 	url = https://github.com/alvarofe/irssi.git
+[submodule "vim/.vim/pack/plugins/start/rust-vim"]
+	path = vim/.vim/pack/plugins/start/rust-vim
+	url = https://github.com/rust-lang/rust.vim.git
