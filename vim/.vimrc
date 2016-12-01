@@ -66,13 +66,13 @@ cmap w!! w !sudo tee % >/dev/null
 set listchars+=nbsp:x
 set background=dark
 colorscheme PaperColor
-let g:netrw_banner=0        " disable annoying banner
-let g:netrw_browse_split=4  " open in prior window
-let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=3     " tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_winsize = 25
+"let g:netrw_banner=0        " disable annoying banner
+"let g:netrw_browse_split=4  " open in prior window
+"let g:netrw_altv=1          " open splits to the right
+"let g:netrw_liststyle=3     " tree view
+"let g:netrw_list_hide=netrw_gitignore#Hide()
+"let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+"let g:netrw_winsize = 25
 set path+=**
 set wildmenu
 autocmd FileType python setlocal smartindent shiftwidth=4 ts=4 et cinwords=if,elif,else,for,while,try,except,finally,def,class
@@ -96,3 +96,9 @@ let g:clang_format#style_options = {
        \ "AllowShortCaseLabelsOnASingleLine": "true",
        \ "AllowShortFunctionsOnASingleLine": "Inline",
        \ "AllowShortLoopsOnASingleLine": "true"}
+
+"rust
+
+let $RUST_SRC_PATH="/Users/alvaro/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
+let g:rustfmt_autosave = 1
+let g:racer_experimental_completer = 1
