@@ -50,6 +50,7 @@ au BufNewFile,BufRead *.gtkaml setf cs
 au BufNewFile,BufRead *.gtkon setf cs
 
 filetype indent on
+filetype plugin on
 set foldmethod=marker
 set hlsearch
 set paste
