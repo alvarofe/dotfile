@@ -16,3 +16,15 @@
 [submodule "vim/.vim/pack/plugins/start/vim-racer"]
 	path = vim/.vim/pack/plugins/start/vim-racer
 	url = https://github.com/racer-rust/vim-racer.git
+[submodule "vim/.vim/pack/plugins/start/vim-snippets"]
+	path = vim/.vim/pack/plugins/start/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "vim/.vim/pack/plugins/start/unite.vim"]
+	path = vim/.vim/pack/plugins/start/unite.vim
+	url = https://github.com/Shougo/unite.vim.git
+[submodule "vim/.vim/pack/plugins/start/ultisnips"]
+	path = vim/.vim/pack/plugins/start/ultisnips
+	url = https://github.com/SirVer/ultisnips.git
+[submodule "vim/.vim/pack/plugins/opt/YouCompleteMe"]
+	path = vim/.vim/pack/plugins/opt/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git

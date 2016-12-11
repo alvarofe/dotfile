@@ -53,7 +53,6 @@ filetype indent on
 filetype plugin on
 set foldmethod=marker
 set hlsearch
-set paste
 set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
@@ -103,3 +102,14 @@ let g:clang_format#style_options = {
 let $RUST_SRC_PATH="/Users/alvaro/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
 let g:rustfmt_autosave = 1
 let g:racer_experimental_completer = 1
+
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+"let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+
+let g:UltiSnipsExpandTrigger="<c-h>"
+
+" If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="vertical"
+au Filetype c packadd YouCompleteMe 
+au Filetype c call youcompleteme#Enable()
+
