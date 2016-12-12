@@ -106,10 +106,10 @@ let g:racer_experimental_completer = 1
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 "let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 
-let g:UltiSnipsExpandTrigger="<c-h>"
+let g:UltiSnipsExpandTrigger="<tab>"
 
 " If you want :UltiSnipsEdit to split your window.
 " let g:UltiSnipsEditSplit="vertical"
-au Filetype c packadd YouCompleteMe 
-au Filetype c call youcompleteme#Enable()
+"au Filetype c packadd YouCompleteMe 
+"au Filetype c call youcompleteme#Enable()
 
