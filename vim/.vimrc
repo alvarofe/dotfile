@@ -89,6 +89,7 @@ let g:clang_format#style_options = {
        \ "IndentFunctionDeclarationAfterType": "false",
        \ "IndentWidth": 8,
        \ "UseTab": "Always",
+	   \ "ColumnLimit" : 80,
        \ "BreakBeforeBraces": "Attach",
        \ "AlignConsecutiveAssignments" : "true",
        \ "AllowAllParametersOfDeclarationOnNextLine" : "true",
@@ -113,4 +114,5 @@ let g:UltiSnipsExpandTrigger="<tab>"
 " let g:UltiSnipsEditSplit="vertical"
 "au Filetype c packadd YouCompleteMe 
 "au Filetype c call youcompleteme#Enable()
-
+"set cursorline
+"set cursorcolumn
