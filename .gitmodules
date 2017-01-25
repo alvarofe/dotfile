@@ -1,29 +1,29 @@
 [submodule "vim/.vim/pack/plugins/start/vim-go"]
-	path = vim/.vim/pack/plugins/start/vim-go
+	path = vim/.vim/pack/plugins/opt/vim-go
 	url = https://github.com/fatih/vim-go.git
 [submodule "vim/.vim/pack/plugins/start/vim-man"]
-	path = vim/.vim/pack/plugins/start/vim-man
+	path = vim/.vim/pack/plugins/opt/vim-man
 	url = https://github.com/vim-utils/vim-man.git
 [submodule "vim/.vim/pack/plugins/start/vim-clang-format"]
-	path = vim/.vim/pack/plugins/start/vim-clang-format
+	path = vim/.vim/pack/plugins/opt/vim-clang-format
 	url = https://github.com/rhysd/vim-clang-format.git
 [submodule "irssi/.irssi"]
 	path = irssi/.irssi
 	url = https://github.com/alvarofe/irssi.git
 [submodule "vim/.vim/pack/plugins/start/rust-vim"]
-	path = vim/.vim/pack/plugins/start/rust-vim
+	path = vim/.vim/pack/plugins/opt/rust-vim
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/.vim/pack/plugins/start/vim-racer"]
-	path = vim/.vim/pack/plugins/start/vim-racer
+	path = vim/.vim/pack/plugins/opt/vim-racer
 	url = https://github.com/racer-rust/vim-racer.git
 [submodule "vim/.vim/pack/plugins/start/vim-snippets"]
-	path = vim/.vim/pack/plugins/start/vim-snippets
+	path = vim/.vim/pack/plugins/opt/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
 [submodule "vim/.vim/pack/plugins/start/unite.vim"]
-	path = vim/.vim/pack/plugins/start/unite.vim
+	path = vim/.vim/pack/plugins/opt/unite.vim
 	url = https://github.com/Shougo/unite.vim.git
 [submodule "vim/.vim/pack/plugins/start/ultisnips"]
-	path = vim/.vim/pack/plugins/start/ultisnips
+	path = vim/.vim/pack/plugins/opt/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
 [submodule "vim/.vim/pack/plugins/opt/YouCompleteMe"]
 	path = vim/.vim/pack/plugins/opt/YouCompleteMe

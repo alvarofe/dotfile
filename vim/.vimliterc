@@ -1,5 +1,15 @@
-" my own indentation for C using the coding styles
+set nocompatible  
+let mapleader = ","
+noremap <leader>e :call Exposee()<CR>
+noremap <leader>w :w<CR>
+noremap <leader>q :q<CR>
+noremap <leader>v :vsp<CR>
+noremap <leader>h :sp<CR>
+noremap <leader>p :set paste<CR>
+noremap <leader>o :set nopaste<CR>
+noremap <leader><Space> :%s/\s\+$//e<CR>
 
+" my own indentation for C using the coding styles
 set cindent
 set tabstop=4
 set noexpandtab
@@ -20,16 +30,6 @@ endif
 endfun
 
 "some nice keymappings
-let mapleader=","
-map <leader>e :call Exposee()<CR>
-map <leader>w :w<CR>
-map <leader>q :q<CR>
-map <leader>v :vsp<CR>
-map <leader>h :sp<CR>
-map <leader>n :Vexplore<CR>
-map <leader>p :set paste<CR>
-map <leader>o :set nopaste<CR>
-map <leader><Space> :%s/\s\+$//e<CR>
 
 " fine zooming
 map <C-J> 2<C-W>+
@@ -45,10 +45,6 @@ map <C-O> <C-W>l
 
 sy on
 set path+=**
-filetype indent on
-filetype plugin on
-
-set foldmethod=marker
 set hlsearch
 set mouse=a
 set clipboard=unnamed
