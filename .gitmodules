@@ -5,7 +5,7 @@
 	path = vim/.vim/pack/plugins/opt/vim-man
 	url = https://github.com/vim-utils/vim-man.git
 [submodule "vim/.vim/pack/plugins/start/vim-clang-format"]
-	path = vim/.vim/pack/plugins/opt/vim-clang-format
+	path = vim/.vim/pack/plugins/start/vim-clang-format
 	url = https://github.com/rhysd/vim-clang-format.git
 [submodule "irssi/.irssi"]
 	path = irssi/.irssi
