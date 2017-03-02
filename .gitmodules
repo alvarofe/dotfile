@@ -28,3 +28,9 @@
 [submodule "vim/.vim/pack/plugins/opt/YouCompleteMe"]
 	path = vim/.vim/pack/plugins/opt/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/.vim/pack/plugins/opt/vim-node"]
+	path = vim/.vim/pack/plugins/opt/vim-node
+	url = https://github.com/moll/vim-node.git
+[submodule "vim/.vim/pack/plugins/opt/vim-jsbeautify"]
+	path = vim/.vim/pack/plugins/opt/vim-jsbeautify
+	url = https://github.com/maksimr/vim-jsbeautify.git

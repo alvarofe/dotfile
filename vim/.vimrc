@@ -2,8 +2,8 @@ set nocompatible
 filetype plugin on 
 filetype indent on
 let mapleader = ","
-set relativenumber
 set nu
+set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
 noremap <leader>q :q<CR>
