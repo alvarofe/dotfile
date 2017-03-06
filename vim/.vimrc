@@ -76,3 +76,4 @@ let g:clang_format#style_options = {
        \ "AllowShortCaseLabelsOnASingleLine": "true",
        \ "AllowShortFunctionsOnASingleLine": "Inline",
        \ "AllowShortLoopsOnASingleLine": "true"}
+set paste
