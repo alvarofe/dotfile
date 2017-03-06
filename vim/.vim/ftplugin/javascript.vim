@@ -6,4 +6,5 @@ setlocal smarttab
 setlocal expandtab
 packadd vim-jsbeautify
 packadd vim-node
+set autoindent
 noremap <leader>j :call JsBeautify()<CR>
