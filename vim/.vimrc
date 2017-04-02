@@ -56,6 +56,7 @@ set clipboard=unnamed
 set vb t_vb="."
 set t_Co=256 " 256 Color Term
 set colorcolumn=80
+set listchars+=nbsp:x
  
 let g:clang_format#style_options = {
        \ "Language": "Cpp",
