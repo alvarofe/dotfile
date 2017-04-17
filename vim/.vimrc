@@ -1,5 +1,5 @@
 set nocompatible
-filetype plugin on 
+filetype plugin on
 filetype indent on
 let mapleader = ","
 set nu
@@ -13,6 +13,8 @@ noremap <leader>p :set paste<CR>
 noremap <leader>f :ClangFormat<CR>
 noremap <leader>o :set nopaste<CR>
 noremap <leader><Space> :%s/\s\+$//e<CR>
+noremap <leader><tab> :tabnext<cr>
+noremap <leader><s-tab> :tabprev<cr>
 
 " my own indentation for C using the coding styles
 set cindent
@@ -55,9 +57,9 @@ set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
 set t_Co=256 " 256 Color Term
-set colorcolumn=80
+set colorcolumn=81
 set listchars+=nbsp:x
- 
+
 let g:clang_format#style_options = {
        \ "Language": "Cpp",
        \ "MaxEmptyLinesToKeep": "1",
@@ -78,3 +80,42 @@ let g:clang_format#style_options = {
        \ "AllowShortFunctionsOnASingleLine": "Inline",
        \ "AllowShortLoopsOnASingleLine": "true"}
 set paste
+
+" Search tweaks
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+set wildmenu
+set wildmode=list:longest
+
+set wildignore+=.hg,.git,.svn                    " Version control
+set wildignore+=*.aux,*.out,*.toc                " LaTeX intermediate files
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
+set wildignore+=*.spl                            " compiled spelling word lists
+set wildignore+=*.sw?                            " Vim swap files
+set wildignore+=*.DS_Store                       " OSX bullshit
+set wildignore+=*.dSYM                           " OSX debug info directories
+
+set wildignore+=*.luac                           " Lua byte code
+set wildignore+=*.pyc                            " Python byte code
+
+" increase history
+set history=1000
+
+" UI tweaks
+set ruler
+set nolazyredraw
+set number
+
+autocmd! bufwritepost vimrc source ~/.vimrc
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" Highlightning
+hi clear CursorLine
+set cursorline
+set background=light
