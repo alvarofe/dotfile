@@ -6,6 +6,7 @@ set nu
 set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
+noremap <leader>n :Vexplore<CR>
 noremap <leader>q :q<CR>
 noremap <leader>v :vsp<CR>
 noremap <leader>h :sp<CR>
@@ -57,6 +58,7 @@ set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
 set t_Co=256 " 256 Color Term
+set t_Co=256
 set colorcolumn=81
 set listchars+=nbsp:x
 
@@ -88,7 +90,6 @@ set ignorecase
 set smartcase
 
 set wildmenu
-set wildmode=list:longest
 
 set wildignore+=.hg,.git,.svn                    " Version control
 set wildignore+=*.aux,*.out,*.toc                " LaTeX intermediate files
@@ -98,6 +99,7 @@ set wildignore+=*.spl                            " compiled spelling word lists
 set wildignore+=*.sw?                            " Vim swap files
 set wildignore+=*.DS_Store                       " OSX bullshit
 set wildignore+=*.dSYM                           " OSX debug info directories
+set wildignore+=*.o,*.d                          " compilation 
 
 set wildignore+=*.luac                           " Lua byte code
 set wildignore+=*.pyc                            " Python byte code
@@ -118,4 +120,15 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " Highlightning
 hi clear CursorLine
 set cursorline
-set background=light
+set background=dark
+set listchars=tab:\|\ 
+"set list
+
+" Tweaks for browsing
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.='.*\.o$,.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_winsize = 25

@@ -34,3 +34,15 @@
 [submodule "vim/.vim/pack/plugins/opt/vim-jsbeautify"]
 	path = vim/.vim/pack/plugins/opt/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
+[submodule "vim/.vim/pack/plugins/start/vim-maktaba"]
+	path = vim/.vim/pack/plugins/start/vim-maktaba
+	url = https://github.com/google/vim-maktaba.git
+[submodule "vim/.vim/pack/plugins/start/vim-codereview"]
+	path = vim/.vim/pack/plugins/start/vim-codereview
+	url = https://github.com/google/vim-codereview.git
+[submodule "vim/.vim/pack/plugins/start/vim-move"]
+	path = vim/.vim/pack/plugins/start/vim-move
+	url = https://github.com/matze/vim-move
+[submodule "vim/.vim/pack/plugins/start/vimwiki"]
+	path = vim/.vim/pack/plugins/start/vimwiki
+	url = https://github.com/vimwiki/vimwiki.git
