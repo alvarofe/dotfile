@@ -16,6 +16,13 @@ noremap <leader>o :set nopaste<CR>
 noremap <leader><Space> :%s/\s\+$//e<CR>
 noremap <leader><tab> :tabnext<cr>
 noremap <leader><s-tab> :tabprev<cr>
+noremap <leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
+noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
+noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
+noremap <leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
+noremap <leader>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
+noremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+noremap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
 " my own indentation for C using the coding styles
 set cindent
@@ -132,3 +139,14 @@ let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.='.*\.o$,.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_winsize = 25
+
+function! LoadCscope()
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    let path = strpart(db, 0, match(db, "/cscope.out$"))
+    set nocscopeverbose " suppress 'duplicate connection' error
+    exe "cs add " . db . " " . path
+    set cscopeverbose
+  endif
+endfunction
+au BufEnter /* call LoadCscope()
