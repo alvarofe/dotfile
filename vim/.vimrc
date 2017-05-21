@@ -20,7 +20,6 @@ noremap <leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
 noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
 noremap <leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
-noremap <leader>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
 noremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 noremap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
