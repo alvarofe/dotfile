@@ -1,16 +1,9 @@
-set imap_user = "alvaro.felipe91@gmail.com"
-set imap_pass = $GMAIL_PASSWORD 
-set smtp_url = "smtp://alvaro.felipe91@smtp.gmail.com:587/"
-set smtp_pass = $GMAIL_PASSWORD 
-set from = "alvaro.felipe91@gmail.com"
-set realname = "Álvaro Felipe Melchor"
-set folder = "imaps://imap.gmail.com:993"
-set spoolfile = "+INBOX"
-set postponed = "+[Gmail]/Drafts"
-set record="+[Gmail]/Sent"
-set header_cache = ~/.mutt/cache/headers
-set message_cachedir = ~/.mutt/cache/bodies
-set certificate_file = ~/.mutt/certificates
+# Default account
+source ~/.mutt/alvarofelipemelchor.gmail
+
+macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/alvaro.felipe91.gmail<enter><change-folder>!<enter>'
+macro index <f5> '<sync-mailbox><enter-command>source ~/.mutt/alvarofelipemelchor.gmail<enter><change-folder>!<enter>'
+
 set move = no
 set smtp_authenticators = ‘gssapi:login’
 set sort_aux=reverse-date-received       
@@ -20,6 +13,12 @@ set send_charset="us-ascii:utf-8
 bind index G imap-fetch-mail 
 auto_view text/html
 set editor=vi
+set sidebar_visible = yes
+set imap_check_subscribed
+bind index,pager B sidebar-toggle-visible
+bind index J sidebar-prev
+bind index K sidebar-next
+bind index O sidebar-open
 
 
 # }}}

@@ -1,0 +1,13 @@
+set imap_user = "alvarofelipemelchor@gmail.com"
+set imap_pass = $GMAIL_PASSWORD2 
+set smtp_url = "smtp://alvarofelipemelchor@smtp.gmail.com:587/"
+set smtp_pass = $GMAIL_PASSWORD2
+set from = "alvarofelipemelchor@gmail.com"
+set realname = "Álvaro Felipe Melchor"
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set record="+[Gmail]/Sent"
+set header_cache = ~/.mutt/alvarofelipemelchor/cache/headers            
+set message_cachedir = ~/.mutt/alvarofelipemelchor/cache/bodies         
+set certificate_file = ~/.mutt/alvarofelipemelchor/certificates 
