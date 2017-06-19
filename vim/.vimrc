@@ -2,8 +2,8 @@ set nocompatible
 filetype plugin on
 filetype indent on
 let mapleader = ","
-set nu
-set relativenumber
+"set nu
+"set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
 noremap <leader>n :Vexplore<CR>
@@ -116,7 +116,6 @@ set history=1000
 " UI tweaks
 set ruler
 set nolazyredraw
-set number
 
 autocmd! bufwritepost vimrc source ~/.vimrc
 
@@ -149,3 +148,9 @@ function! LoadCscope()
   endif
 endfunction
 au BufEnter /* call LoadCscope()
+
+let g:ycm_confirm_extra_conf = 1
+let g:ycm_global_ycm_extra_conf = "/Users/alvaro/.ycm_extra_conf.py"
+let g:ycm_show_diagnostics_ui = 0
+colorscheme one
+
