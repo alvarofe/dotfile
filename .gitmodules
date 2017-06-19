@@ -26,7 +26,7 @@
 	path = vim/.vim/pack/plugins/opt/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
 [submodule "vim/.vim/pack/plugins/opt/YouCompleteMe"]
-	path = vim/.vim/pack/plugins/opt/YouCompleteMe
+	path = vim/.vim/pack/plugins/start/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "vim/.vim/pack/plugins/opt/vim-node"]
 	path = vim/.vim/pack/plugins/opt/vim-node
@@ -46,3 +46,6 @@
 [submodule "vim/.vim/pack/plugins/start/vimwiki"]
 	path = vim/.vim/pack/plugins/start/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
+[submodule "vim/.vim/pack/plugins/start/vim-fugitive"]
+	path = vim/.vim/pack/plugins/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
