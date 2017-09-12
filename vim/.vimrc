@@ -2,10 +2,11 @@ set nocompatible
 filetype plugin on
 filetype indent on
 let mapleader = ","
-"set nu
-"set relativenumber
+set nu
+set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
+noremap <leader>m :!make<CR>
 noremap <leader>n :Vexplore<CR>
 noremap <leader>q :q<CR>
 noremap <leader>v :vsp<CR>
@@ -66,7 +67,6 @@ set vb t_vb="."
 set t_Co=256 " 256 Color Term
 set t_Co=256
 set colorcolumn=81
-set listchars+=nbsp:x
 
 let g:clang_format#style_options = {
        \ "Language": "Cpp",
@@ -120,13 +120,14 @@ set nolazyredraw
 autocmd! bufwritepost vimrc source ~/.vimrc
 
 " Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+"noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Highlightning
 hi clear CursorLine
 set cursorline
 set background=dark
 set listchars=tab:\|\ 
+set listchars+=nbsp:x
 "set list
 
 " Tweaks for browsing
@@ -150,7 +151,7 @@ endfunction
 au BufEnter /* call LoadCscope()
 
 let g:ycm_confirm_extra_conf = 1
-let g:ycm_global_ycm_extra_conf = "/Users/alvaro/.ycm_extra_conf.py"
+let g:ycm_server_python_interpreter = 'python2'
+let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
-colorscheme one
-
+"colorscheme github 
