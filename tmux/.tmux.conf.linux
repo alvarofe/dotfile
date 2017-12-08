@@ -1,0 +1,115 @@
+# Enable xterm options for ctrl + left/right
+set-window-option -g xterm-keys on
+
+# Disable ctrl + arrow keys
+unbind C-Left
+unbind C-Right
+unbind C-Up
+unbind C-Down
+
+
+unbind-key C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# make tmux display things in 256 colors
+set -g default-terminal "screen-256color"
+
+# shorten command delay
+set -sg escape-time 1
+
+# Start numbering at 1
+set -g base-index 1
+
+# Change using ALT
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# Resize pane
+bind -n M-Enter resize-pane -Z
+
+# Rotate window
+bind o rotate-window
+
+# Enable mouse - deprecated
+#set-option -g mouse-select-pane on
+#set -g mouse-resize-pane
+#setw -g mode-mouse on
+set-option -g -q mouse on
+
+
+# auto window rename
+set-window-option -g automatic-rename on
+
+# reload config
+bind r source-file ~/.tmux.conf
+
+# Resize panels
+unbind left
+unbind right
+unbind up
+
+
+
+unbind down
+bind -r left resize-pane -L 1
+bind -r right resize-pane -R 1
+bind -r down resize-pane -D 1
+bind -r up resize-pane -U 1
+
+# Window management
+bind -n S-up choose-window
+bind -n S-down command-prompt -p "Window name: " "rename-window '%%'"
+bind -n S-left prev
+bind -n S-right next
+
+
+# Tmux clipboard shit
+bind s run "tmux show-buffer > /tmp/paste.tmux"
+bind b run "tmux show-buffer | xsel -i"
+bind v paste-buffer
+
+set-option -g set-clipboard on
+
+set -sg escape-time 0
+bind-key Escape copy-mode
+
+
+# ----------------------
+# set some pretty colors
+# ----------------------
+# set pane colors - hilight the active pane
+#set-option -g pane-border-fg colour235 #base02
+#set-option -g pane-active-border-fg colour240 #base01
+
+# colorize messages in the command line
+#set-option -g message-bg black #base02
+#set-option -g message-fg brightred #orange
+
+# set color for status bar
+#set-option -g status-bg colour235 #base02
+#set-option -g status-fg yellow #yellow
+#set-option -g status-attr dim 
+
+# set window list colors - red for active and cyan for inactive
+#set-window-option -g window-status-fg brightblue #base0
+#set-window-option -g window-status-bg colour237
+#set-window-option -g window-status-attr dim
+
+#set-window-option -g window-status-current-fg red #orange
+#set-window-option -g window-status-current-bg colour236
+#set-window-option -g window-status-current-attr bright
+
+set -g @plugin 'tmux-plugins/tmux-yank'
+run "~/.tmux/plugins/tpm/tpm"
+# C-c: save into system clipboard (+). With preselection.
+bind C-c choose-buffer "run \"tmux save-buffer -b %% - | xclip -i -sel clipboard\" \; run \" tmux display \\\"Clipboard \(+\) filled with: $(tmux save-buffer -b %1 - | dd ibs=1 obs=1 status=noxfer count=80 2> /dev/null)... \\\" \" "
+# C-v: copy from + clipboard.
+bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer" \; run "tmux display \"Copied from \(+\) $(xclip -o -sel clipboard | dd ibs=1 obs=1 status=noxfer count=80 2> /dev/null)... \""
+
+# C-d: save into selection clipboard (*). With preselection.
+bind C-d choose-buffer "run \"tmux save-buffer -b %% - | xclip -i\" \; run \" tmux display \\\"Clipboard \(*\) filled with: $(tmux save-buffer -b %1 - | dd ibs=1 obs=1 status=noxfer count=80 2> /dev/null)... \\\" \" "
+# C-f: copy from * clipboard.
+bind C-f run "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer" \; run "tmux display \"Copied from \(*\) $(xclip -o | dd ibs=1 obs=1 status=noxfer count=80 2> /dev/null)... \""
