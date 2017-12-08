@@ -1,77 +1,24 @@
-*VT100.allowWindowOps : true
-*VT100.allowTitleOps  : true
-*VT100.allowFontOps   : true
-
-*customization: -color
-xterm*termName: xterm-256color
-
-nc.autoStart: True
-vncviewer.forceOwnCmap: true
-Xvnc.IdleTimeout: 0
-
-xterm*saveLines:        500
-! xterm*scrollBar:        true
-xterm*scrollBar:        false
-xterm*cursorColor:      white
-xterm*pointerColor:     white
-xterm*c132:             true
-xterm*loginShell:       false
-! xterm*loginshell: 1
-xterm*Foreground:       white
-xterm*Background:       black
-! xterm*Foreground:       black
-! xterm*Background:       white
-
-! Fonts
-! xterm*faceName: DejaVu Sans Mono
-! xterm*faceName: Inconsolata
-! xterm*faceName: Inconsolata\\-dz:style=dz
-! xterm*faceName: Inconsolata\\-g:style=g
-! xterm*faceName: Inconsolata\\-dz for Powerline
-xterm*faceName: Source Code Pro for Powerline
-! xterm*faceName: Envy Code R
-xterm*faceSize: 11
-
-! emacs*font: Envy Code R
-emacs*font: PragmataPro
-emacs*geometry: 80x24
-
-! Xft settings ---------------------------------------------------------------
-
-Xft.dpi:        96
-Xft.antialias:  true
-Xft.rgba:       rgb
-Xft.hinting:    true
-Xft.hintstyle:  hintslight
-
-xterm*fontMenu*fontdefault*Label: Default
-xterm*locale: 1
-xterm.utf8: 1
-xterm*utf8Title: 1
-
-xterm*bellIsUrgent: 1
-xterm*borderWidth: 0
-
-xterm*xftAntialias: 1
-xterm*cjkWidth: 0
-
-XLock.mode: random
-XLock.echokeys: on
-XLock.enablesaver: on
-XLock.usefirst: on
-XLock.allowroot: on
-
-Scrollbar.JumpCursor:   True
-
-AcroRead.Geometry: 800x900-0+0
-AcroRead.DefaultSplitterPos: 237
-
-cdsLibManager*textFontList:-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*
-
-emacs.toolBar: 0
-emacs.verticalScrollBars: off
-
-! Enable copying from tmux
-XTerm*disallowedWindowOps: 20,21,SetXprop
+xterm*faceName: Source Code Pro
+xterm*faceSize: 10
+xterm*selectToClipboard:true
 Xterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
 
+! Dracula Xresources palette
+*.foreground: #F8F8F2
+*.background: #282A36
+*.color0:     #000000
+*.color8:     #4D4D4D
+*.color1:     #FF5555
+*.color9:     #FF6E67
+*.color2:     #50FA7B
+*.color10:    #5AF78E
+*.color3:     #F1FA8C
+*.color11:    #F4F99D
+*.color4:     #BD93F9
+*.color12:    #CAA9FA
+*.color5:     #FF79C6
+*.color13:    #FF92D0
+*.color6:     #8BE9FD
+*.color14:    #9AEDFE
+*.color7:     #BFBFBF
+*.color15:    #E6E6E6
