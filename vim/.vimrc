@@ -131,13 +131,13 @@ set listchars+=nbsp:x
 "set list
 
 " Tweaks for browsing
-let g:netrw_banner=0        " disable annoying banner
-let g:netrw_browse_split=4  " open in prior window
-let g:netrw_altv=1          " open splits to the right
-let g:netrw_liststyle=3     " tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.='.*\.o$,.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_winsize = 25
+"let g:netrw_banner=0        " disable annoying banner
+"let g:netrw_browse_split=4  " open in prior window
+"let g:netrw_altv=1          " open splits to the right
+"let g:netrw_liststyle=3     " tree view
+"let g:netrw_list_hide=netrw_gitignore#Hide()
+"let g:netrw_list_hide.='.*\.o$,.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
+"let g:netrw_winsize = 25
 
 function! LoadCscope()
   let db = findfile("cscope.out", ".;")
@@ -150,7 +150,7 @@ function! LoadCscope()
 endfunction
 au BufEnter /* call LoadCscope()
 
-let g:ycm_confirm_extra_conf = 1
+let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_python_interpreter = 'python2'
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
