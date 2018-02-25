@@ -7,5 +7,5 @@ LINKLATEST="${SCREENDIR}/latest.png"
 [ ! -d "$SCREENDIR" ] && mkdir "$SCREENDIR"
 
 sleep 0.5
-maim -s "$SCREENFILE"
+scrot -s "$SCREENFILE"
 ln -sf "$SCREENFILE" "$LINKLATEST"

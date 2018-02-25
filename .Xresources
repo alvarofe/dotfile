@@ -1,10 +1,19 @@
+! XTERM
 xterm*faceName: Source Code Pro
 xterm*faceSize: 9.5 
 *.foreground: white 
 *.background: black 
 xterm*selectToClipboard:true
 Xterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
+XTerm*scrollBar:false
 
+! UXTERM
+uxterm*faceName: Source Code Pro
+uxterm*faceSize: 9.5 
+uxterm*selectToClipboard:true
+uXterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
+uXTerm*scrollBar:false
+UXTerm*scrollBar:false
 disallowedWindowsOps: 20,21,SetXprop
 
 ! Dracula Xresources palette
