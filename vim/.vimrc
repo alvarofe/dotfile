@@ -65,7 +65,6 @@ set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
 set t_Co=256 " 256 Color Term
-set t_Co=256
 set colorcolumn=81
 
 let g:clang_format#style_options = {
