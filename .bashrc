@@ -14,7 +14,7 @@ alias grep="grep --color"
 
 function cs() {
 	find . -name "*.c" -o -name "*.cc" -o -name "*.h" -o -name "*.hpp" -o -name "*.cpp" > cscope.files
-	cscope -b
+	cscope -b -q -k
 }
 
 function kernel_tags() {
@@ -34,3 +34,7 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 export EDITOR=vim
 export PAGER=less
 export PS1="\h:\W \u\$ "
+
+
+export CFLAGFUZZ="-fsanitize=address -fsanitize-coverage=bb,indirect-calls,trace-pc-guard,trace-cmp,trace-div,trace-gep -fno-omit-frame-pointer"   
+
