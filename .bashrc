@@ -16,6 +16,18 @@ function cs() {
 	find . -name "*.c" -o -name "*.cc" -o -name "*.h" -o -name "*.hpp" -o -name "*.cpp" > cscope.files
 	cscope -b
 }
+
+function kernel_tags() {
+    rm -rf cscope.*
+    rm -rf tags
+
+    find . -path ./arch -prune -o -path ./tools -prune -o -type f -name "*.[chsS]" -print >> cscope.files
+    find arch/$1 -type f -name "*.[chsS]" -print >> cscope.files
+
+    cscope -b -q -k
+    ctags -L cscope.files
+}
+
 export CLICOLOR=1
 #export LSCOLORS=GxFxCxDxBxegedabagaced
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
