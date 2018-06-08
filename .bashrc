@@ -8,7 +8,7 @@ alias tksv="tmux -2 kill kill-server"
 alias tkss="tmux -2 kill-session -t"
 alias cdr2="cd ~/projects/reverse/radare2/r2"
 alias cdr2r="cd ~/projects/reverse/radare2/r2-regressions"
-alias tags="ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ." 
+alias tags="ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
 alias less="less -R"
 alias grep="grep --color"
 
@@ -36,5 +36,8 @@ export PAGER=less
 export PS1="\h:\W \u\$ "
 
 
-export CFLAGFUZZ="-fsanitize=address -fsanitize-coverage=bb,indirect-calls,trace-pc-guard,trace-cmp,trace-div,trace-gep -fno-omit-frame-pointer"   
+export CFLAGFUZZ="-fsanitize=address -fsanitize-coverage=bb,indirect-calls,trace-pc-guard,trace-cmp,trace-div,trace-gep -fno-omit-frame-pointer"
 
+export AFL_PATH="/home/alvaro/tools/afl-latest"
+export LSAN_OPTIONS=verbosity=0:log_threads=0
+export ASAN_OPTIONS=detect_leaks=0,abort_on_error=1,symbolize=0,detect_odr_violation=0
