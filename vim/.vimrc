@@ -65,7 +65,6 @@ set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
 set t_Co=256 " 256 Color Term
-"set colorcolumn=81
 
 let g:clang_format#style_options = {
        \ "Language": "Cpp",
@@ -153,7 +152,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_python_interpreter = 'python2'
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
-colorscheme gruvbox 
+colorscheme dracula 
 
 
 function MoveToPrevTab()
@@ -202,3 +201,12 @@ endfunc
 
 map <C-m> :call MoveToNextTab()<CR><C-w>H
 map <C-n> :call MoveToPrevTab()<CR><C-w>H
+
+" switch tabs with Ctrl left and right
+nnoremap <C-right> :tabnext<CR>
+nnoremap <C-left> :tabprevious<CR>
+" and whilst in insert mode
+inoremap <C-right> <Esc>:tabnext<CR>
+inoremap <C-left> <Esc>:tabprevious<CR>
+
+set directory^=$HOME/.vim/swapfiles//

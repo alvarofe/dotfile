@@ -179,3 +179,4 @@ bindsym XF86AudioPrev exec playerctl previous
 #brightness
 bindsym XF86MonBrightnessUp exec /home/alvaro/i3-scripts/brightness.sh inc
 bindsym XF86MonBrightnessDown exec /home/alvaro/i3-scripts/brightness.sh dec 
+
