@@ -2,8 +2,8 @@ set nocompatible
 filetype plugin on
 filetype indent on
 let mapleader = ","
-set nu
-set relativenumber
+"set nu
+"set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
 noremap <leader>m :!make<CR>
@@ -65,7 +65,7 @@ set mouse=a
 set clipboard=unnamed
 set vb t_vb="."
 set t_Co=256 " 256 Color Term
-set colorcolumn=81
+"set colorcolumn=81
 
 let g:clang_format#style_options = {
        \ "Language": "Cpp",
@@ -154,3 +154,51 @@ let g:ycm_server_python_interpreter = 'python2'
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
 colorscheme gruvbox 
+
+
+function MoveToPrevTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() != 1
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabprev
+    endif
+    sp
+  else
+    close!
+    exe "0tabnew"
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunc
+
+function MoveToNextTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() < tab_nr
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabnext
+    endif
+    sp
+  else
+    close!
+    tabnew
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunc
+
+map <C-m> :call MoveToNextTab()<CR><C-w>H
+map <C-n> :call MoveToPrevTab()<CR><C-w>H
