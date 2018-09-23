@@ -1,6 +1,6 @@
 ! XTERM
-!xterm*faceName: Source Code Pro
-!xterm*faceSize: 12 
+xterm*faceName: Consolas 
+xterm*faceSize: 10 
 *.foreground: white 
 *.background: black 
 xterm*selectToClipboard:true
@@ -8,8 +8,8 @@ Xterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOAR
 XTerm*scrollBar:false
 
 ! UXTERM
-!uxterm*faceName: Source Code Pro
-!uxterm*faceSize: 12 
+uxterm*faceName: Consolas 
+uxterm*faceSize: 10 
 uxterm*selectToClipboard:true
 uXterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
 uXTerm*scrollBar:false
