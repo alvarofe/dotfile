@@ -44,3 +44,9 @@ export AFL_PATH="/home/alvaro/tools/afl-latest"
 export LSAN_OPTIONS=verbosity=0:log_threads=0
 export ASAN_OPTIONS=detect_leaks=0,abort_on_error=1,symbolize=0,detect_odr_violation=0
 export PATH=$PATH:/home/alvaro/projects/android/toolchain/x86_64-linux-android-4.9/bin
+
+function get_service_number {                                                                                                                                                                                                                                                                                                 
+    cat $1 | gcc -P -E - | tr '{};\n\r' '\n\n\n  ' | grep -v ^$ | sed -e '1,/interface\s/ d' | sed '/^\s*$/d' | cat -n
+}
+
+alias aosp="cd /home/alvaro/projects/android/aosp" 
