@@ -15,6 +15,7 @@ alias grep="grep --color"
 function cs() {
 	find . -name "*.c" -o -name "*.cc" -o -name "*.h" -o -name "*.hpp" -o -name "*.cpp" > cscope.files
 	cscope -b -q -k
+	ctags -L cscope.files
 }
 
 function kernel_tags() {
@@ -37,7 +38,9 @@ export PS1="\h:\W \u\$ "
 
 
 export CFLAGFUZZ="-fsanitize=address -fsanitize-coverage=bb,indirect-calls,trace-pc-guard,trace-cmp,trace-div,trace-gep -fno-omit-frame-pointer"
+export PATH=$PATH:/home/alvaro/dotfile/i3/scripts
 
 export AFL_PATH="/home/alvaro/tools/afl-latest"
 export LSAN_OPTIONS=verbosity=0:log_threads=0
 export ASAN_OPTIONS=detect_leaks=0,abort_on_error=1,symbolize=0,detect_odr_violation=0
+export PATH=$PATH:/home/alvaro/projects/android/toolchain/x86_64-linux-android-4.9/bin
