@@ -6,8 +6,6 @@ let mapleader = ","
 "set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
-noremap <leader>m :!make<CR>
-noremap <leader>n :Vexplore<CR>
 noremap <leader>q :q<CR>
 noremap <leader>v :vsp<CR>
 noremap <leader>h :sp<CR>
@@ -209,4 +207,5 @@ nnoremap <C-left> :tabprevious<CR>
 inoremap <C-right> <Esc>:tabnext<CR>
 inoremap <C-left> <Esc>:tabprevious<CR>
 
-set directory^=$HOME/.vim/swapfiles//
+set directory^=$HOME/.vim/swapfiles/
+set encoding=utf-8
