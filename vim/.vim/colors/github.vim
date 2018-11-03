@@ -1,116 +1,335 @@
-" Vim color file -- with 256 colour support!
+" vim: set foldmethod=marker :
 "
-" Author: Anthony Carapetis <anthony.carapetis@gmail.com>
-" Contributors: Lucas Tadeu <lucastadeuteixeira@gmail.com>
+" Author:   Cormac Relf <web@cormacrelf.net>
 "
-" Note: Based on github's syntax highlighting theme
-"       Used Brian Mock's darkspectrum as a starting point/template
-"       Thanks to Ryan Heath for an easy list of some of the colours:
-"       http://rpheath.com/posts/356-github-theme-for-syntax-gem
+" Note:     Based on github's syntax highlighting theme as of 2018.
+"           Originally based on https://github.com/endel/vim-github-colorscheme,
+"           but none of that code remains.
+"
+" Usage:    colorscheme github
+"           " optional, if you use airline
+"           let g:airline_theme = "github"
+"           
 
 set background=light
-
-if version > 580
-    hi clear
-    if exists("syntax_on")
-        syntax reset
-    endif
-endif
-
 let colors_name = "github"
-
-" {{{ General colors
-hi Normal   ctermfg=0   ctermbg=255  guifg=#000000   guibg=#F8F8FF
-hi Cursor   ctermfg=239   ctermbg=15  guifg=#F8F8FF   guibg=#444454
-hi Visual   ctermfg=15   ctermbg=61  guifg=#FFFFFF   guibg=#3465a3
-hi VisualNOS   ctermfg=15   ctermbg=24  guifg=#FFFFFF   guibg=#204a87
-hi Search   ctermfg=236   ctermbg=228  guifg=#000000   guibg=#FFFF8C  cterm=bold gui=bold
-hi Folded   ctermfg=8 ctermbg=15 guifg=#808080 guibg=#ECECEC gui=bold cterm=bold
-hi Title    ctermfg=167 guifg=#ef5939
-hi StatusLine ctermfg=238 ctermbg=250 guifg=#404040 guibg=#bbbbbb gui=bold cterm=bold
-hi StatusLineNC ctermfg=238 ctermbg=252 guifg=#404040 guibg=#d4d4d4 gui=italic cterm=italic
-hi VertSplit ctermfg=250 ctermbg=250 guifg=#bbbbbb guibg=#bbbbbb gui=none cterm=none
-hi LineNr   ctermfg=246 ctermbg=15 guifg=#959595 guibg=#ECECEC gui=bold cterm=bold
-hi SpecialKey ctermfg=6 guifg=#177F80 gui=italic cterm=italic
-hi WarningMsg ctermfg=167 guifg=#ef5939
-hi ErrorMsg ctermbg=15 ctermfg=196 guibg=#f8f8ff guifg=#ff1100 gui=undercurl cterm=undercurl
-hi ColorColumn ctermbg=254 guibg=#e4e4e4
-" }}}
-
-" {{{ Vim => 7.0 specific colors
-if version >= 700
-    hi CursorLine ctermbg=253 guibg=#D8D8DD
-    hi MatchParen ctermfg=0 ctermbg=252 guifg=#000000 guibg=#cdcdfd
-    hi Pmenu        ctermfg=15 ctermbg=8 guifg=#ffffff guibg=#808080 gui=bold   cterm=bold
-    hi PmenuSel     ctermfg=0 ctermbg=252 guifg=#000000 guibg=#cdcdfd  gui=italic cterm=italic
-    hi PmenuSbar    ctermfg=238 ctermbg=0 guifg=#444444 guibg=#000000
-    hi PmenuThumb   ctermfg=248 ctermbg=248 guifg=#aaaaaa guibg=#aaaaaa
+hi clear
+if exists("syntax_on")
+    syntax reset
 endif
+
+if !exists("g:github_colors_extra_functions")
+  let g:github_colors_extra_functions = 1
+endif
+
+if !exists("g:github_colors_soft")
+  let g:github_colors_soft = 0
+endif
+
+" Helper functions {{{
+" from vim-gotham
+
+function! s:Highlight(args)
+  exec 'highlight ' . join(a:args, ' ')
+endfunction
+
+function! s:AddGroundValues(accumulator, ground, color)
+  let new_list = a:accumulator
+  for [where, value] in items(a:color)
+    call add(new_list, where . a:ground . '=' . value)
+  endfor
+
+  return new_list
+endfunction
+
+function! s:Col(group, fg_name, ...)
+  " ... = optional bg_name
+
+  let pieces = [a:group]
+
+  if a:fg_name !=# ''
+    let pieces = s:AddGroundValues(pieces, 'fg', s:colors[a:fg_name])
+  endif
+
+  if a:0 > 0 && a:1 !=# ''
+    let pieces = s:AddGroundValues(pieces, 'bg', s:colors[a:1])
+  endif
+
+  call s:Clear(a:group)
+  call s:Highlight(pieces)
+endfunction
+
+function! s:Attr(group, attr)
+  let l:attrs = [a:group, 'term=' . a:attr, 'cterm=' . a:attr, 'gui=' . a:attr]
+  call s:Highlight(l:attrs)
+endfunction
+
+function! s:Spell(group, attr)
+  let l:attrs = [a:group, 'guisp=' . a:attr]
+  call s:Highlight(l:attrs)
+endfunction
+
+
+function! s:Clear(group)
+  exec 'highlight clear ' . a:group
+endfunction
+
 " }}}
 
-" {{{ Diff highlighting
-hi DiffAdd    ctermfg=233 ctermbg=194 guifg=#003300 guibg=#DDFFDD gui=none cterm=none
-hi DiffChange ctermbg=255  guibg=#ececec gui=none   cterm=none
-hi DiffText   ctermfg=233  ctermbg=189  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
-hi DiffDelete ctermfg=252 ctermbg=224   guifg=#DDCCCC guibg=#FFDDDD gui=none    cterm=none
+" Colors {{{
+
+" let's store colors in a dictionary
+
+let s:colors = {}
+
+let s:colors.base0          = { 'gui': '#24292e', 'cterm': 235 } " github text fg
+let s:colors.base1          = { 'gui': '#41484f', 'cterm': 238 } " lightened from 0
+let s:colors.base2          = { 'gui': '#6a737d', 'cterm': 243 } " comment
+let s:colors.base3          = { 'gui': '#76787b', 'cterm': 243 } " github linenr darker
+let s:colors.base_35        = { 'gui': '#979797', 'cterm': 246 } " github linenr darker
+let s:colors.base4          = { 'gui': '#babbbc', 'cterm': 250 } " github linenr lighter
+let s:colors.base5          = { 'gui': '#dddddd', 'cterm': 253 } "
+let s:colors.base6          = { 'gui': '#ebeced', 'cterm': 255 } " 
+let s:colors.base7          = { 'gui': '#f6f8fa', 'cterm': 231 } " github inline code block bg
+let s:colors.base8          = { 'gui': '#fafbfc', 'cterm': 231 } " github generic light
+let s:colors.white          = { 'gui': '#ffffff', 'cterm': 231 } "
+
+if g:github_colors_soft == 1
+    let s:colors.bg         = s:colors.base7
+    let s:colors.uiline     = s:colors.base5
+    let s:colors.over       = s:colors.white
+    let s:colors.gutter     = s:colors.base6
+    let s:colors.gutterfg   = s:colors.base_35
+else
+    let s:colors.bg         = s:colors.white
+    let s:colors.uiline     = s:colors.base6
+    let s:colors.over       = s:colors.base7
+    let s:colors.gutter     = s:colors.base8
+    let s:colors.gutterfg   = s:colors.base4
+endif
+
+let s:colors.red            = { 'gui': '#d73a49', 'cterm': 167 } " github syntax
+let s:colors.darkred        = { 'gui': '#b31d28', 'cterm': 124 } " github syntax
+let s:colors.orange         = { 'gui': '#e36209', 'cterm': 166 } " github syntax
+let s:colors.purple         = { 'gui': '#6f42c1', 'cterm': 61  } " github syntax
+let s:colors.darkpurple     = { 'gui': '#352650', 'cterm': 237 } " ^- darkened
+let s:colors.blue           = { 'gui': '#005cc5', 'cterm': 26  } " github syntax
+let s:colors.darkblue       = { 'gui': '#032f62', 'cterm': 17  } " ^- darkened
+let s:colors.yellow         = { 'gui': '#ffffc5', 'cterm': 230 } " github search
+let s:colors.green          = { 'gui': '#22863a', 'cterm': 29  } " github syntax (html)
+let s:colors.lightgreen     = { 'gui': '#e6ffed', 'cterm': 85  } " github diff
+let s:colors.lightred       = { 'gui': '#ffeef0', 'cterm': 167 } " github diff
+let s:colors.lightorange_nr = { 'gui': '#fff5b1', 'cterm': 229 } " github selected line number column
+let s:colors.lightorange    = { 'gui': '#fffbdd', 'cterm': 230 } " github selected line
+let s:colors.difftext       = { 'gui': '#f2e496', 'cterm': 222 } " ^- darkened
+let s:colors.lightblue      = { 'gui': '#f1f8ff', 'cterm': 231 } " github diff folds
+let s:colors.visualblue     = { 'gui': '#e4effb', 'cterm': 255 } " ^- darkened
+let s:colors.medblue        = { 'gui': '#b2ceec', 'cterm': 153 } " ^- darkened
+
+" to link to
+call s:Col('ghGreen', 'green')
+call s:Col('ghPurple', 'purple')
+call s:Col('ghBlack', 'base0')
+call s:Col('ghBlue', 'blue')
+call s:Col('ghDarkBlue', 'darkblue')
+call s:Col('ghOrange', 'orange')
+call s:Col('ghRed', 'red')
+
+" }}}
+
+" UI colors {{{
+
+call s:Col('Normal', 'base0', 'bg')
+call s:Col('Cursor', 'base8', 'base0') " only if vim gets to render cursor
+call s:Col('Visual', '', 'visualblue')
+call s:Col('VisualNOS', '', 'lightblue')
+call s:Col('Search', '', 'yellow') | call s:Attr('Search', 'bold')
+
+call s:Col('MatchParen', 'base0', 'medblue')
+call s:Col('Conceal', 'blue')
+call s:Col('SpecialKey', 'blue') | call s:Attr('SpecialKey', 'italic')
+call s:Col('WarningMsg', 'red')
+call s:Col('ErrorMsg', 'darkred', 'base8')
+call s:Col('Error', 'gutter', 'darkred')
+call s:Col('Title', 'blue')
+
+call s:Col('VertSplit',    'uiline', 'uiline')
+call s:Col('SignColumn',   'gutterfg',  'gutter')
+call s:Col('LineNr',       'gutterfg',  'gutter')
+call s:Col('ColorColumn',  '',       'base5')
+call s:Col('CursorLine',   '',       'lightorange')
+call s:Col('CursorLineNR', 'base3',  'lightorange_nr')
+hi! link CursorColumn CursorLine
+" tildes at the bottom
+hi! link NonText      LineNr
+
+call s:Col('Folded', 'base3', 'lightblue')
+call s:Col('FoldColumn', 'medblue', 'gutter')
+
+call s:Col('StatusLine',      'base8', 'base0')
+call s:Col('StatusLineNC',    'base3', 'gutter')
+" statusline determines inactive wildmenu entries too
+call s:Col('WildMenu', 'base8', 'blue')
+
+call s:Col('airlineN1',       'uiline', 'base0')
+call s:Col('airlineN2',       'uiline', 'base1')
+call s:Col('airlineN3',       'base0',  'uiline')
+call s:Col('airlineInsert1',  'uiline', 'blue')
+call s:Col('airlineInsert2',  'uiline', 'darkblue')
+call s:Col('airlineVisual1',  'uiline', 'purple')
+call s:Col('airlineVisual2',  'uiline', 'darkpurple')
+call s:Col('airlineReplace1', 'uiline', 'red')
+call s:Col('airlineReplace2', 'uiline', 'darkred')
+
+call s:Col('Pmenu',      'base3', 'over')
+call s:Col('PmenuSel',   'over',  'blue') | call s:Attr('PmenuSel', 'bold')
+call s:Col('PmenuSbar',  '',      'over')
+call s:Col('PmenuThumb', '',      'blue')
+
+" hit enter to continue
+call s:Col('Question', 'green')
+
+call s:Col('TabLine',     'base1', 'uiline') | call s:Attr('TabLine', 'none')
+call s:Col('TabLineFill', 'base1', 'uiline') | call s:Attr('TabLineFill', 'none')
+call s:Col('TabLineSel',  'base1'         ) | call s:Attr('TabLineSel', 'bold')
+
+call s:Col('DiffAdd',    '', 'lightgreen')
+call s:Col('DiffDelete', 'base4', 'lightred') | call s:Attr('DiffDelete', 'none')
+call s:Col('DiffChange', '', 'lightorange')
+call s:Col('DiffText',   '', 'difftext')
+
 " }}}
 
 " {{{ Syntax highlighting
-hi Ignore   ctermfg=8 guifg=#808080
-hi Identifier   ctermfg=31 guifg=#0086B3
-hi PreProc  ctermfg=247 guifg=#A0A0A0 gui=bold cterm=bold
-hi Comment  ctermfg=246 guifg=#999988
-hi Constant ctermfg=6 guifg=#177F80 gui=none cterm=none
-hi String   ctermfg=161 guifg=#D81745
-hi Function ctermfg=88 guifg=#990000 gui=bold cterm=bold
-hi Statement    ctermfg=0 guifg=#000000 gui=bold cterm=bold
-hi Type     ctermfg=60 guifg=#445588 gui=bold   cterm=bold
-hi Number   ctermfg=30 guifg=#1C9898
-hi Todo     ctermfg=15 ctermbg=88 guifg=#FFFFFF guibg=#990000 gui=bold cterm=bold
-hi Special  ctermfg=28 guifg=#159828 gui=bold   cterm=bold
-hi Todo         ctermbg=15 ctermfg=196 guibg=#f8f8ff guifg=#ff1100 gui=underline cterm=underline
-hi Label        ctermfg=0 guifg=#000000 gui=bold    cterm=bold
-hi StorageClass ctermfg=0 guifg=#000000 gui=bold    cterm=bold
-hi Structure    ctermfg=0 guifg=#000000 gui=bold    cterm=bold
-hi TypeDef      ctermfg=0 guifg=#000000 gui=bold    cterm=bold
 
-" {{{ Links
-hi! link FoldColumn Folded
-hi! link CursorColumn   CursorLine
-hi! link NonText    LineNr
-" }}}
+hi Ignore   ctermfg=8    guifg=#808080
+call s:Col('Identifier', 'blue')
+call s:Col('PreProc', 'red')
+call s:Col('Macro', 'blue')
+call s:Col('Define', 'purple')
+call s:Col('Comment', 'base2')
+call s:Col('Constant', 'blue')
+call s:Col('String', 'darkblue')
+call s:Col('Function', 'purple')
+call s:Col('Statement', 'red')
+call s:Col('Type', 'red')
+call s:Col('Todo', 'purple') | call s:Attr('Todo', 'underline')
+call s:Col('Special', 'purple')
+call s:Col('Label', 'base0')
+call s:Col('StorageClass', 'red')
+call s:Col('Structure', 'red')
 
-" {{{ Aliases
-hi link cppSTL          Function
-hi link cppSTLType      Type
-hi link Character       Number
-hi link htmlTag         htmlEndTag
-hi link htmlLink        Underlined
-hi link pythonFunction  Identifier
-hi link Question        Type
-hi link CursorIM        Cursor
-hi link VisualNOS       Visual
-hi link xmlTag          Identifier
-hi link xmlTagName      Identifier
-hi link shDeref         Identifier
-hi link shVariable      Function
-hi link rubySharpBang   Special
-hi link perlSharpBang   Special
-hi link schemeFunc      Statement
-" }}}
+" Optimisations {{{
 
-" {{{ Tabs
-hi TabLine ctermfg=238 ctermbg=188 guifg=#404040 guibg=#dddddd gui=none
-hi TabLineFill ctermfg=238 ctermbg=188 guifg=#404040 guibg=#dddddd gui=none
-hi TabLineSel   ctermfg=238 guifg=#404040 gui=bold
+hi link cDefine Define
+
+" html
+" xml doesn't recognise xmlEndTag->xmlTagName, so colour it all green
+call s:Col('xmlTag', 'green')
+call s:Col('xmlEndTag', 'green')
+call s:Col('xmlTagName', 'green')
+call s:Col('xmlAttrib', 'purple')
+
+call s:Col('htmlTag', 'base0')
+hi link htmlEndTag  htmlTag
+hi link htmlTagN    htmlTag
+hi link htmlTagName xmlTagName
+hi link htmlArg     xmlAttrib
+hi link htmlLink    Underlined
+
+" toml
+hi link tomlTable ghPurple
+hi link tomlKey   ghBlack
+" yaml
+hi link yamlBlockMappingKey ghGreen
+
+" NERDTree
+hi link Directory        ghBlue
+hi link NERDTreeDir      ghBlue
+hi link NERDTreeCWD      ghRed
+hi link NERDTreeExecFile ghPurple
+hi link NERDTreeFile     ghDarkBlue
+
+if g:github_colors_extra_functions == 1
+  " in C, functions are blue!
+  au FileType c syntax match ghBlueFunc /\w\+\s*(/me=e-1,he=e-1
+  highlight def link ghBlueFunc Identifier
+  au FileType typescript syntax match ghPurpleFunc /\w\+\s*(/me=e-1,he=e-1
+  au FileType javascript syntax match ghPurpleFunc /\w\+\s*(/me=e-1,he=e-1
+  highlight def link ghPurpleFunc Function
+endif
+
+" vimL
+hi link vimHiTerm      ghBlack
+hi link vimHiGroup     ghOrange
+hi link vimUserFunc    ghPurple
+hi link vimCommand     Statement
+hi link vimNotFunc     Statement
+hi link vimGroup       Statement
+hi link vimHighlight   Identifier
+hi link vimAutoCmd     Identifier
+hi link vimAutoEvent   Identifier
+hi link vimSyntax      Identifier
+hi link vimSynType     Identifier
+hi link vimMap         Identifier
+hi link vimOption      Identifier
+hi link vimUserCommand Identifier
+hi link vimAugroupKey  Identifier
+
+hi link Delimiter         ghBlack
+hi link SpecialComment    Comment
+hi link Character         Number
+hi link CursorIM          Cursor
+hi link cppSTL            Function
+hi link cppSTLType        Type
+hi link shDeref           Identifier
+hi link shVariable        Function
+hi link perlSharpBang     Special
+hi link schemeFunc        Statement
+hi link typescriptBraces  ghBlack
+hi link typescriptBraces  ghBlack
+hi link typescriptParens  ghBlack
+
+hi link rubySharpBang     Special
+hi link rubyDefine        PreProc
+hi link rubyClass         PreProc
+hi link rubyConstant      Define
+hi link rubyInclude       PreProc
+
+hi link pythonBuiltin     Identifier
+
+" fatih/vim-go
+" you should enable more highlights from :h go-syntax
+hi link goConstants       Constant
+hi link goFunctionCall    Identifier
+
+hi link rustModPath       Define
+hi link rustIdentifier    Function
+
+" Plug 'neovimhaskell/haskell-vim'
+hi link haskellIdentifier Function
+hi link haskellType       Identifier
+
 " }}}
 
 " {{{ Spelling
+
 if has("spell")
-    hi spellBad     guisp=#fcaf3e
-    hi spellCap     guisp=#73d216
-    hi spellRare    guisp=#fcaf3e
-    hi spellLocal   guisp=#729fcf
+  call s:Col('SpellBad', 'red')
+    \ | call s:Attr('SpellBad', 'underline')
+    " \ | call s:Spell('SpellBad', 'red')
+  call s:Col('SpellCap', 'orange')
+    \ | call s:Attr('SpellCap', 'underline')
+    " \ | call s:Spell('SpellCap', 'orange')
+  call s:Col('SpellLocal', 'yellow')
+    \ | call s:Attr('SpellLocal', 'underline')
+    " \ | call s:Spell('SpellLocal', 'yellow')
+  call s:Col('SpellRare', 'base5', 'purple')
+    \ | call s:Attr('SpellRare', 'underline')
+    " \ | call s:Spell('SpellRare', 'purple')
 endif
+
+" }}}
+
 " }}}
 
