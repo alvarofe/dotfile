@@ -119,8 +119,8 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 "noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Highlightning
-hi clear CursorLine
-set cursorline
+" hi clear CursorLine
+" set cursorline
 set background=dark
 set listchars=tab:\|\ 
 set listchars+=nbsp:x
@@ -150,7 +150,8 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_python_interpreter = 'python2'
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
-colorscheme night-owl 
+colorscheme mrkn256
+
 
 
 function MoveToPrevTab()
@@ -209,3 +210,5 @@ inoremap <C-left> <Esc>:tabprevious<CR>
 
 set directory^=$HOME/.vim/swapfiles/
 set encoding=utf-8
+set autoindent
+hi Visual term=reverse cterm=reverse guibg=Grey
