@@ -2,8 +2,8 @@ set nocompatible
 filetype plugin on
 filetype indent on
 let mapleader = ","
-"set nu
-"set relativenumber
+set nu
+set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
 noremap <leader>q :q<CR>
@@ -20,14 +20,24 @@ noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
 noremap <leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
 noremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-noremap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+"noremap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+" Key bindings for vim-lsp.
+
+nn <silent> <leader>d :LspDefinition<cr>
+nn <silent> <leader>r :LspReferences<cr>
+nn <f2> :LspRename<cr>
+nn <silent> <leader>a :LspWorkspaceSymbol<cr>
+nn <silent> <leader>l :LspDocumentSymbol<cr>
+
 
 " my own indentation for C using the coding styles
 set cindent
-set tabstop=4
-set noexpandtab
+set tabstop=8
+set shiftwidth=8
+set expandtab
 set smartindent
-set cino=:0,+0,(2,J0,{1,}0,>4,)1,m2
+"set cino=:0,+0,(2,J0,{1,}0,>4,)1,m2
 
 " pancake's exposee for vim:
 let fs=0
@@ -150,63 +160,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_python_interpreter = 'python2'
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
-colorscheme mrkn256
-
-
-
-function MoveToPrevTab()
-  "there is only one window
-  if tabpagenr('$') == 1 && winnr('$') == 1
-    return
-  endif
-  "preparing new window
-  let l:tab_nr = tabpagenr('$')
-  let l:cur_buf = bufnr('%')
-  if tabpagenr() != 1
-    close!
-    if l:tab_nr == tabpagenr('$')
-      tabprev
-    endif
-    sp
-  else
-    close!
-    exe "0tabnew"
-  endif
-  "opening current buffer in new window
-  exe "b".l:cur_buf
-endfunc
-
-function MoveToNextTab()
-  "there is only one window
-  if tabpagenr('$') == 1 && winnr('$') == 1
-    return
-  endif
-  "preparing new window
-  let l:tab_nr = tabpagenr('$')
-  let l:cur_buf = bufnr('%')
-  if tabpagenr() < tab_nr
-    close!
-    if l:tab_nr == tabpagenr('$')
-      tabnext
-    endif
-    sp
-  else
-    close!
-    tabnew
-  endif
-  "opening current buffer in new window
-  exe "b".l:cur_buf
-endfunc
-
-map <C-m> :call MoveToNextTab()<CR><C-w>H
-map <C-n> :call MoveToPrevTab()<CR><C-w>H
-
-" switch tabs with Ctrl left and right
-nnoremap <C-right> :tabnext<CR>
-nnoremap <C-left> :tabprevious<CR>
-" and whilst in insert mode
-inoremap <C-right> <Esc>:tabnext<CR>
-inoremap <C-left> <Esc>:tabprevious<CR>
+colorscheme darkburn 
 
 set directory^=$HOME/.vim/swapfiles/
 set encoding=utf-8

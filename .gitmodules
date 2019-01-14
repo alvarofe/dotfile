@@ -31,12 +31,6 @@
 [submodule "vim/.vim/pack/plugins/opt/vim-jsbeautify"]
 	path = vim/.vim/pack/plugins/opt/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
-[submodule "vim/.vim/pack/plugins/start/vim-maktaba"]
-	path = vim/.vim/pack/plugins/start/vim-maktaba
-	url = https://github.com/google/vim-maktaba.git
-[submodule "vim/.vim/pack/plugins/start/vim-codereview"]
-	path = vim/.vim/pack/plugins/start/vim-codereview
-	url = https://github.com/google/vim-codereview.git
 [submodule "vim/.vim/pack/plugins/start/vim-move"]
 	path = vim/.vim/pack/plugins/start/vim-move
 	url = https://github.com/matze/vim-move
@@ -44,14 +38,14 @@
 	path = vim/.vim/pack/plugins/start/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
 [submodule "vim/.vim/pack/plugins/start/YouCompleteMe"]
-	path = vim/.vim/pack/plugins/start/YouCompleteMe
+	path = vim/.vim/pack/plugins/opt/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
-[submodule "vim/.vim/pack/plugins/start/ctrlp.vim"]
-	path = vim/.vim/pack/plugins/start/ctrlp.vim
-	url = https://github.com/kien/ctrlp.vim.git
 [submodule "vim/.vim/pack/plugins/start/vim-linux-coding-style"]
-	path = vim/.vim/pack/plugins/start/vim-linux-coding-style
+	path = vim/.vim/pack/plugins/opt/vim-linux-coding-style
 	url = https://github.com/vivien/vim-linux-coding-style.git
 [submodule "gdb-dashboard"]
 	path = gdb-dashboard
 	url = https://github.com/cyrus-and/gdb-dashboard.git
+[submodule "emacs/lsp-mode"]
+	path = emacs/.emacs.d/lsp-mode
+	url = https://github.com/emacs-lsp/lsp-mode
