@@ -2,8 +2,8 @@ set nocompatible
 filetype plugin on
 filetype indent on
 let mapleader = ","
-set nu
-set relativenumber
+"set nu
+"set relativenumber
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
 noremap <leader>q :q<CR>
@@ -160,7 +160,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_python_interpreter = 'python2'
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
-colorscheme darkburn 
+colorscheme colorful256 
 
 set directory^=$HOME/.vim/swapfiles/
 set encoding=utf-8

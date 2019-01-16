@@ -25,9 +25,8 @@ function kernel_tags() {
     find . -path ./arch -prune -o -path ./tools -prune -o -type f -name "*.[chsS]" -print >> cscope.files
     find arch/$1 -type f -name "*.[chsS]" -print >> cscope.files
 
-    #cscope -b -q -k
-		cscope -kqRubvb
-		ctags -L cscope.files
+    cscope -b -q -k
+	ctags -L cscope.files
 }
 
 export CLICOLOR=1
@@ -50,4 +49,9 @@ function get_service_number {
     cat $1 | gcc -P -E - | tr '{};\n\r' '\n\n\n  ' | grep -v ^$ | sed -e '1,/interface\s/ d' | sed '/^\s*$/d' | cat -n
 }
 
+
 alias aosp="cd /home/alvaro/projects/android/aosp" 
+export PATH=/home/alvaro/tools/llvm/build/bin:$PATH
+export PATH=$PATH:/home/alvaro/Android/android-ndk-r16b
+export PATH=$PATH:/home/alvaro/.local/bin
+alias em=emacs
