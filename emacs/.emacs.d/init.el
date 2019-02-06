@@ -1,32 +1,24 @@
 (require 'package)
 
+(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope))
+
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#3c3836" "#fb4933" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
- '(custom-safe-themes
-   (quote
-    ("84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "2a9039b093df61e4517302f40ebaf2d3e95215cb2f9684c8c1a446659ee226b9" "e2fd81495089dc09d14a88f29dfdff7645f213e2c03650ac2dd275de52a513de" "a622aaf6377fe1cd14e4298497b7b2cae2efc9e0ce362dade3a58c16c89e089c" "d8dc153c58354d612b2576fea87fe676a3a5d43bcc71170c62ddde4a1ad9e1fb" default)))
- '(package-selected-packages
-   (quote
-    (rust-mode yasnippet xclip smart-mode-line-powerline-theme smart-mode-line powerline linum-relative gruvbox-theme abyss-theme ccls company-lsp lsp-ui clang-format evil-vimish-fold ace-window ggtags use-package magit fzf evil)))
- '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#32302f"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(unless package-archive-contents
+  (package-refresh-contents))
+
+; install the missing packages
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
+
 
 (add-to-list 'load-path "~/.emacs.d/lsp-mode")
 (require 'lsp-mode)
+
 ;; buffers
 (setq indo-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -65,7 +57,7 @@
   '(define-key evil-normal-state-map (kbd "M-.") nil))
 
 (define-key evil-normal-state-map (kbd "C-]") 'ggtags-find-tag-dwim)
-;;(define-key evil-normal-state-map (kbd "C-]") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "C-]") 'xref-find-definitions)
 (define-key evil-normal-state-map (kbd "C-r") 'ggtags-find-reference)
 (define-key evil-normal-state-map (kbd "C-f") 'ggtags-find-definition)
 (define-key evil-normal-state-map (kbd "C-u") 'xref-find-references)
@@ -77,7 +69,7 @@
 (add-hook 'c-mode-common-hook
 	  (lambda ()
 	    (when (derived-mode-p 'c-mode 'c++-mode)
-	                    (ggtags-mode 1))))
+	      (ggtags-mode 1))))
 
 ;; fuzzy file find
 
@@ -208,3 +200,23 @@
 
 (global-set-key [?\C-h] 'delete-backward-char)
 (global-set-key [?\C-x ?h] 'help-command)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+ '(custom-enabled-themes (quote (molokai)))
+ '(custom-safe-themes
+   (quote
+    ("c3c0a3702e1d6c0373a0f6a557788dfd49ec9e66e753fb24493579859c8e95ab" default)))
+ '(package-selected-packages
+   (quote
+    (yasnippet xcscope xclip use-package rust-mode magit lsp-ui linum-relative ggtags fzf evil company-lsp clang-format ace-window))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
