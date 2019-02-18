@@ -1,6 +1,6 @@
 (require 'package)
 
-(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope))
+(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope zenburn-theme cquery))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
@@ -13,7 +13,7 @@
 ; install the missing packages
 (dolist (package package-list)
   (unless (package-installed-p package)
-    (package-install package)))
+	(package-install package)))
 
 
 (add-to-list 'load-path "~/.emacs.d/lsp-mode")
@@ -54,26 +54,27 @@
 (evil-mode 1)
 
 (eval-after-load 'evil-maps
-  '(define-key evil-normal-state-map (kbd "M-.") nil))
+				 '(define-key evil-normal-state-map (kbd "M-.") nil))
 
-(define-key evil-normal-state-map (kbd "C-]") 'ggtags-find-tag-dwim)
+;;(define-key evil-normal-state-map (kbd "C-]") 'ggtags-find-tag-dwim)
 (define-key evil-normal-state-map (kbd "C-]") 'xref-find-definitions)
-(define-key evil-normal-state-map (kbd "C-r") 'ggtags-find-reference)
+;;(define-key evil-normal-state-map (kbd "C-r") 'ggtags-find-reference)
+(define-key evil-normal-state-map (kbd "C-r") 'xref-find-references)
 (define-key evil-normal-state-map (kbd "C-f") 'ggtags-find-definition)
 (define-key evil-normal-state-map (kbd "C-u") 'xref-find-references)
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
 
 ;; ggtags (gnu global)
 (eval-after-load 'ggtags
-  (setq ggtags-enable-navigation-keys nil))
+				 (setq ggtags-enable-navigation-keys nil))
 (add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (when (derived-mode-p 'c-mode 'c++-mode)
-	      (ggtags-mode 1))))
+		  (lambda ()
+			(when (derived-mode-p 'c-mode 'c++-mode)
+			  (ggtags-mode 1))))
 
 ;; fuzzy file find
 
-(global-set-key (kbd "C-c p p") 'fzf)
+(global-set-key (kbd "C-c p p") 'fzf-git)
 
 
 ; Get rid of the startup message
@@ -118,19 +119,20 @@
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-;; ccls
+;; cquery 
 
-;;(use-package lsp-mode :commands lsp)
-;;(use-package lsp-ui :commands lsp-ui-mode)
-;;(use-package company-lsp :commands company-lsp)
+(require 'cquery)
+(setq cquery-executable "/usr/local/bin/cquery")
 
-;;(use-package ccls
-;;  :hook ((c-mode c++-mode objc-mode) .
-;;        (lambda () (require 'ccls) (lsp))))
+(defun cquery//enable ()
+  (condition-case nil
+				  (lsp)
+				  (user-error nil)))
 
-;;(setq ccls-executable "/usr/local/bin/ccls")
-;; theme
-(load-theme #'tango-dark t)
+(use-package cquery
+			 :commands lsp
+			 :init (add-hook 'c-mode-hook #'cquery//enable)
+			 (add-hook 'c++-mode-hook #'cquery//enable))
 
 
 ;; hide menu bar

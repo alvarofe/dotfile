@@ -160,9 +160,56 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_python_interpreter = 'python2'
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 let g:ycm_show_diagnostics_ui = 0
-colorscheme colorful256 
+colorscheme molokai 
 
 set directory^=$HOME/.vim/swapfiles/
 set encoding=utf-8
 set autoindent
 hi Visual term=reverse cterm=reverse guibg=Grey
+
+function MoveToPrevTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() != 1
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabprev
+    endif
+    sp
+  else
+    close!
+    exe "0tabnew"
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunc
+
+function MoveToNextTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() < tab_nr
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabnext
+    endif
+    sp
+  else
+    close!
+    tabnew
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunc
+
+map <C-m> :call MoveToNextTab()<CR><C-w>H
+map <C-n> :call MoveToPrevTab()<CR><C-w>H
