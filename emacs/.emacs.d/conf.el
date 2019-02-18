@@ -1,6 +1,6 @@
 (require 'package)
 
-(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope zenburn-theme cquery))
+(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope cquery))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
@@ -126,13 +126,13 @@
 
 (defun cquery//enable ()
   (condition-case nil
-				  (lsp)
-				  (user-error nil)))
+      (lsp)
+    (user-error nil)))
 
 (use-package cquery
-			 :commands lsp
-			 :init (add-hook 'c-mode-hook #'cquery//enable)
-			 (add-hook 'c++-mode-hook #'cquery//enable))
+  :commands lsp
+  :init (add-hook 'c-mode-hook #'cquery//enable)
+  (add-hook 'c++-mode-hook #'cquery//enable))
 
 
 ;; hide menu bar
@@ -202,23 +202,3 @@
 
 (global-set-key [?\C-h] 'delete-backward-char)
 (global-set-key [?\C-x ?h] 'help-command)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
- '(custom-enabled-themes (quote (molokai)))
- '(custom-safe-themes
-   (quote
-    ("c3c0a3702e1d6c0373a0f6a557788dfd49ec9e66e753fb24493579859c8e95ab" default)))
- '(package-selected-packages
-   (quote
-    (yasnippet xcscope xclip use-package rust-mode magit lsp-ui linum-relative ggtags fzf evil company-lsp clang-format ace-window))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
