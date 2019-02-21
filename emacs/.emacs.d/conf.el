@@ -1,6 +1,6 @@
 (require 'package)
 
-(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope cquery))
+(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope cquery evil-tabs))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
@@ -53,6 +53,8 @@
 (require 'evil)
 (evil-mode 1)
 
+(global-evil-tabs-mode t)
+
 (eval-after-load 'evil-maps
 				 '(define-key evil-normal-state-map (kbd "M-.") nil))
 
@@ -66,11 +68,11 @@
 
 ;; ggtags (gnu global)
 (eval-after-load 'ggtags
-				 (setq ggtags-enable-navigation-keys nil))
+  (setq ggtags-enable-navigation-keys nil))
 (add-hook 'c-mode-common-hook
-		  (lambda ()
-			(when (derived-mode-p 'c-mode 'c++-mode)
-			  (ggtags-mode 1))))
+	  (lambda ()
+	    (when (derived-mode-p 'c-mode 'c++-mode)
+	      (ggtags-mode 1))))
 
 ;; fuzzy file find
 
@@ -121,8 +123,8 @@
 
 ;; cquery 
 
-(require 'cquery)
 (setq cquery-executable "/usr/local/bin/cquery")
+(setq cquery-extra-init-params '(:index (:comments 2) :cacheFormat "msgpack" :completion (:detailedLabel t)))
 
 (defun cquery//enable ()
   (condition-case nil
@@ -131,9 +133,11 @@
 
 (use-package cquery
   :commands lsp
-  :init (add-hook 'c-mode-hook #'cquery//enable)
+  :init 
+  (add-hook 'c-mode-hook #'cquery//enable)
   (add-hook 'c++-mode-hook #'cquery//enable))
 
+(require 'cquery)
 
 ;; hide menu bar
 
