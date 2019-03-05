@@ -51,7 +51,8 @@ function get_service_number {
 
 
 alias aosp="cd /home/alvaro/projects/android/aosp" 
-export PATH=/home/alvaro/tools/llvm/build/bin:$PATH
-export PATH=$PATH:/home/alvaro/Android/android-ndk-r16b
+export PATH=/home/alvaro/tools/llvm/llvm-project/build/bin:$PATH
+export PATH=$PATH:/home/alvaro/Android/android-ndk-r19
 export PATH=$PATH:/home/alvaro/.local/bin
 alias em=emacs
+
