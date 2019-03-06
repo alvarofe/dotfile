@@ -1,6 +1,6 @@
 (require 'package)
 
-(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope cquery evil-tabs))
+(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope cquery evil-tabs org helm evil-leader))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
@@ -56,14 +56,21 @@
 (global-evil-tabs-mode t)
 
 (eval-after-load 'evil-maps
-				 '(define-key evil-normal-state-map (kbd "M-.") nil))
+  '(define-key evil-normal-state-map (kbd "M-.") nil))
 
-;;(define-key evil-normal-state-map (kbd "C-]") 'ggtags-find-tag-dwim)
+(global-evil-leader-mode)
+(setq evil-leader/in-all-states 1)
+(evil-leader/set-leader ",")
+(evil-leader/set-key
+  "." 'switch-to-previous-buffer
+  "b" 'helm-buffers-list
+  "f" 'helm-find-files
+  "g" 'magit-status
+  "x" 'helm-M-x)
+
 (define-key evil-normal-state-map (kbd "C-]") 'xref-find-definitions)
-;;(define-key evil-normal-state-map (kbd "C-r") 'ggtags-find-reference)
 (define-key evil-normal-state-map (kbd "C-r") 'xref-find-references)
 (define-key evil-normal-state-map (kbd "C-f") 'ggtags-find-definition)
-(define-key evil-normal-state-map (kbd "C-u") 'xref-find-references)
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
 
 ;; ggtags (gnu global)
@@ -197,6 +204,10 @@
 	    (setq indent-tabs-mode t)
 	    (setq show-trailing-whitespace t)
 	    (c-set-style "linux-tabs-only")))
+
+(setq default-tab-width 8)
+(setq-default c-basic-offset 8)
+
 ;; text mode
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook
