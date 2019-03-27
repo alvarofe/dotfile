@@ -1,6 +1,9 @@
 (require 'package)
 
-(setq package-list '(evil ggtags rust-mode magit fzf evil xclip yasnippet linum-relative lsp-ui company-lsp clang-format ace-window use-package xcscope cquery evil-tabs org helm evil-leader))
+(setq package-list '(evil ggtags rust-mode magit fzf evil xclip
+			  linum-relative lsp-ui company-lsp clang-format
+			  ace-window use-package xcscope cquery evil-tabs org
+			  helm evil-leader elpy material-theme))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
@@ -168,11 +171,6 @@
 (require 'xclip)
 (xclip-mode 1)
 
-;; yasnippet
-
-(require 'yasnippet)
-(yas-global-mode 1)
-
 ;; backup files
 (setq backup-directory-alist `(("." . "~/.saves")))
 
@@ -224,3 +222,13 @@
 (setq whitespace-style '(face lines-tail))
 
 (add-hook 'prog-mode-hook 'whitespace-mode)
+
+;; elpy
+
+(elpy-enable)
+
+(add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
+(setq elpy-rpc-python-command "python3")
+
+;; material theme
+(load-theme 'material t)
