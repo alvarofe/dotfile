@@ -3,7 +3,7 @@
 (setq package-list '(evil ggtags rust-mode magit fzf evil xclip
 			  linum-relative lsp-ui company-lsp clang-format
 			  ace-window use-package xcscope cquery evil-tabs org
-			  helm evil-leader elpy material-theme))
+			  helm evil-leader elpy))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
@@ -231,4 +231,12 @@
 (setq elpy-rpc-python-command "python3")
 
 ;; material theme
-(load-theme 'material t)
+(load-theme 'tango-dark t)
+
+;; clang-format
+
+(require 'clang-format)
+(global-set-key (kbd "C-c i") 'clang-format-region)
+(global-set-key (kbd "C-c u") 'clang-format-buffer)
+
+(setq clang-format-style-option "LLVM")
