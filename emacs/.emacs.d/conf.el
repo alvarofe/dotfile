@@ -3,10 +3,10 @@
 (setq package-list '(evil ggtags rust-mode magit fzf evil xclip
 			  linum-relative lsp-ui company-lsp clang-format
 			  ace-window use-package xcscope cquery evil-tabs org
-			  helm evil-leader elpy))
+			  helm evil-leader elpy projectile rust-mode racer
+			  company))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
@@ -21,6 +21,8 @@
 
 (add-to-list 'load-path "~/.emacs.d/lsp-mode")
 (require 'lsp-mode)
+
+(package-initialize)
 
 ;; buffers
 (setq indo-enable-flex-matching t)
@@ -240,3 +242,21 @@
 (global-set-key (kbd "C-c u") 'clang-format-buffer)
 
 (setq clang-format-style-option "LLVM")
+
+;; lsp-java
+(require 'lsp-java)
+(add-hook 'java-mode-hook #'lsp)
+
+;; rust
+(require 'rust-mode)
+
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+
+(add-hook 'racer-mode-hook #'company-mode)
+
+(global-set-key (kbd "C-c d") "M-.")
+(require 'rust-mode)
+
+(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+(setq company-tooltip-align-annotations t)

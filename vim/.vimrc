@@ -10,7 +10,7 @@ noremap <leader>q :q<CR>
 noremap <leader>v :vsp<CR>
 noremap <leader>h :sp<CR>
 noremap <leader>p :set paste<CR>
-noremap <leader>f :ClangFormat<CR>
+noremap <leader>f :Explore<CR>
 noremap <leader>o :set nopaste<CR>
 noremap <leader><Space> :%s/\s\+$//e<CR>
 noremap <leader><tab> :tabnext<cr>
@@ -32,12 +32,8 @@ nn <silent> <leader>l :LspDocumentSymbol<cr>
 
 
 " my own indentation for C using the coding styles
-set cindent
-set tabstop=8
-set shiftwidth=8
-set expandtab
-set smartindent
-"set cino=:0,+0,(2,J0,{1,}0,>4,)1,m2
+
+runtime! config/**/*.vim
 
 " pancake's exposee for vim:
 let fs=0
@@ -74,51 +70,9 @@ set clipboard=unnamed
 set vb t_vb="."
 set t_Co=256 " 256 Color Term
 
-let g:clang_format#style_options = {
-       \ "Language": "Cpp",
-       \ "MaxEmptyLinesToKeep": "1",
-       \ "SpaceBeforeParens": "Always",
-       \ "BasedOnStyle": "Google",
-       \ "ContinuationIndentWidth": 8,
-       \ "IndentCaseLabels": "false",
-       \ "IndentFunctionDeclarationAfterType": "false",
-       \ "IndentWidth": 8,
-       \ "UseTab": "Always",
-	   \ "ColumnLimit" : 80,
-       \ "BreakBeforeBraces": "Attach",
-       \ "AlignConsecutiveAssignments" : "true",
-       \ "AllowAllParametersOfDeclarationOnNextLine" : "true",
-       \ "BreakBeforeTernaryOperators": "false",
-       \ "AllowShortIfStatementsOnASingleLine": "true",
-       \ "AllowShortCaseLabelsOnASingleLine": "true",
-       \ "AllowShortFunctionsOnASingleLine": "Inline",
-       \ "AllowShortLoopsOnASingleLine": "true"}
 set paste
 
 " Search tweaks
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-
-set wildmenu
-
-set wildignore+=.hg,.git,.svn                    " Version control
-set wildignore+=*.aux,*.out,*.toc                " LaTeX intermediate files
-set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
-set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
-set wildignore+=*.spl                            " compiled spelling word lists
-set wildignore+=*.sw?                            " Vim swap files
-set wildignore+=*.DS_Store                       " OSX bullshit
-set wildignore+=*.dSYM                           " OSX debug info directories
-set wildignore+=*.o,*.d                          " compilation 
-
-set wildignore+=*.luac                           " Lua byte code
-set wildignore+=*.pyc                            " Python byte code
-
-" increase history
-set history=1000
-
 " UI tweaks
 set ruler
 set nolazyredraw
@@ -156,15 +110,21 @@ function! LoadCscope()
 endfunction
 au BufEnter /* call LoadCscope()
 
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_server_python_interpreter = 'python2'
-let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
-let g:ycm_show_diagnostics_ui = 0
-colorscheme molokai 
+colorscheme desert256 
+
+set showmatch           " show matching brackets
+set mat=5               " how many tenths of a second to blink matching brackets for
+set incsearch           " search as you type
+set hls noignorecase    " Highlight search
 
 set directory^=$HOME/.vim/swapfiles/
 set encoding=utf-8
 set autoindent
+
+set wildignore+=*.so,*.o,*.a,*.la,*.class,*.obj,.git,*.beam,*.mo,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc
+set wildmenu
+
+set completeopt=menu,longest
 hi Visual term=reverse cterm=reverse guibg=Grey
 
 function MoveToPrevTab()
@@ -213,3 +173,6 @@ endfunc
 
 map <C-m> :call MoveToNextTab()<CR><C-w>H
 map <C-n> :call MoveToPrevTab()<CR><C-w>H
+
+noremap <f1> :bprev<CR> 
+noremap <f2> :bnext<CR>

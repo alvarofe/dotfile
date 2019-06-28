@@ -1,7 +1,7 @@
 ! XTERM
 !xterm*faceName: Consolas
-xterm*faceName:Terminus:style=Regular
-xterm*faceSize: 9
+!xterm*faceName:Terminus:style=Regular
+!xterm*faceSize: 9
 *.foreground: white
 *.background: black
 xterm*selectToClipboard:true
@@ -11,8 +11,8 @@ XTerm*metaSendsEscape: true
 
 ! UXTERM
 !uxterm*faceName: Consolas
-uxterm*faceName:Terminus:style=Regular
-uxterm*metaSendsEscape: true
+!uxterm*faceName:Terminus:style=Regular
+!uxterm*metaSendsEscape: true
 uxterm*faceSize: 9
 uxterm*selectToClipboard:true
 uXterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
