@@ -49,6 +49,3 @@
 [submodule "emacs/lsp-mode"]
 	path = emacs/.emacs.d/lsp-mode
 	url = https://github.com/emacs-lsp/lsp-mode
-[submodule "vim/.vim/pack/plugins/start/ctrlp.vim"]
-	path = vim/.vim/pack/plugins/start/ctrlp.vim
-	url = https://github.com/kien/ctrlp.vim.git
