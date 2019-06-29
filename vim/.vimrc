@@ -176,3 +176,6 @@ map <C-n> :call MoveToPrevTab()<CR><C-w>H
 
 noremap <f1> :bprev<CR> 
 noremap <f2> :bnext<CR>
+
+map <C-c> :s/^/\/\//<Enter>
+map <C-u> :s/^\/\///<Enter>
