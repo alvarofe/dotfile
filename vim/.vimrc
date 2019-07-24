@@ -10,28 +10,20 @@ noremap <leader>q :q<CR>
 noremap <leader>v :vsp<CR>
 noremap <leader>h :sp<CR>
 noremap <leader>p :set paste<CR>
+noremap <leader>m :Gstatus<CR>
 noremap <leader>f :Explore<CR>
 noremap <leader>o :set nopaste<CR>
 noremap <leader><Space> :%s/\s\+$//e<CR>
 noremap <leader><tab> :tabnext<cr>
 noremap <leader><s-tab> :tabprev<cr>
+noremap <leader>b :Buffer<cr>
 noremap <leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
 noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
 noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
-noremap <leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
+noremap <leader>t :Tags<cr>
 noremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
 "noremap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-
-" Key bindings for vim-lsp.
-
-nn <silent> <leader>d :LspDefinition<cr>
-nn <silent> <leader>r :LspReferences<cr>
-nn <f2> :LspRename<cr>
-nn <silent> <leader>a :LspWorkspaceSymbol<cr>
-nn <silent> <leader>l :LspDocumentSymbol<cr>
-
-
-" my own indentation for C using the coding styles
 
 runtime! config/**/*.vim
 
@@ -47,6 +39,8 @@ else
   let g:fs=0
 endif
 endfun
+
+map <c-p> :Files<cr>
 
 "some nice keymappings
 
@@ -92,11 +86,11 @@ set listchars+=nbsp:x
 
 " Tweaks for browsing
 "let g:netrw_banner=0        " disable annoying banner
+let g:netrw_list_hide='.*\.o$,$.*\.so$.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
 "let g:netrw_browse_split=4  " open in prior window
 "let g:netrw_altv=1          " open splits to the right
 "let g:netrw_liststyle=3     " tree view
 "let g:netrw_list_hide=netrw_gitignore#Hide()
-"let g:netrw_list_hide.='.*\.o$,.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
 "let g:netrw_winsize = 25
 
 function! LoadCscope()
@@ -179,3 +173,13 @@ noremap <f2> :bnext<CR>
 
 map <C-c> :s/^/\/\//<Enter>
 map <C-u> :s/^\/\///<Enter>
+set foldmethod=syntax
+set foldlevelstart=20
+set rtp+=~/.fzf
+
+" rust
+"let g:rustfmt_autosave = 1
+set hidden
+let g:racer_cmd = "/home/alvaro/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+
