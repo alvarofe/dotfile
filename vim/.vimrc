@@ -9,7 +9,6 @@ noremap <leader>w :w<CR>
 noremap <leader>q :q<CR>
 noremap <leader>v :vsp<CR>
 noremap <leader>h :sp<CR>
-noremap <leader>p :set paste<CR>
 noremap <leader>m :Gstatus<CR>
 noremap <leader>f :Explore<CR>
 noremap <leader>o :set nopaste<CR>
@@ -105,6 +104,7 @@ endfunction
 au BufEnter /* call LoadCscope()
 
 colorscheme desert256 
+"colorschem night-owl 
 
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
@@ -179,7 +179,14 @@ set rtp+=~/.fzf
 
 " rust
 "let g:rustfmt_autosave = 1
-set hidden
-let g:racer_cmd = "/home/alvaro/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
+"set hidden
+"let g:racer_cmd = "/home/alvaro/.cargo/bin/racer"
+"let g:racer_experimental_completer = 1
 
+"clipboard
+noremap <leader>y "*y
+noremap <leader>p "*p
+noremap <leader>Y "+y
+noremap <leader>P "+p
+
+set cc=80

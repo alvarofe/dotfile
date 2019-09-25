@@ -4,9 +4,6 @@
 [submodule "vim/.vim/pack/plugins/start/vim-man"]
 	path = vim/.vim/pack/plugins/opt/vim-man
 	url = https://github.com/vim-utils/vim-man.git
-[submodule "vim/.vim/pack/plugins/start/vim-clang-format"]
-	path = vim/.vim/pack/plugins/start/vim-clang-format
-	url = https://github.com/rhysd/vim-clang-format.git
 [submodule "irssi/.irssi"]
 	path = irssi/.irssi
 	url = https://github.com/alvarofe/irssi.git
@@ -14,7 +11,7 @@
 	path = vim/.vim/pack/plugins/opt/rust-vim
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/.vim/pack/plugins/start/vim-racer"]
-	path = vim/.vim/pack/plugins/start/vim-racer
+	path = vim/.vim/pack/plugins/opt/vim-racer
 	url = https://github.com/racer-rust/vim-racer.git
 [submodule "vim/.vim/pack/plugins/start/vim-snippets"]
 	path = vim/.vim/pack/plugins/opt/vim-snippets
@@ -31,9 +28,6 @@
 [submodule "vim/.vim/pack/plugins/opt/vim-jsbeautify"]
 	path = vim/.vim/pack/plugins/opt/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
-[submodule "vim/.vim/pack/plugins/start/vim-move"]
-	path = vim/.vim/pack/plugins/start/vim-move
-	url = https://github.com/matze/vim-move
 [submodule "vim/.vim/pack/plugins/start/vimwiki"]
 	path = vim/.vim/pack/plugins/start/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
@@ -62,5 +56,8 @@
 	path = vim/.vim/pack/plugins/start/splitjoin.vim
 	url = https://github.com/AndrewRadev/splitjoin.vim.git
 [submodule "vim/.vim/pack/plugins/start/rust.vim"]
-	path = vim/.vim/pack/plugins/start/rust.vim
+	path = vim/.vim/pack/plugins/opt/rust.vim
 	url = https://github.com/rust-lang/rust.vim.git
+[submodule "vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc"]
+	path = vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc
+	url = https://github.com/powerman/vim-plugin-AnsiEsc.git

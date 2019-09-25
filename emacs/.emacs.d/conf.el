@@ -4,7 +4,7 @@
 			  linum-relative lsp-ui company-lsp clang-format
 			  ace-window use-package xcscope cquery evil-tabs org
 			  helm evil-leader elpy projectile rust-mode racer
-			  company))
+			  company typescript-mode))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 

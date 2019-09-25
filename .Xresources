@@ -1,5 +1,5 @@
 ! XTERM
-!xterm*faceName: Consolas
+!xterm*faceName:Consolas
 !xterm*faceName:Terminus:style=Regular
 !xterm*faceSize: 9
 *.foreground: white
