@@ -61,3 +61,9 @@
 [submodule "vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc"]
 	path = vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc.git
+[submodule "vim/.vim/pack/plugins/start/vala.vim"]
+	path = vim/.vim/pack/plugins/start/vala.vim
+	url = https://github.com/arrufat/vala.vim.git
+[submodule "vim/.vim/pack/plugins/start/ayu-vim"]
+	path = vim/.vim/pack/plugins/start/ayu-vim
+	url = https://github.com/ayu-theme/ayu-vim.git
