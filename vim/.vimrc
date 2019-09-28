@@ -181,7 +181,14 @@ map <C-c> :s/^/\/\//<Enter>
 map <C-u> :s/^\/\///<Enter>
 set foldmethod=syntax
 set foldlevelstart=20
-set rtp+=~/.fzf
+
+let uname = substitute(system('uname'), '\n', '', '')
+
+if uname == "Darwin"
+	set rtp+=/usr/local/opt/fzf
+else
+	set rtp+=~/.fzf
+endif
 
 " rust
 "let g:rustfmt_autosave = 1
