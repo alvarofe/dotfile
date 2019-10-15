@@ -152,9 +152,7 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-"colorscheme rdark-terminal
-let ayucolor="dark"
-colorscheme ayu
+colorscheme codedark
 
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
