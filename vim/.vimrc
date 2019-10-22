@@ -152,7 +152,21 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-colorscheme codedark
+let g:PaperColor_Theme_Options = {
+  \   'language': {
+  \     'python': {
+  \       'highlight_builtins' : 1
+  \     },
+  \     'cpp': {
+  \       'highlight_standard_library': 1
+  \     },
+  \     'c': {
+  \       'highlight_builtins' : 1
+  \     }
+  \   }
+  \ }
+
+colorscheme papercolor
 
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
