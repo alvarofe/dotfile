@@ -1,12 +1,13 @@
 set nocompatible
 filetype plugin on
 filetype indent on
+set nu
+set relativenumber
 
 runtime! config/**/*.vim
 
 let mapleader = ","
 
-" pancake's exposee for vim:
 let fs=0
 fun Exposee()
 if (g:fs == 0)
@@ -115,12 +116,10 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 " Remove the Windows ^M - when the encodings gets messed up
 "noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-" Highlightning
-" hi clear CursorLine
-" set cursorline
-set background=dark
-set listchars=tab:\|\
-set listchars+=nbsp:x
+"hi clear CursorLine
+"set cursorline
+"set listchars=tab:\|\
+"set listchars+=nbsp:x
 "set list
 
 " Tweaks for browsing
@@ -180,7 +179,7 @@ set autoindent
 set wildignore+=*.so,*.o,*.a,*.la,*.class,*.obj,.git,*.beam,*.mo,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc
 set wildmenu
 
-set completeopt=menu,longest
+set completeopt=menu,menuone,noinsert,noselect
 hi Visual term=reverse cterm=reverse guibg=Grey
 
 map <C-m> :call MoveToNextTab()<CR><C-w>H
@@ -215,3 +214,21 @@ noremap <leader>Y "+y
 noremap <leader>P "+p
 
 set cc=80
+
+" LSC
+let g:lsc_server_commands = {
+  \ 'c': 'cquery --init="{\"cacheDirectory\": \"/tmp/cquery_cache\"}"',
+  \ 'cpp': 'cquery --init="{\"cacheDirectory\": \"/tmp/cquery_cache\"}"',
+  \ }
+let g:lsc_auto_map = {
+ \  'GoToDefinition': 'gd',
+ \  'FindReferences': 'gr',
+ \  'Rename': 'gR',
+ \  'ShowHover': 'K',
+ \  'FindImplementations' : 'gI',
+ \  'Completion': 'completefunc',
+ \}
+let g:lsc_enable_autocomplete  = v:false
+let g:lsc_enable_diagnostics   = v:false
+let g:lsc_reference_highlights = v:false
+let g:lsc_trace_level          = 'off'

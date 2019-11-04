@@ -10,9 +10,6 @@
 [submodule "vim/.vim/pack/plugins/start/rust-vim"]
 	path = vim/.vim/pack/plugins/opt/rust-vim
 	url = https://github.com/rust-lang/rust.vim.git
-[submodule "vim/.vim/pack/plugins/start/vim-racer"]
-	path = vim/.vim/pack/plugins/opt/vim-racer
-	url = https://github.com/racer-rust/vim-racer.git
 [submodule "vim/.vim/pack/plugins/start/vim-snippets"]
 	path = vim/.vim/pack/plugins/opt/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
@@ -56,7 +53,7 @@
 	path = vim/.vim/pack/plugins/start/splitjoin.vim
 	url = https://github.com/AndrewRadev/splitjoin.vim.git
 [submodule "vim/.vim/pack/plugins/start/rust.vim"]
-	path = vim/.vim/pack/plugins/opt/rust.vim
+	path = vim/.vim/pack/plugins/start/rust.vim
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc"]
 	path = vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc
@@ -70,3 +67,9 @@
 [submodule "vim/.vim/pack/plugins/start/vim-syntax-extra"]
 	path = vim/.vim/pack/plugins/start/vim-syntax-extra
 	url = https://github.com/justinmk/vim-syntax-extra
+[submodule "vim/.vim/pack/plugins/start/VimCompletesMe"]
+	path = vim/.vim/pack/plugins/start/VimCompletesMe
+	url = https://github.com/ajh17/VimCompletesMe
+[submodule "vim/.vim/pack/plugins/start/vim-lsc"]
+	path = vim/.vim/pack/plugins/start/vim-lsc
+	url = https://github.com/natebosch/vim-lsc
