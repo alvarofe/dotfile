@@ -76,3 +76,6 @@
 [submodule "vim/.vim/pack/plugins/start/vim-racer"]
 	path = vim/.vim/pack/plugins/start/vim-racer
 	url = https://github.com/racer-rust/vim-racer.git
+[submodule "vim/.vim/pack/plugins/start/tagbar"]
+	path = vim/.vim/pack/plugins/start/tagbar
+	url = https://github.com/majutsushi/tagbar.git

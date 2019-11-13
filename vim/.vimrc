@@ -1,8 +1,8 @@
 set nocompatible
 filetype plugin on
 filetype indent on
-set nu
-set relativenumber
+"set nu
+"set relativenumber
 
 runtime! config/**/*.vim
 
@@ -20,52 +20,7 @@ else
 endif
 endfun
 
-function MoveToPrevTab()
-  "there is only one window
-  if tabpagenr('$') == 1 && winnr('$') == 1
-    return
-  endif
-  "preparing new window
-  let l:tab_nr = tabpagenr('$')
-  let l:cur_buf = bufnr('%')
-  if tabpagenr() != 1
-    close!
-    if l:tab_nr == tabpagenr('$')
-      tabprev
-    endif
-    sp
-  else
-    close!
-    exe "0tabnew"
-  endif
-  "opening current buffer in new window
-  exe "b".l:cur_buf
-endfunc
-
-function MoveToNextTab()
-  "there is only one window
-  if tabpagenr('$') == 1 && winnr('$') == 1
-    return
-  endif
-  "preparing new window
-  let l:tab_nr = tabpagenr('$')
-  let l:cur_buf = bufnr('%')
-  if tabpagenr() < tab_nr
-    close!
-    if l:tab_nr == tabpagenr('$')
-      tabnext
-    endif
-    sp
-  else
-    close!
-    tabnew
-  endif
-  "opening current buffer in new window
-  exe "b".l:cur_buf
-endfunc
-
 "some nice keymappings
-map <c-p> :Files<cr>
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
 noremap <leader>q :q<CR>
@@ -78,7 +33,7 @@ noremap <leader><Space> :%s/\s\+$//e<CR>
 noremap <leader><tab> :tabnext<cr>
 noremap <leader><s-tab> :tabprev<cr>
 noremap <leader>b :Buffer<cr>
-noremap <leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>s :TagbarToggle<CR>
 noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>t :Tags<cr>
@@ -116,12 +71,6 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 " Remove the Windows ^M - when the encodings gets messed up
 "noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-"hi clear CursorLine
-"set cursorline
-"set listchars=tab:\|\
-"set listchars+=nbsp:x
-"set list
-
 " Tweaks for browsing
 "let g:netrw_banner=0        " disable annoying banner
 let g:netrw_list_hide='.*\.o$,$.*\.so$.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
@@ -141,6 +90,12 @@ function! LoadCscope()
   endif
 endfunction
 au BufEnter /* call LoadCscope()
+
+if (isdirectory(".git"))
+  map <c-p> :GFiles<cr>
+else
+  map <c-p> :Files<cr>
+endif
 
 set background=dark
 set t_Co=256
@@ -167,6 +122,8 @@ let g:PaperColor_Theme_Options = {
 
 colorscheme papercolor
 
+hi Cursor guibg=#b60900 guifg=#000000
+
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
 set incsearch           " search as you type
@@ -179,11 +136,10 @@ set autoindent
 set wildignore+=*.so,*.o,*.a,*.la,*.class,*.obj,.git,*.beam,*.mo,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc
 set wildmenu
 
-set completeopt=menu,menuone,noinsert,noselect
 hi Visual term=reverse cterm=reverse guibg=Grey
 
-map <C-m> :call MoveToNextTab()<CR><C-w>H
-map <C-n> :call MoveToPrevTab()<CR><C-w>H
+"map <C-m> :call MoveToNextTab()<CR><C-w>H
+"map <C-n> :call MoveToPrevTab()<CR><C-w>H
 
 noremap <f1> :bprev<CR>
 noremap <f2> :bnext<CR>
@@ -202,7 +158,7 @@ else
 endif
 
 " rust
-let g:rustfmt_autosave = 1
+let g:rustfmt_autosave = 0
 "set hidden
 let g:racer_cmd = "/home/alvaro/.cargo/bin/racer"
 let g:racer_experimental_completer = 1
@@ -213,22 +169,56 @@ noremap <leader>p "*p
 noremap <leader>Y "+y
 noremap <leader>P "+p
 
-set cc=80
-
 " LSC
-let g:lsc_server_commands = {
-  \ 'c': 'cquery --init="{\"cacheDirectory\": \"/tmp/cquery_cache\"}"',
-  \ 'cpp': 'cquery --init="{\"cacheDirectory\": \"/tmp/cquery_cache\"}"',
-  \ }
+if !exists('g:lsc_server_commands')
+  let g:lsc_server_commands = {}
+endif
+
+if executable('clangd')
+  let g:lsc_server_commands.c = {
+        \   'command': 'clangd',
+        \   'suppress_stderr': 1
+        \ }
+  let g:lsc_server_commands.cpp = {
+        \   'command': 'clangd',
+        \   'suppress_stderr': 1
+        \ }
+endif
+
+if executable('rls')
+  let g:lsc_server_commands.rust = {
+  	\    'command' : 'rls',
+	\    'supress_stderr': 1
+	\ }
+endif
+
+
 let g:lsc_auto_map = {
  \  'GoToDefinition': 'gd',
  \  'FindReferences': 'gr',
- \  'Rename': 'gR',
  \  'ShowHover': 'K',
  \  'FindImplementations' : 'gI',
+ \  'Rename': 'gR',
+ \  'FindCodeActions': 'ga',
+ \  'DocumentSymbol': 'go',
+ \  'WorkspaceSymbol': 'gS',
  \  'Completion': 'completefunc',
  \}
-let g:lsc_enable_autocomplete  = v:false
-let g:lsc_enable_diagnostics   = v:false
-let g:lsc_reference_highlights = v:false
+
+let g:lsc_enable_autocomplete  = v:true
+let g:lsc_enable_diagnostics   = 0
+let g:lsc_reference_highlights = 0
 let g:lsc_trace_level          = 'off'
+"let g:lsc_server_log_level = -1
+
+set completeopt=menu,menuone,noinsert,noselect
+set completeopt-=preview
+
+" guioptions
+set guifont=Terminus\ 8
+set guioptions-=T "remove toolbar
+set guioptions-=m "remove toolbar
+set guioptions-=r "remove right-hand scroll bar
+set guioptions-=L "remove left-hand scroll bar. Fix for TagBar.
+set guioptions+=aA
+set belloff=all
