@@ -71,14 +71,7 @@ autocmd! bufwritepost vimrc source ~/.vimrc
 " Remove the Windows ^M - when the encodings gets messed up
 "noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-" Tweaks for browsing
-"let g:netrw_banner=0        " disable annoying banner
 let g:netrw_list_hide='.*\.o$,$.*\.so$.*\.d$,.*\.swp$,\(^\|\s\s\)\zs\.\S\+'
-"let g:netrw_browse_split=4  " open in prior window
-"let g:netrw_altv=1          " open splits to the right
-"let g:netrw_liststyle=3     " tree view
-"let g:netrw_list_hide=netrw_gitignore#Hide()
-"let g:netrw_winsize = 25
 
 function! LoadCscope()
   let db = findfile("cscope.out", ".;")
@@ -106,21 +99,21 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-let g:PaperColor_Theme_Options = {
-  \   'language': {
-  \     'python': {
-  \       'highlight_builtins' : 1
-  \     },
-  \     'cpp': {
-  \       'highlight_standard_library': 1
-  \     },
-  \     'c': {
-  \       'highlight_builtins' : 1
-  \     }
-  \   }
-  \ }
+"colorscheme koehler
 
-colorscheme papercolor
+"let g:PaperColor_Theme_Options = {
+" \   'language': {
+" \     'python': {
+" \       'highlight_builtins' : 1
+" \     },
+" \     'cpp': {
+" \       'highlight_standard_library': 1
+" \     },
+" \     'c': {
+" \       'highlight_builtins' : 1
+" \     }
+" \   }
+" \ }
 
 hi Cursor guibg=#b60900 guifg=#000000
 
@@ -174,16 +167,16 @@ if !exists('g:lsc_server_commands')
   let g:lsc_server_commands = {}
 endif
 
-if executable('clangd')
-  let g:lsc_server_commands.c = {
-        \   'command': 'clangd',
-        \   'suppress_stderr': 1
-        \ }
-  let g:lsc_server_commands.cpp = {
-        \   'command': 'clangd',
-        \   'suppress_stderr': 1
-        \ }
-endif
+"if executable('clangd')
+"  let g:lsc_server_commands.c = {
+"        \   'command': 'clangd',
+"        \   'suppress_stderr': 1
+"        \ }
+"  let g:lsc_server_commands.cpp = {
+"        \   'command': 'clangd',
+"        \   'suppress_stderr': 1
+"        \ }
+"endif
 
 if executable('rls')
   let g:lsc_server_commands.rust = {
@@ -191,7 +184,6 @@ if executable('rls')
 	\    'supress_stderr': 1
 	\ }
 endif
-
 
 let g:lsc_auto_map = {
  \  'GoToDefinition': 'gd',
@@ -201,14 +193,14 @@ let g:lsc_auto_map = {
  \  'Rename': 'gR',
  \  'FindCodeActions': 'ga',
  \  'DocumentSymbol': 'go',
- \  'WorkspaceSymbol': 'gS',
+ \  'WorkspaceSymbol': 'gs',
  \  'Completion': 'completefunc',
  \}
 
-let g:lsc_enable_autocomplete  = v:true
-let g:lsc_enable_diagnostics   = 0
-let g:lsc_reference_highlights = 0
-let g:lsc_trace_level          = 'off'
+"let g:lsc_enable_autocomplete  = v:true
+"let g:lsc_enable_diagnostics   = 0
+"let g:lsc_reference_highlights = 0
+"let g:lsc_trace_level          = 'off'
 "let g:lsc_server_log_level = -1
 
 set completeopt=menu,menuone,noinsert,noselect

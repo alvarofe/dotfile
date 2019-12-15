@@ -77,5 +77,11 @@
 	path = vim/.vim/pack/plugins/start/vim-racer
 	url = https://github.com/racer-rust/vim-racer.git
 [submodule "vim/.vim/pack/plugins/start/tagbar"]
-	path = vim/.vim/pack/plugins/start/tagbar
+	path = vim/.vim/pack/plugins/opt/tagbar
 	url = https://github.com/majutsushi/tagbar.git
+[submodule "vim/.vim/pack/plugins/start/ranger.vim"]
+	path = vim/.vim/pack/plugins/start/ranger.vim
+	url = https://github.com/francoiscabrol/ranger.vim.git
+[submodule "vim/.vim/pack/plugins/start/typescript-vim"]
+	path = vim/.vim/pack/plugins/start/typescript-vim
+	url = https://github.com/leafgarland/typescript-vim.git

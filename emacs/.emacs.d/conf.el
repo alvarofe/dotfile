@@ -21,6 +21,9 @@
 
 (add-to-list 'load-path "~/.emacs.d/lsp-mode")
 (require 'lsp-mode)
+(require 'lsp-clients)
+(add-hook 'c++-mode-hook 'lsp)
+(add-hook 'c-mode-hook 'lsp)
 
 (package-initialize)
 
@@ -132,24 +135,6 @@
 ;; lsp-ui
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-
-;; cquery 
-
-(setq cquery-executable "/usr/local/bin/cquery")
-(setq cquery-extra-init-params '(:index (:comments 2) :cacheFormat "msgpack" :completion (:detailedLabel t)))
-
-(defun cquery//enable ()
-  (condition-case nil
-      (lsp)
-    (user-error nil)))
-
-(use-package cquery
-  :commands lsp
-  :init 
-  (add-hook 'c-mode-hook #'cquery//enable)
-  (add-hook 'c++-mode-hook #'cquery//enable))
-
-(require 'cquery)
 
 ;; hide menu bar
 
