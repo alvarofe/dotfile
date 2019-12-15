@@ -19,9 +19,6 @@
 [submodule "vim/.vim/pack/plugins/start/ultisnips"]
 	path = vim/.vim/pack/plugins/opt/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
-[submodule "vim/.vim/pack/plugins/opt/vim-node"]
-	path = vim/.vim/pack/plugins/opt/vim-node
-	url = https://github.com/moll/vim-node.git
 [submodule "vim/.vim/pack/plugins/opt/vim-jsbeautify"]
 	path = vim/.vim/pack/plugins/opt/vim-jsbeautify
 	url = https://github.com/maksimr/vim-jsbeautify.git
@@ -55,30 +52,18 @@
 [submodule "vim/.vim/pack/plugins/start/rust.vim"]
 	path = vim/.vim/pack/plugins/start/rust.vim
 	url = https://github.com/rust-lang/rust.vim.git
-[submodule "vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc"]
-	path = vim/.vim/pack/plugins/start/vim-plugin-AnsiEsc
-	url = https://github.com/powerman/vim-plugin-AnsiEsc.git
 [submodule "vim/.vim/pack/plugins/start/vala.vim"]
 	path = vim/.vim/pack/plugins/start/vala.vim
 	url = https://github.com/arrufat/vala.vim.git
-[submodule "vim/.vim/pack/plugins/start/ayu-vim"]
-	path = vim/.vim/pack/plugins/start/ayu-vim
-	url = https://github.com/ayu-theme/ayu-vim.git
 [submodule "vim/.vim/pack/plugins/start/vim-syntax-extra"]
 	path = vim/.vim/pack/plugins/start/vim-syntax-extra
 	url = https://github.com/justinmk/vim-syntax-extra
-[submodule "vim/.vim/pack/plugins/start/VimCompletesMe"]
-	path = vim/.vim/pack/plugins/start/VimCompletesMe
-	url = https://github.com/ajh17/VimCompletesMe
 [submodule "vim/.vim/pack/plugins/start/vim-lsc"]
 	path = vim/.vim/pack/plugins/start/vim-lsc
 	url = https://github.com/natebosch/vim-lsc
 [submodule "vim/.vim/pack/plugins/start/vim-racer"]
 	path = vim/.vim/pack/plugins/start/vim-racer
 	url = https://github.com/racer-rust/vim-racer.git
-[submodule "vim/.vim/pack/plugins/start/tagbar"]
-	path = vim/.vim/pack/plugins/opt/tagbar
-	url = https://github.com/majutsushi/tagbar.git
 [submodule "vim/.vim/pack/plugins/start/ranger.vim"]
 	path = vim/.vim/pack/plugins/start/ranger.vim
 	url = https://github.com/francoiscabrol/ranger.vim.git
