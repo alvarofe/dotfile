@@ -1,4 +1,7 @@
 .netrwhist
 vim/.vim/swapfiles/
-emacs/.emacs.d/
+emacs/.emacs.d/eclipse.jdt.ls/*
+emacs/.emacs.d/workspace/*
+emacs/.emacs.d/auto-save-list/*
+emacs/.emacs.d/elpa/*
 vim/.vim/view
