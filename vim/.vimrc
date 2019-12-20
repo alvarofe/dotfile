@@ -38,6 +38,7 @@ noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>t :Tags<cr>
 noremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+map <C-m> i<CR><Esc>h
 nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
 
 
@@ -99,7 +100,7 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-"colorscheme koehler
+colorscheme koehler
 
 "let g:PaperColor_Theme_Options = {
 " \   'language': {

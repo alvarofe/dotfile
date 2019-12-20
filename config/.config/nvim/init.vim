@@ -4,8 +4,8 @@ let &packpath = &runtimepath
 set nocompatible
 filetype plugin on
 filetype indent on
-set nu
-set relativenumber
+"set nu
+"set relativenumber
 
 runtime! config/**/*.vim
 
@@ -24,6 +24,7 @@ endif
 endfun
 
 "some nice keymappings
+noremap <leader>R :RustFmt<CR>
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
 noremap <leader>q :q<CR>
@@ -42,6 +43,7 @@ noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>t :Tags<cr>
 noremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
+map <C-m> i<CR><Esc>h
 
 
 " fine zooming
@@ -102,7 +104,7 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-"colorscheme koehler
+colorscheme desert
 
 hi Cursor guibg=#b60900 guifg=#000000
 set showmatch           " show matching brackets
@@ -133,35 +135,34 @@ else
   set rtp+=~/.fzf
 endif
 
-let $FZF_DEFAULT_OPTS .= ' --border --margin=0,2'
-
-function! FloatingFZF()
-  let buf = nvim_create_buf(v:false, v:true)
-  call setbufvar(buf, '&signcolumn', 'no')
-
-  let height = float2nr(40)
-  let width = float2nr(80)
-  let horizontal = float2nr((&columns - width) / 2)
-  let vertical = 1
-  let opts = {
-        \ 'relative': 'editor',
-        \ 'row': vertical,
-        \ 'col': horizontal,
-        \ 'width': width,
-        \ 'height': height,
-        \ 'style': 'minimal'
-        \ }
-
-  call nvim_open_win(buf, v:true, opts)
-endfunction
-
-let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
 " rust
 let g:rustfmt_autosave = 0
 "set hidden
 let g:racer_cmd = "/home/alvaro/.cargo/bin/racer"
 let g:racer_experimental_completer = 1
+
+if !exists('g:lsc_server_commands')
+  let g:lsc_server_commands = {}
+endif
+
+if executable('rls')
+  let g:lsc_server_commands.rust = {
+  	\    'command' : 'rls',
+	\    'supress_stderr': 1
+	\ }
+endif
+
+let g:lsc_auto_map = {
+ \  'GoToDefinition': 'gd',
+ \  'FindReferences': 'gr',
+ \  'ShowHover': 'K',
+ \  'FindImplementations' : 'gI',
+ \  'Rename': 'gR',
+ \  'FindCodeActions': 'ga',
+ \  'DocumentSymbol': 'go',
+ \  'WorkspaceSymbol': 'gs',
+ \  'Completion': 'completefunc',
+ \}
 
 "clipboard
 noremap <leader>y "*y
