@@ -215,3 +215,10 @@ set guioptions-=r "remove right-hand scroll bar
 set guioptions-=L "remove left-hand scroll bar. Fix for TagBar.
 set guioptions+=aA
 set belloff=all
+
+if &term =~ '256color'
+    " disable Background Color Erase (BCE) so that color schemes
+    " render properly when inside 256-color tmux and GNU screen.
+    " see also http://sunaku.github.io/vim-256color-bce.html
+    set t_ut=
+endif
