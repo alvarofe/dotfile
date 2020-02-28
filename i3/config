@@ -31,7 +31,7 @@ workspace_auto_back_and_forth yes
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec uxterm 
+bindsym $mod+Return exec st 
 bindsym $mod+m exec thunar 
 bindsym $mod+Ctrl+greater move workspace to output right
 bindsym $mod+Ctrl+less move workspace to output left
