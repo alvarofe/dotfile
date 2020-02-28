@@ -57,7 +57,7 @@
 	url = https://github.com/justinmk/vim-syntax-extra
 [submodule "vim/.vim/pack/plugins/start/vim-lsc"]
 	path = vim/.vim/pack/plugins/start/vim-lsc
-	url = https://github.com/natebosch/vim-lsc
+	url = https://github.com/natebosch/vim-lsc.git
 [submodule "vim/.vim/pack/plugins/start/vim-racer"]
 	path = vim/.vim/pack/plugins/start/vim-racer
 	url = https://github.com/racer-rust/vim-racer.git
