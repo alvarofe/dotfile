@@ -5,5 +5,6 @@ emacs/.emacs.d/workspace/*
 emacs/.emacs.d/auto-save-list/*
 emacs/.emacs.d/elpa/*
 emacs/.emacs.d/init.el
+emacs/.emacs.d/elpy/*
 vim/.vim/view
 .bashrc
