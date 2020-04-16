@@ -91,7 +91,6 @@ else
   map <c-p> :Files<cr>
 endif
 
-set background=dark
 set t_Co=256
 
 if (has("termguicolors"))
@@ -100,7 +99,8 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-colorscheme koehler
+set background=dark
+colorscheme medic_chalk
 
 "let g:PaperColor_Theme_Options = {
 " \   'language': {
@@ -179,6 +179,42 @@ endif
 "        \ }
 "endif
 
+if executable('ccls')
+	let g:lsc_server_commands = {
+	\ 'cpp': {
+	\    'command': 'ccls',
+	\    'message_hooks': {
+	\        'initialize': {
+	\            'initializationOptions': {'cache': {'directory': '/tmp/ccls/cache'}},
+	\            'rootUri': {m, p -> lsc#uri#documentUri(fnamemodify(findfile('compile_commands.json', expand('%:p') . ';'), ':p:h'))}
+	\        },
+	\    },
+	\  },
+	\}
+	let g:lsc_server_commands = {
+	\ 'c': {
+	\    'command': 'ccls',
+	\    'message_hooks': {
+	\        'initialize': {
+	\            'initializationOptions': {'cache': {'directory': '/tmp/ccls/cache'}},
+	\            'rootUri': {m, p -> lsc#uri#documentUri(fnamemodify(findfile('compile_commands.json', expand('%:p') . ';'), ':p:h'))}
+	\        },
+	\    },
+	\  },
+	\}
+	let g:lsc_server_commands = {
+	\ 'cc': {
+	\    'command': 'ccls',
+	\    'message_hooks': {
+	\        'initialize': {
+	\            'initializationOptions': {'cache': {'directory': '/tmp/ccls/cache'}},
+	\            'rootUri': {m, p -> lsc#uri#documentUri(fnamemodify(findfile('compile_commands.json', expand('%:p') . ';'), ':p:h'))}
+	\        },
+	\    },
+	\  },
+	\}
+endif
+
 if executable('rls')
   let g:lsc_server_commands.rust = {
   	\    'command' : 'rls',
@@ -198,22 +234,22 @@ let g:lsc_auto_map = {
  \  'Completion': 'completefunc',
  \}
 
-"let g:lsc_enable_autocomplete  = v:true
-"let g:lsc_enable_diagnostics   = 0
-"let g:lsc_reference_highlights = 0
-"let g:lsc_trace_level          = 'off'
-"let g:lsc_server_log_level = -1
+let g:lsc_enable_autocomplete  = v:true
+let g:lsc_enable_diagnostics   = 0
+let g:lsc_reference_highlights = 0
+let g:lsc_trace_level          = 'off'
+let g:lsc_server_log_level = -1
 
 set completeopt=menu,menuone,noinsert,noselect
 set completeopt-=preview
 
 " guioptions
-set guifont=Terminus\ 8
+set guifont=-*-terminus-*-*-*-*-*-*-*-*-*-*-*-*
 set guioptions-=T "remove toolbar
 set guioptions-=m "remove toolbar
 set guioptions-=r "remove right-hand scroll bar
-set guioptions-=L "remove left-hand scroll bar. Fix for TagBar.
-set guioptions+=aA
+"set guioptions-=L "remove left-hand scroll bar. Fix for TagBar.
+set guioptions=ac
 set belloff=all
 
 if &term =~ '256color'

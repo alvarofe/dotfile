@@ -67,3 +67,6 @@
 [submodule "vim/.vim/pack/plugins/start/typescript-vim"]
 	path = vim/.vim/pack/plugins/start/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
+[submodule "vim/.vim/pack/plugins/start/vim-ccls"]
+	path = vim/.vim/pack/plugins/start/vim-ccls
+	url = https://github.com/m-pilia/vim-ccls.git

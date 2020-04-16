@@ -2,9 +2,9 @@
 
 (setq package-list '(evil ggtags rust-mode magit fzf evil xclip
 			  linum-relative lsp-ui company-lsp clang-format
-			  ace-window use-package xcscope cquery evil-tabs org
+			  ace-window use-package xcscope evil-tabs org
 			  helm evil-leader elpy projectile rust-mode racer
-			  company typescript-mode))
+			  company typescript-mode ccls))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
@@ -161,37 +161,34 @@
 ;; backup files
 (setq backup-directory-alist `(("." . "~/.saves")))
 
-;; coding style linux
+(require 'ccls)
 
-(setq c-default-style "linux")
-
-(defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists by tabs, not spaces"
-  (let* ((anchor (c-langelem-pos c-syntactic-element))
-	 (column (c-langelem-2nd-pos c-syntactic-element))
-	 (offset (- (1+ column) anchor))
-	 (steps (floor offset c-basic-offset)))
-    (* (max steps 1)
-       c-basic-offset)))
-
-(add-hook 'c-mode-common-hook
-	  (lambda ()
-	    ;; Add kernel style
-	    (c-add-style
-	     "linux-tabs-only"
-	     '("linux" (c-offsets-alist
-			(arglist-cont-nonempty
-			 c-lineup-gcc-asm-reg
-			 c-lineup-arglist-tabs-only))))))
+;;(defun c-lineup-arglist-tabs-only (ignored)
+;; "Line up argument lists by tabs, not spaces"
+;; (let* ((anchor (c-langelem-pos c-syntactic-element))
+;;        (column (c-langelem-2nd-pos c-syntactic-element))
+;;        (offset (- (1+ column) anchor))
+;;        (steps (floor offset c-basic-offset)))
+;;   (* (max steps 1)
+;;      c-basic-offset)))
+;;
+;;(add-hook 'c-mode-common-hook
+;;  (lambda ()
+;;    ;; Add kernel style
+;;    (c-add-style
+;;     "linux-tabs-only"
+;;     '("linux" (c-offsets-alist
+;;		(arglist-cont-nonempty
+;;		 c-lineup-gcc-asm-reg
+;;		 c-lineup-arglist-tabs-only))))))
 
 (add-hook 'c-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode t)
-	    (setq show-trailing-whitespace t)
-	    (c-set-style "linux-tabs-only")))
-
-(setq default-tab-width 8)
-(setq-default c-basic-offset 8)
+  (lambda ()
+    (setq indent-tabs-mode t)
+    (setq default-tab-width 2)
+    (setq-default c-basic-offset 2)
+    (setq show-trailing-whitespace t)
+    (c-set-style "linux-tabs-only")))
 
 ;; text mode
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -228,10 +225,6 @@
 
 (setq clang-format-style-option "LLVM")
 
-;; lsp-java
-(require 'lsp-java)
-(add-hook 'java-mode-hook #'lsp)
-
 ;; rust
 (require 'rust-mode)
 
@@ -245,3 +238,9 @@
 
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 (setq company-tooltip-align-annotations t)
+
+(setq indent-tabs-mode nil)
+(setq c-default-style
+      '((c++-mode . "k&r") (awk-mode . "awk") (other . "gnu")))
+(setq-default tab-width 2) ; set tab width to 4 for all buffers
+(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
