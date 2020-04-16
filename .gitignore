@@ -4,4 +4,6 @@ emacs/.emacs.d/eclipse.jdt.ls/*
 emacs/.emacs.d/workspace/*
 emacs/.emacs.d/auto-save-list/*
 emacs/.emacs.d/elpa/*
+emacs/.emacs.d/init.el
 vim/.vim/view
+.bashrc
