@@ -43,15 +43,9 @@
 [submodule "vim/.vim/pack/plugins/start/vim-unimpaired"]
 	path = vim/.vim/pack/plugins/start/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
-[submodule "vim/.vim/pack/plugins/start/splitjoin.vim"]
-	path = vim/.vim/pack/plugins/start/splitjoin.vim
-	url = https://github.com/AndrewRadev/splitjoin.vim.git
 [submodule "vim/.vim/pack/plugins/start/rust.vim"]
 	path = vim/.vim/pack/plugins/opt/rust.vim
 	url = https://github.com/rust-lang/rust.vim.git
-[submodule "vim/.vim/pack/plugins/start/vala.vim"]
-	path = vim/.vim/pack/plugins/start/vala.vim
-	url = https://github.com/arrufat/vala.vim.git
 [submodule "vim/.vim/pack/plugins/start/vim-syntax-extra"]
 	path = vim/.vim/pack/plugins/start/vim-syntax-extra
 	url = https://github.com/justinmk/vim-syntax-extra
@@ -67,3 +61,9 @@
 [submodule "vim/.vim/pack/plugins/start/typescript-vim"]
 	path = vim/.vim/pack/plugins/start/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
+[submodule "vim/.vim/pack/plugins/start/vim-silicon"]
+	path = vim/.vim/pack/plugins/start/vim-silicon
+	url = https://github.com/segeljakt/vim-silicon.git
+[submodule "dwm/scripts"]
+	path = dwm/scripts
+	url = https://github.com/zlowram/scripts.git

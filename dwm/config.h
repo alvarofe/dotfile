@@ -66,9 +66,8 @@ static const char *nextmusic[]  = { "playerctl", "next", NULL };
 static const char *prevmusic[]  = { "playerctl", "previous", NULL };
 static const char *pausemusic[] = { "playerctl", "play-pause", NULL };
 static const char *suspend[]    = { "slock", "systemctl", "suspend", "-i", NULL };
-//static const char *hibernate[]  = {"dbus-send", "--print-reply", "--system",
-//    "--dest=org.freedesktop.login1", "/org/freedesktop/login1",
-//    "org.freedesktop.login1.Manager.Suspend", "boolean:true", NULL };
+static const char *screenshot[] = { "screenshot", "-sc", NULL };
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
@@ -102,6 +101,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F7,     spawn,          {.v = pausemusic } },
 	{ MODKEY,                       XK_F8,     spawn,          {.v = prevmusic } },
 	{ MODKEY,                       XK_F9,     spawn,          {.v = nextmusic } },
+	{ MODKEY|ShiftMaks,             XK_p,      spawn,          {.v = screenshot } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
