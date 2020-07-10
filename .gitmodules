@@ -1,69 +1,6 @@
-[submodule "vim/.vim/pack/plugins/start/vim-go"]
-	path = vim/.vim/pack/plugins/opt/vim-go
-	url = https://github.com/fatih/vim-go.git
-[submodule "vim/.vim/pack/plugins/start/vim-man"]
-	path = vim/.vim/pack/plugins/opt/vim-man
-	url = https://github.com/vim-utils/vim-man.git
-[submodule "irssi/.irssi"]
-	path = irssi/.irssi
-	url = https://github.com/alvarofe/irssi.git
-[submodule "vim/.vim/pack/plugins/start/rust-vim"]
-	path = vim/.vim/pack/plugins/opt/rust-vim
-	url = https://github.com/rust-lang/rust.vim.git
-[submodule "vim/.vim/pack/plugins/start/vim-snippets"]
-	path = vim/.vim/pack/plugins/opt/vim-snippets
-	url = https://github.com/honza/vim-snippets.git
-[submodule "vim/.vim/pack/plugins/start/unite.vim"]
-	path = vim/.vim/pack/plugins/opt/unite.vim
-	url = https://github.com/Shougo/unite.vim.git
-[submodule "vim/.vim/pack/plugins/start/ultisnips"]
-	path = vim/.vim/pack/plugins/opt/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
-[submodule "vim/.vim/pack/plugins/opt/vim-jsbeautify"]
-	path = vim/.vim/pack/plugins/opt/vim-jsbeautify
-	url = https://github.com/maksimr/vim-jsbeautify.git
-[submodule "vim/.vim/pack/plugins/start/vimwiki"]
-	path = vim/.vim/pack/plugins/start/vimwiki
-	url = https://github.com/vimwiki/vimwiki.git
-[submodule "vim/.vim/pack/plugins/start/YouCompleteMe"]
-	path = vim/.vim/pack/plugins/opt/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe.git
-[submodule "vim/.vim/pack/plugins/start/vim-linux-coding-style"]
-	path = vim/.vim/pack/plugins/opt/vim-linux-coding-style
-	url = https://github.com/vivien/vim-linux-coding-style.git
 [submodule "emacs/lsp-mode"]
 	path = emacs/.emacs.d/lsp-mode
 	url = https://github.com/emacs-lsp/lsp-mode
-[submodule "vim/.vim/pack/plugins/start/vim-fugitive"]
-	path = vim/.vim/pack/plugins/start/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/.vim/pack/plugins/start/fzf.vim"]
-	path = vim/.vim/pack/plugins/start/fzf.vim
-	url = https://github.com/junegunn/fzf.vim.git
-[submodule "vim/.vim/pack/plugins/start/vim-unimpaired"]
-	path = vim/.vim/pack/plugins/start/vim-unimpaired
-	url = https://github.com/tpope/vim-unimpaired.git
-[submodule "vim/.vim/pack/plugins/start/rust.vim"]
-	path = vim/.vim/pack/plugins/opt/rust.vim
-	url = https://github.com/rust-lang/rust.vim.git
-[submodule "vim/.vim/pack/plugins/start/vim-syntax-extra"]
-	path = vim/.vim/pack/plugins/start/vim-syntax-extra
-	url = https://github.com/justinmk/vim-syntax-extra
-[submodule "vim/.vim/pack/plugins/start/vim-lsc"]
-	path = vim/.vim/pack/plugins/opt/vim-lsc
-	url = https://github.com/natebosch/vim-lsc.git
-[submodule "vim/.vim/pack/plugins/start/vim-racer"]
-	path = vim/.vim/pack/plugins/opt/vim-racer
-	url = https://github.com/racer-rust/vim-racer.git
-[submodule "vim/.vim/pack/plugins/start/ranger.vim"]
-	path = vim/.vim/pack/plugins/start/ranger.vim
-	url = https://github.com/francoiscabrol/ranger.vim.git
-[submodule "vim/.vim/pack/plugins/start/typescript-vim"]
-	path = vim/.vim/pack/plugins/start/typescript-vim
-	url = https://github.com/leafgarland/typescript-vim.git
-[submodule "vim/.vim/pack/plugins/start/vim-silicon"]
-	path = vim/.vim/pack/plugins/start/vim-silicon
-	url = https://github.com/segeljakt/vim-silicon.git
 [submodule "dwm/scripts"]
 	path = dwm/scripts
 	url = https://github.com/zlowram/scripts.git
