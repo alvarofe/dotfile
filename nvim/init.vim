@@ -9,6 +9,7 @@ Plug 'preservim/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'AndrewRadev/splitjoin.vim'
 
 call plug#end()
 
@@ -72,6 +73,7 @@ endif
 sy on
 set background=dark
 set termguicolors
+set tw=80
 set t_Co=256
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
@@ -91,7 +93,6 @@ set clipboard=unnamedplus
 set vb t_vb="."
 set paste
 set expandtab
-set tw=792034
 set autoindent
 
 "clipboard
@@ -183,7 +184,6 @@ autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd FileType markdown set cursorline
 " Hide and format markdown elements like **bold**
 autocmd FileType markdown set conceallevel=2
-autocmd FileType markdown Goyo
 let g:vim_markdown_conceal = 2
 let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_math = 1
@@ -193,3 +193,23 @@ let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_autowrite = 1
 let g:vim_markdown_edit_url_in = 'tab'
 let g:vim_markdown_follow_anchor = 1
+
+
+set statusline=
+set statusline+=%<%f\ %h%m%r             " filename and flags
+set statusline+=%{fugitive#statusline()} " git info
+set statusline+=%=                       " alignment separator
+set statusline+=[%{&ft}]                 " filetype
+set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
+
+set number
+set relativenumber
+set ruler
+set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
+set guioptions=crb
+set linebreak showbreak=+
+set listchars=eol:.,tab:\|-
+set laststatus=2
+
+
+color torte
