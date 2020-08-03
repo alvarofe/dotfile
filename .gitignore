@@ -7,4 +7,6 @@ emacs/.emacs.d/elpa/*
 emacs/.emacs.d/init.el
 emacs/.emacs.d/elpy/*
 vim/.vim/view
+nvim/site/plugged/*
+nvim/site/plugged
 .bashrc
