@@ -10,6 +10,11 @@ Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'bignimbus/pop-punk.vim'
+Plug 'dylanaraps/wal.vim'
+Plug 'fcpg/vim-shore'
+
+Plug 'chriskempson/base16-vim'
 
 call plug#end()
 
@@ -180,8 +185,6 @@ let g:NERDCompactSexyComs = 3
 
 " MARKDOWN
 autocmd BufNewFile,BufRead *.md set filetype=markdown
-" Highlight the line the cursor is on
-autocmd FileType markdown set cursorline
 " Hide and format markdown elements like **bold**
 autocmd FileType markdown set conceallevel=2
 let g:vim_markdown_conceal = 2
@@ -202,8 +205,8 @@ set statusline+=%=                       " alignment separator
 set statusline+=[%{&ft}]                 " filetype
 set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
 
-set number
-set relativenumber
+"set number
+"set relativenumber
 set ruler
 set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
 set guioptions=crb
@@ -211,5 +214,10 @@ set linebreak showbreak=+
 set listchars=eol:.,tab:\|-
 set laststatus=2
 
+" vim-shore
+let g:shore_stayonfront = 1
 
-color torte
+" Colorscheme
+" let base16colorspace=256
+" colorscheme base16-papercolor-dark
+" set termguicolors
