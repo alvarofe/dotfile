@@ -1,9 +1,10 @@
-call plug#begin('~/.local/share/nvim/site/plugged')
+call plug#begin('~/.vim/plugged')
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
+Plug 'ackyshake/VimCompletesMe'
 Plug 'vimwiki/vimwiki'
 Plug 'preservim/nerdcommenter'
 Plug 'junegunn/goyo.vim'
@@ -13,13 +14,20 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bignimbus/pop-punk.vim'
 Plug 'dylanaraps/wal.vim'
 Plug 'fcpg/vim-shore'
-Plug 'aonemd/kuroi.vim'
 Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'thomasfaingnaert/vim-lsp-snippets'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+
+Plug 'ervandew/supertab'
+
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'rust-lang/rust.vim'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'lighttiger2505/deoplete-vim-lsp'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 Plug 'chriskempson/base16-vim'
@@ -104,7 +112,6 @@ set hlsearch
 set mouse=a
 set clipboard=unnamedplus
 set vb t_vb="."
-set paste
 set expandtab
 set autoindent
 
@@ -178,7 +185,6 @@ set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
 "set relativenumber
 set ruler
 set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
-set guioptions=crb
 set linebreak showbreak=+
 set listchars=eol:.,tab:\|-
 set laststatus=2
@@ -202,7 +208,7 @@ if executable('ccls')
       \     lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json', '.git/']))},
       \ 'initialization_options': {
       \   'highlight': { 'lsRanges' : v:true },
-      \   'cache': {'directory': stdpath('cache') . '/ccls' },
+      \   'cache': {'directory': '/tmp/cache' . '/ccls' },
       \ },
       \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc', 'h', 'hpp'],
       \ })
@@ -223,3 +229,17 @@ let  g:gutentags_cache_dir = s:vim_tags
 let  g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let  g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let  g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
+set guifont=Source\ Code\ Pro\ Medium\ 9
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
+
+let g:SuperTabDefaultCompletionType    = '<C-n>'
+let g:SuperTabCrMapping                = 1
+let g:UltiSnipsExpandTrigger           = '<tab>'
+let g:UltiSnipsJumpForwardTrigger      = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger     = '<s-tab>'

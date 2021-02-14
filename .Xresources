@@ -1,11 +1,12 @@
 *.foreground: white
 *.background: black
-xterm*selectToClipboard:true
-Xterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
-xterm*scrollBar:false
+XTerm*selectToClipboard:true
+XTerm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
+XTerm*scrollBar:false
 XTerm*metaSendsEscape: true
+XTerm.termName: xterm-256color
 
-uxterm*faceSize: 9
+uxterm*faceSize: 9 
 uxterm*selectToClipboard:true
 uxterm*VT100.Translations: #override Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
 uxterm*scrollBar:false
