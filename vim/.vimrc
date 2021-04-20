@@ -7,12 +7,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'ackyshake/VimCompletesMe'
 Plug 'vimwiki/vimwiki'
 Plug 'preservim/nerdcommenter'
-Plug 'junegunn/goyo.vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bignimbus/pop-punk.vim'
-Plug 'dylanaraps/wal.vim'
 Plug 'fcpg/vim-shore'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/async.vim'
@@ -22,15 +20,8 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-
 Plug 'ervandew/supertab'
-
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'rust-lang/rust.vim'
-
-Plug 'jackguo380/vim-lsp-cxx-highlight'
-
-Plug 'chriskempson/base16-vim'
 
 call plug#end()
 
@@ -109,7 +100,9 @@ set noundofile
 set fillchars+=vert:│
 set path+=**
 set hlsearch
-set mouse=a
+set mouse=ivn
+map <ScrollWheelUp> <C-Y>
+map <ScrollWheelDown> <C-E>
 set clipboard=unnamedplus
 set vb t_vb="."
 set expandtab
@@ -181,8 +174,8 @@ set statusline+=%=                       " alignment separator
 set statusline+=[%{&ft}]                 " filetype
 set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
 
-"set number
-"set relativenumber
+set number
+set relativenumber
 set ruler
 set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
 set linebreak showbreak=+
@@ -214,21 +207,50 @@ if executable('ccls')
       \ })
 endif
 
-if executable('rls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        \ 'whitelist': ['rust'],
+" if executable('rls')
+    " au User lsp_setup call lsp#register_server({
+        " \ 'name': 'rls',
+        " \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+        " \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+        " \ 'whitelist': ['rust'],
+        " \ })
+" endif
+"
+if executable('rust-analyzer')
+  au User lsp_setup call lsp#register_server({
+        \   'name': 'Rust Language Server',
+        \   'cmd': {server_info->['rust-analyzer']},
+        \   'whitelist': ['rust'],
+        \   'initialization_options': {
+        \     'cargo': {
+        \       'loadOutDirsFromCheck': v:true,
+        \     },
+        \     'procMacro': {
+        \       'enable': v:true,
+        \     },
+        \   },
         \ })
 endif
 
-let  g:gutentags_ctags_tagfile = '.tags'
-let  s:vim_tags = expand('~/.cache/tags')
-let  g:gutentags_cache_dir = s:vim_tags
-let  g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let  g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let  g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+          \ 'name': 'pyls',
+          \ 'cmd': {server_info->['pyls']},
+          \ 'allowlist': ['python'],
+          \ 'workspace_config': {
+          \    'pyls':
+          \        {'configurationSources': ['flake8'],
+          \         'plugins': {'flake8': {'enabled': v:false},
+          \                     'pyflakes': {'enabled': v:false},
+          \                     'pycodestyle': {'enabled': v:false},
+          \                    }
+          \         }
+          \ }})
+endif
+
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+let g:lsp_document_highlight_enabled = 0
 
 set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
@@ -243,3 +265,5 @@ let g:SuperTabCrMapping                = 1
 let g:UltiSnipsExpandTrigger           = '<tab>'
 let g:UltiSnipsJumpForwardTrigger      = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger     = '<s-tab>'
+hi Pmenu guibg=blue
+

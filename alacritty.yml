@@ -1,0 +1,55 @@
+# XTerm's default colors
+colors:
+   # Default colors
+   primary:
+     background: '#000000'
+     foreground: '#ffffff'
+   # Normal colors
+   normal:
+     black:   '#000000'
+     red:     '#cd0000'
+     green:   '#00cd00'
+     yellow:  '#cdcd00'
+     blue:    '#0000ee'
+     magenta: '#cd00cd'
+     cyan:    '#00cdcd'
+     white:   '#e5e5e5'
+
+   # Bright colors
+   bright:
+     black:   '#7f7f7f'
+     red:     '#ff0000'
+     green:   '#00ff00'
+     yellow:  '#ffff00'
+     blue:    '#5c5cff'
+     magenta: '#ff00ff'
+     cyan:    '#00ffff'
+     white:   '#ffffff'
+   cursor:
+     text:    '#000000'
+     cursor:  '#b60900'
+font:
+  # The normal (roman) font face to use.
+  normal:
+    family: SourceCodePro
+    style: Regular
+
+  # The bold font face
+  bold:
+    family: SourceCodePro
+    style: Bold
+
+  # The italic font face
+  italic:
+    family: SourceCodePro
+    style: Italic
+
+  # Point size of the font
+  size: 9.0
+
+selection:
+  # This string contains all characters that are used as separators for
+  # "semantic words" in Alacritty.
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+  # When set to `true`, selected text will be copied to the primary clipboard.
+  save_to_clipboard: true

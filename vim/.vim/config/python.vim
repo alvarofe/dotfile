@@ -1,1 +1,2 @@
-au BufRead,BufNewFile *.py set sw=2 ts=2 sts=2 et
+au BufRead,BufNewFile *.py set sw=4 ts=4 sts=4 et
+au BufRead,BufNewFile *.py setlocal omnifunc=lsp#complete

@@ -6,23 +6,15 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'vimwiki/vimwiki'
 Plug 'preservim/nerdcommenter'
-Plug 'junegunn/goyo.vim'
-Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'bignimbus/pop-punk.vim'
-Plug 'dylanaraps/wal.vim'
-Plug 'fcpg/vim-shore'
-Plug 'aonemd/kuroi.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'neovim/nvim-lspconfig'
 Plug 'rust-lang/rust.vim'
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'lighttiger2505/deoplete-vim-lsp'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
-
-Plug 'chriskempson/base16-vim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/lsp_extensions.nvim'
+Plug 'nvim-lua/completion-nvim'
+Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'godlygeek/tabular'
 
 call plug#end()
 
@@ -63,7 +55,7 @@ noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>t :Tags<cr>
 nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
-map <C-m> i<CR><C-t><C-t><Esc>h
+map <C-m> i<CR><C-t><Esc>h
 map <C-Return> i<CR><CR><C-o>k<C-t><C-t>
 
 function! LoadCscope()
@@ -134,12 +126,10 @@ set updatetime=300
 set signcolumn=no
 
 " Remap keys for LSP
-nmap <silent> gd :LspDefinition<CR>
-nmap <silent> gy :LspTypeDefinition<CR>
-nmap <silent> gi :LspImplementation<CR>
-nmap <silent> gr :LspReferences<CR>
-nmap <silent> gR :LspRename<CR>
-nmap <silent> gk :LspHover<CR>
+nmap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nmap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nmap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nmap <silent> gk <cmd>lua vim.lsp.buf.hover()<CR>
 
 hi Visual term=reverse cterm=reverse guibg=Grey
 highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
@@ -174,8 +164,8 @@ set statusline+=%=                       " alignment separator
 set statusline+=[%{&ft}]                 " filetype
 set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
 
-"set number
-"set relativenumber
+set number
+set relativenumber
 set ruler
 set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
 set guioptions=crb
@@ -190,36 +180,77 @@ let g:shore_stayonfront = 1
 set termguicolors
 colorscheme torte
 
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
+" Configure LSP
 
-if executable('ccls')
-   au User lsp_setup call lsp#register_server({
-      \ 'name': 'ccls',
-      \ 'cmd': {server_info->['ccls']},
-      \ 'root_uri': {server_info->lsp#utils#path_to_uri(
-      \   lsp#utils#find_nearest_parent_file_directory(
-      \     lsp#utils#get_buffer_path(), ['.ccls', 'compile_commands.json', '.git/']))},
-      \ 'initialization_options': {
-      \   'highlight': { 'lsRanges' : v:true },
-      \   'cache': {'directory': stdpath('cache') . '/ccls' },
-      \ },
-      \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc', 'h', 'hpp'],
-      \ })
+if (executable('pyls'))
+  lua require'lspconfig'.pyls.setup{}
 endif
 
-if executable('rls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        \ 'whitelist': ['rust'],
-        \ })
+if (executable('rust-analyzer'))
+  lua require'lspconfig'.rust_analyzer.setup{}
 endif
 
-let  g:gutentags_ctags_tagfile = '.tags'
-let  s:vim_tags = expand('~/.cache/tags')
-let  g:gutentags_cache_dir = s:vim_tags
-let  g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let  g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let  g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+if (executable('ccls'))
+  lua require'lspconfig'.ccls.setup{ init_options = { cache = { directory = "/tmp/cache/ccls" }; index = {threads = 2 }; } };
+endif
+
+
+lua <<EOF
+
+-- nvim_lsp object
+local nvim_lsp = require'lspconfig'
+
+-- Disable diagnostics
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+
+vim.o.completeopt = "menuone,noselect"
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = false;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    vsnip = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    spell = true;
+    tags = false;
+    snippets_nvim = true;
+    treesitter = true;
+  };
+}
+
+local t = function(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+_G.s_tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-p>"
+  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+    return t "<Plug>(vsnip-jump-prev)"
+  else
+    return t "<S-Tab>"
+  end
+end
+
+vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+EOF
+
+hi Pmenu guibg=blue

@@ -1,13 +1,12 @@
-
 (require 'package)
 
-(setq package-list '(evil rust-mode magit fzf evil xclip linum-relative lsp-ui
-                          ace-window use-package org helm evil-leader elpy
+(setq package-list '(evil lsp-mode rust-mode magit evil xclip linum-relative lsp-ui
+                          ace-window use-package org helm evil-leader elpy fzf
                           projectile rust-mode racer company ccls ivy swiper
-                          counsel))
+                          yasnippet yasnippet-snippets projectile
+                          helm-projectile helm-ag smart-mode-line rg))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 (unless package-archive-contents
@@ -19,8 +18,13 @@
 	(package-install package)))
 
 
-(add-to-list 'load-path "~/.emacs.d/lsp-mode")
-(require 'lsp-mode)
+(use-package lsp-mode
+  :commands lsp
+  :custom
+  ((lsp-enable-indentation nil)
+   (lsp-enable-on-type-formatting nil)
+))
+
 (setq lsp-file-watch-threshold nil)
 (add-hook 'c++-mode-hook 'lsp)
 (add-hook 'c-mode-hook 'lsp)
@@ -30,6 +34,7 @@
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq lsp-diagnostic-package :none)
+
 
 ;; ccls
 (setq ccls-executable "/usr/bin/ccls")
@@ -81,13 +86,17 @@
   "g" 'magit-status
   "x" 'helm-M-x)
 
+(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+
 (define-key evil-normal-state-map (kbd "C-]") 'xref-find-definitions)
 (define-key evil-normal-state-map (kbd "C-r") 'xref-find-references)
+(define-key evil-normal-state-map (kbd "C-\\") 'find-tag)
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
 
 ;; fuzzy file find
 
-(global-set-key (kbd "C-c p p") 'counsel-fzf)
+(global-set-key (kbd "C-c p p") 'fzf-hg)
 
 ; Get rid of the startup message
 (setq inhibit-startup-message t)
@@ -124,8 +133,8 @@
 (setq backup-directory-alist `(("." . "~/.saves")))
 
 (setq-default indent-tabs-mode nil)
-(setq-default c-basic-offset 2
-          tab-width 2)
+(setq-default c-basic-offset 4
+          tab-width 4)
 
 ;; text mode
 (setq set-fill-column 80)
@@ -160,14 +169,13 @@
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 (setq company-tooltip-align-annotations t)
 
-(setq-default tab-width 4) 
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
 (defun indent-or-complete ()
-	(interactive)
-	(if (looking-at "\\_>")
-		(company-complete-common)
-		(indent-according-to-mode)))
+        (interactive)
+        (if (looking-at "\\_>")
+                (company-complete-common)
+                (indent-according-to-mode)))
 
 ;; linum-relative
 (require 'linum-relative)
@@ -249,53 +257,45 @@ middle"
 (global-set-key [C-M-left] 'win-resize-enlarge-vert)
 (global-set-key [C-M-right] 'win-resize-minimize-vert)
 
-(use-package counsel
-  :ensure t
-  :bind
-  (("M-y" . counsel-yank-pop)
-   :map ivy-minibuffer-map
-   ("M-y" . ivy-next-line)))
-
-(use-package ivy
-  :ensure t
-  :diminish (ivy-mode)
-  :bind (("C-x b" . ivy-switch-buffer))
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "%d/%d ")
-  (setq ivy-display-style 'fancy))
-
-
-(use-package swiper
-  :ensure t
-  :bind (("C-c C-s" . swiper-isearch)
-         ("C-c C-r" . ivy-resume)
-         ("M-x" . counsel-M-x))
-  :config
-  (progn
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-display-style 'fancy)
-    ))
-
 (icomplete-mode 1)
 
-(add-hook 'eshell-mode-hook
-          (lambda ()
-            ;; (setq pcomplete-ignore-case t)
-            ;; (setq pcomplete-cycle-completions nil)
+(require 'yasnippet)
+(yas-global-mode 1)
 
-            ;; These have to be done in a hook because
-            ;; eshell-command-map is a buffer local variable.  It's
-            ;; apparently not supposed to be and appears to to be a
-            ;; bug in the way eshell is implemented.
-            ;; eshell-mode-map:    <key>
-            ;; ehsell-command-map: C-c <key>
-            (define-key eshell-command-map (kbd "C-t") 'eshell-truncate-buffer-all)
-            (define-key eshell-command-map (kbd "M-o") 'eshell-truncate-buffer-all)
-            (define-key eshell-mode-map (kbd "M-r") 'counsel-esh-history)
-            (define-key eshell-mode-map (kbd "<tab>")
-              (lambda () (interactive) (pcomplete-std-complete)))
-            )
-          )
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c f") 'projectile-command-map)
+
+(custom-set-variables
+ '(helm-ag-base-command "rg --no-heading")
+ `(helm-ag-success-exit-status '(0 2)))
+
+(set-face-attribute 'mode-line-buffer-id nil :foreground "white")
+
+(set-face-foreground 'mode-line "#2424F1")
+(set-face-background 'mode-line "#2424F1")
+(set-face-foreground 'mode-line-inactive "#2424F1")
+(set-face-background 'mode-line-inactive "#2424F1")
+
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
+(setq sml/theme 'dark)
+
+(require 'org)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
+(setq org-agenda-files (list "~/org/work.org"
+                             "~/org/home.org"))
+(require 'org-mouse)
+
+(add-hook 'python-mode-hook
+      (lambda ()
+        (setq indent-tabs-mode nil)
+        (setq python-indent 4)
+        (setq tab-width 4))
+      (untabify (point-min) (point-max)))
+
+(require 'rg)
+(rg-enable-default-bindings)
