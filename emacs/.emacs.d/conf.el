@@ -4,7 +4,8 @@
                           ace-window use-package org helm evil-leader elpy fzf
                           projectile rust-mode racer company ccls ivy swiper
                           yasnippet yasnippet-snippets projectile
-                          helm-projectile helm-ag smart-mode-line rg))
+                          helm-projectile helm-ag helm-rg smart-mode-line rg projectile-ripgrep
+                          evil-nerd-commenter afternoon-theme buffer-move))
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -37,10 +38,16 @@
 
 
 ;; ccls
-(setq ccls-executable "/usr/bin/ccls")
 (use-package ccls
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
-         (lambda () (require 'ccls) (lsp))))
+         (lambda () (require 'ccls) (lsp)))
+  :config
+  (dolist (dir '(".ccls-cache" "build"))
+    (add-to-list 'lsp-file-watch-ignored dir))
+  (setq ccls-executable "~/.local/bin/ccls")
+  ;;(setq ccls-args '("--init={\"cache\": {\"directory\": \"/home/alvaro/.cache/ccls-cache\"}}"))
+)
+
 
 (defface company-box-candidate
   '((((background light)) :foreground "black")
@@ -96,7 +103,8 @@
 
 ;; fuzzy file find
 
-(global-set-key (kbd "C-c p p") 'fzf-hg)
+(global-set-key (kbd "C-c p p") 'fzf-find-file)
+(global-set-key (kbd "C-c p f") 'helm-rg)
 
 ; Get rid of the startup message
 (setq inhibit-startup-message t)
@@ -133,8 +141,6 @@
 (setq backup-directory-alist `(("." . "~/.saves")))
 
 (setq-default indent-tabs-mode nil)
-(setq-default c-basic-offset 4
-          tab-width 4)
 
 ;; text mode
 (setq set-fill-column 80)
@@ -158,7 +164,17 @@
 (setq elpy-rpc-python-command "python3")
 
 ;; rust
-(require 'rust-mode)
+(use-package rust-mode
+  :ensure t)
+
+(use-package lsp-mode
+  :ensure t
+  :hook ((rust-mode . lsp)
+         (python-mode . lsp)))
+
+(setq lsp-prefer-capf t)
+(setq lsp-completion-provider :capf)
+(setq lsp-completion-enable t)
 
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
@@ -179,10 +195,6 @@
 
 ;; linum-relative
 (require 'linum-relative)
-
-;; Custom themes
-(add-to-list 'custom-theme-load-path "themes")
-;; (load-theme 'vscode-dark-plus t)
 
 ;; enable mouse
 (require 'mouse)
@@ -262,24 +274,49 @@ middle"
 (require 'yasnippet)
 (yas-global-mode 1)
 
+(require 'projectile)
+(setq projectile-use-native-indexing t)
+(setq projectile-globally-ignored-directories
+      '(".git"
+        ".ccls-cache"
+        ".svn"
+        ".stack-work"
+        ".cquery_cached_index"
+        "out"
+        "third_party"))
+
+(setq projectile-globally-ignored-files
+      '("tags"
+        "cscope.files"
+        "cscope.out"
+        "cscope.in.out"))
+
 (projectile-mode +1)
+
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c f") 'projectile-command-map)
+
+(defun my-project-try-cargo-toml (_)
+  (let (dir)
+    (ignore-errors
+      (let* ((output (shell-command-to-string "cargo metadata --no-deps --format-version 1"))
+             (js (json-read-from-string output)))
+        (setq dir (cdr (assq 'workspace_root js)))))
+    (and dir (cons 'transient  dir))))
+
+;; Try rust projects before version-control (vc) projects
+(add-hook 'project-find-functions 'my-project-try-cargo-toml nil nil)
 
 (custom-set-variables
  '(helm-ag-base-command "rg --no-heading")
  `(helm-ag-success-exit-status '(0 2)))
 
-(set-face-attribute 'mode-line-buffer-id nil :foreground "white")
+;;(set-face-attribute 'mode-line-buffer-id nil :foreground "white")
 
-(set-face-foreground 'mode-line "#2424F1")
-(set-face-background 'mode-line "#2424F1")
-(set-face-foreground 'mode-line-inactive "#2424F1")
-(set-face-background 'mode-line-inactive "#2424F1")
-
-(setq sml/no-confirm-load-theme t)
-(sml/setup)
-(setq sml/theme 'dark)
+;;(set-face-foreground 'mode-line "#2424F1")
+;;(set-face-background 'mode-line "#2424F1")
+;;(set-face-foreground 'mode-line-inactive "#2424F1")
+;;(set-face-background 'mode-line-inactive "#2424F1")
 
 (require 'org)
 (define-key global-map "\C-cl" 'org-store-link)
@@ -299,3 +336,30 @@ middle"
 
 (require 'rg)
 (rg-enable-default-bindings)
+
+;; Vim key bindings
+(require 'evil-leader)
+(global-evil-leader-mode)
+(evil-leader/set-key
+  "ci" 'evilnc-comment-or-uncomment-lines
+  "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
+  "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
+  "cc" 'evilnc-copy-and-comment-lines
+  "cp" 'evilnc-comment-or-uncomment-paragraphs
+  "cr" 'comment-or-uncomment-region
+  "cv" 'evilnc-toggle-invert-comment-line-by-line
+  "."  'evilnc-copy-and-comment-operator
+  "\\" 'evilnc-comment-operator ; if you prefer backslash key
+)
+
+(setq sml/no-confirm-load-theme t)
+(setq sml/theme 'dark)
+(sml/setup)
+;;(load-theme 'afternoon t)
+
+
+(require 'buffer-move)
+(global-set-key (kbd "<C-S-up>")     'buf-move-up)
+(global-set-key (kbd "<C-S-down>")   'buf-move-down)
+(global-set-key (kbd "<C-S-left>")   'buf-move-left)
+(global-set-key (kbd "<C-S-right>")  'buf-move-right)

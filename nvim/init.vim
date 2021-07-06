@@ -52,7 +52,7 @@ noremap <leader>f :Explore<CR>
 noremap <leader><Space> :%s/\s\+$//e<CR>
 noremap <leader>b :Buffer<cr>
 noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>c :!cargo build<CR>
 noremap <leader>t :Tags<cr>
 nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
 map <C-m> i<CR><C-t><Esc>h
@@ -164,8 +164,8 @@ set statusline+=%=                       " alignment separator
 set statusline+=[%{&ft}]                 " filetype
 set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
 
-set number
-set relativenumber
+"set number
+"set relativenumber
 set ruler
 set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
 set guioptions=crb
@@ -182,8 +182,8 @@ colorscheme torte
 
 " Configure LSP
 
-if (executable('pyls'))
-  lua require'lspconfig'.pyls.setup{}
+if (executable('pylsp'))
+  lua require'lspconfig'.pylsp.setup{}
 endif
 
 if (executable('rust-analyzer'))
