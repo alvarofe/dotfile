@@ -62,8 +62,8 @@ noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>t :Tags<cr>
 nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
-map <C-m> i<CR><C-t><C-t><Esc>h
-map <C-Return> i<CR><CR><C-o>k<C-t><C-t>
+map <C-m> i<CR><C-t><Esc>h
+map <C-Return> i<CR><C-o>k<C-t>
 
 function! LoadCscope()
   let db = findfile("cscope.out", ".;")

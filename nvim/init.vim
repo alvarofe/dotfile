@@ -8,13 +8,16 @@ Plug 'vimwiki/vimwiki'
 Plug 'preservim/nerdcommenter'
 Plug 'plasticboy/vim-markdown'
 Plug 'neovim/nvim-lspconfig'
+Plug 'glepnir/lspsaga.nvim'
 Plug 'rust-lang/rust.vim'
-Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/completion-nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'godlygeek/tabular'
+Plug 'szw/vim-maximizer'
+Plug 'adelarsq/vim-matchit'
+Plug 'kristijanhusak/orgmode.nvim'
 
 call plug#end()
 
@@ -44,14 +47,14 @@ map <C-L> 15<C-W>>
 map <C-H> 15<C-W><
 
 "some nice keymappings
-noremap <leader>e :call Exposee()<CR>
+noremap <leader>e :MaximizerToggle<CR>
 noremap <leader>w :w<CR>
 noremap <leader>q :q<CR>
 noremap <leader>m :Gstatus<CR>
 noremap <leader>f :Explore<CR>
+nnoremap <leader>g gqip
 noremap <leader><Space> :%s/\s\+$//e<CR>
 noremap <leader>b :Buffer<cr>
-noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>c :!cargo build<CR>
 noremap <leader>t :Tags<cr>
 nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
@@ -77,8 +80,10 @@ endif
 
 sy on
 set background=dark
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors
-set tw=80
+set tw=79
 set t_Co=256
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
@@ -96,7 +101,7 @@ set hlsearch
 set mouse=a
 set clipboard=unnamedplus
 set vb t_vb="."
-set paste
+set nopaste
 set expandtab
 set autoindent
 
@@ -126,10 +131,11 @@ set updatetime=300
 set signcolumn=no
 
 " Remap keys for LSP
-nmap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nmap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
-nmap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-nmap <silent> gk <cmd>lua vim.lsp.buf.hover()<CR>
+nmap <silent>gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent>gi :Lspsaga preview_definition<CR>
+nmap <silent>gr <cmd>lua vim.lsp.buf.references()<CR>
+noremap <silent>gk :Lspsaga hover_doc<CR>
+nnoremap <silent>gh :Lspsaga lsp_finder<CR>
 
 hi Visual term=reverse cterm=reverse guibg=Grey
 highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
@@ -164,8 +170,8 @@ set statusline+=%=                       " alignment separator
 set statusline+=[%{&ft}]                 " filetype
 set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
 
-"set number
-"set relativenumber
+" set number
+" set relativenumber
 set ruler
 set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
 set guioptions=crb
@@ -177,7 +183,6 @@ set laststatus=2
 let g:shore_stayonfront = 1
 
 " Colorscheme
-set termguicolors
 colorscheme torte
 
 " Configure LSP
@@ -186,9 +191,23 @@ if (executable('pylsp'))
   lua require'lspconfig'.pylsp.setup{}
 endif
 
-if (executable('rust-analyzer'))
-  lua require'lspconfig'.rust_analyzer.setup{}
-endif
+" if (executable('rust-analyzer'))
+  " lua require'lspconfig'.rust_analyzer.setup{}
+  " lua require'lspconfig'.rust_analyzer.setup{ settings = {["rust-analyzer"] = {checkOnSave={extraArgs={"--target-dir", "/tmp/rust-analyzer-check"}}}}};
+
+  " lua require'lspconfig.rust_analyzer.setup({
+  " on_attach = on_attach,
+  " settings = {
+    " ['rust-analyzer'] = {
+      " checkOnSave = {
+        " extraArgs = {
+          " "--target-dir", "/tmp/rust-analyzer-check"
+        " }
+      " }
+    " }
+  " }
+" })
+" endif
 
 if (executable('ccls'))
   lua require'lspconfig'.ccls.setup{ init_options = { cache = { directory = "/tmp/cache/ccls" }; index = {threads = 2 }; } };
@@ -197,12 +216,15 @@ endif
 
 lua <<EOF
 
+require('orgmode').setup({
+  org_agenda_files = {'~/org/**/*'},
+  org_default_notes_file = '~/org/refile.org',
+})
+
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
 
 -- Disable diagnostics
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 
 vim.o.completeopt = "menuone,noselect"
 
@@ -229,7 +251,7 @@ require'compe'.setup {
     nvim_lua = true;
     spell = true;
     tags = false;
-    snippets_nvim = true;
+    snippets_nvim = false;
     treesitter = true;
   };
 }
@@ -247,10 +269,50 @@ _G.s_tab_complete = function()
   end
 end
 
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+--vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+--vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+--vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+nvim_lsp.rust_analyzer.setup({
+  settings = {
+    ['rust-analyzer'] = {
+      checkOnSave = {
+        extraArgs = {
+          "--target-dir", "/tmp/rust-analyzer-check"
+        }
+      }
+    }
+  }
+})
+
+local saga = require 'lspsaga'
+saga.init_lsp_saga()
+saga.init_lsp_saga {
+  use_saga_diagnostic_sign = false,
+  max_preview_lines = 10,
+  error_sign = '',
+  warn_sign = '',
+  hint_sign = '',
+  infor_sign = '',
+  finder_definition_icon = '> ',
+  code_action_icon = '',
+  code_action_prompt = {
+    enable = false,
+    sign = false,
+    sign_priority = 20,
+    virtual_text = true,
+  },
+  finder_action_keys = {
+    open = 'o', vsplit = 's',split = 'h',quit = 'q',scroll_down = '<C-f>', scroll_up = '<C-b>' -- quit can be a table
+  },
+  finder_reference_icon = '> '
+}
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 
 EOF
 
 hi Pmenu guibg=blue
+
+set formatoptions=croqnlj
+

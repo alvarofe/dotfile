@@ -140,6 +140,8 @@
 ;; backup files
 (setq backup-directory-alist `(("." . "~/.saves")))
 
+(setq auto-save-default nil)
+
 (setq-default indent-tabs-mode nil)
 
 ;; text mode
@@ -333,6 +335,12 @@ middle"
         (setq python-indent 4)
         (setq tab-width 4))
       (untabify (point-min) (point-max)))
+
+(add-hook 'rust-mode-hook
+      (lambda ()
+        (setq indent-tabs-mode nil)
+        (setq tab-width 4))
+)
 
 (require 'rg)
 (rg-enable-default-bindings)
