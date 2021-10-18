@@ -22,13 +22,14 @@ Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'ervandew/supertab'
 Plug 'rust-lang/rust.vim'
+Plug 'togglebyte/togglerust'
+Plug 'romainl/vim-qf'
 
 call plug#end()
 
 set nocompatible
 filetype plugin on
 filetype indent on
-runtime! config/**/*.vim
 
 let mapleader = ","
 
@@ -50,6 +51,12 @@ map <C-K> 15<C-W>-
 map <C-L> 15<C-W>>
 map <C-H> 15<C-W><
 
+fun Linux()
+  set ts=8
+  set sw=8
+  set noexpandtab
+endfun
+
 "some nice keymappings
 noremap <leader>e :call Exposee()<CR>
 noremap <leader>w :w<CR>
@@ -57,9 +64,8 @@ noremap <leader>q :q<CR>
 noremap <leader>m :Gstatus<CR>
 noremap <leader>f :Explore<CR>
 noremap <leader><Space> :%s/\s\+$//e<CR>
+noremap <leader>l :call Linux()<CR>
 noremap <leader>b :Buffer<cr>
-noremap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-noremap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>t :Tags<cr>
 nnoremap <leader>gm /\v^\<\<\<\<\<\<\< \|\=\=\=\=\=\=\=$\|\>\>\>\>\>\>\> /<cr>
 map <C-m> i<CR><C-t><Esc>h
@@ -87,6 +93,7 @@ set background=dark
 set termguicolors
 set tw=80
 set t_Co=256
+color codedark
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
 set incsearch           " search as you type
@@ -187,7 +194,6 @@ let g:shore_stayonfront = 1
 
 " Colorscheme
 set termguicolors
-colorscheme torte
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
@@ -207,15 +213,6 @@ if executable('ccls')
       \ })
 endif
 
-" if executable('rls')
-    " au User lsp_setup call lsp#register_server({
-        " \ 'name': 'rls',
-        " \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        " \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        " \ 'whitelist': ['rust'],
-        " \ })
-" endif
-"
 if executable('rust-analyzer')
   au User lsp_setup call lsp#register_server({
         \   'name': 'Rust Language Server',
@@ -266,4 +263,6 @@ let g:UltiSnipsExpandTrigger           = '<tab>'
 let g:UltiSnipsJumpForwardTrigger      = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger     = '<s-tab>'
 hi Pmenu guibg=blue
+highlight Cursor guifg=white guibg=red
 
+runtime! config/**/*.vim

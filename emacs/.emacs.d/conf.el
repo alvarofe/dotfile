@@ -19,12 +19,21 @@
 	(package-install package)))
 
 
+; (use-package lsp-mode
+  ; :commands lsp
+  ; :custom
+  ; ((lsp-enable-indentation nil)
+   ; (lsp-enable-on-type-formatting nil)
+; ))
+
 (use-package lsp-mode
-  :commands lsp
-  :custom
-  ((lsp-enable-indentation nil)
-   (lsp-enable-on-type-formatting nil)
-))
+  :diminish "L"
+  :init (setq lsp-keymap-prefix "C-l"
+              lsp-enable-file-watchers nil
+              lsp-enable-on-type-formatting nil
+              lsp-enable-indentation nil)
+  :hook (c-mode-common . lsp-deferred)
+  :commands (lsp lsp-deferred))
 
 (setq lsp-file-watch-threshold nil)
 (add-hook 'c++-mode-hook 'lsp)
@@ -45,7 +54,7 @@
   (dolist (dir '(".ccls-cache" "build"))
     (add-to-list 'lsp-file-watch-ignored dir))
   (setq ccls-executable "~/.local/bin/ccls")
-  ;;(setq ccls-args '("--init={\"cache\": {\"directory\": \"/home/alvaro/.cache/ccls-cache\"}}"))
+  (setq ccls-args '("--init={\"cache\": {\"directory\": \"/home/alvaro/.cache/ccls-cache\"}}"))
 )
 
 
@@ -371,3 +380,5 @@ middle"
 (global-set-key (kbd "<C-S-down>")   'buf-move-down)
 (global-set-key (kbd "<C-S-left>")   'buf-move-left)
 (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+
+(global-set-key (kbd "C-x C-g") 'ripgrep-regexp)

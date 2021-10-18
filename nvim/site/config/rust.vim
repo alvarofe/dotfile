@@ -4,3 +4,4 @@
 "au FileType rust nmap <leader>gd <Plug>(rust-doc)
 au FileType rust set sw=4 ts=8 sts=4 et
 au FileType rust set cc=80
+noremap <leader>c :Compile<CR>
