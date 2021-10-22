@@ -85,6 +85,7 @@
 (use-package evil
   :init
   (setq evil-want-integration nil)
+  (setq evil-want-keybinding nil)
   (progn
     (use-package evil-leader
       :init (global-evil-leader-mode)
@@ -113,6 +114,12 @@
         :config
           (evil-set-undo-system 'undo-tree)
     (evil-mode t))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
 (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
@@ -342,6 +349,36 @@
 (setq whitespace-style '(face lines-tail))
 
 (add-hook 'prog-mode-hook 'whitespace-mode)
+
+(use-package all-the-icons)
+
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-single-up-directory
+    "l" 'dired-single-buffer))
+
+(use-package dired-single)
+
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package dired-open
+  :config
+  ;; Doesn't work as expected!
+  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
+  (setq dired-open-extensions '(("png" . "feh")
+                                ("mkv" . "mpv"))))
+
+(use-package dired-hide-dotfiles
+  :hook (dired-mode . dired-hide-dotfiles-mode)
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "H" 'dired-hide-dotfiles-mode))
 
 ;;;; Language-specific extensions
 (provide 'config-packages)
