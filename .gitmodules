@@ -1,6 +1,3 @@
-[submodule "emacs/lsp-mode"]
-	path = emacs/.emacs.d/lsp-mode
-	url = https://github.com/emacs-lsp/lsp-mode
 [submodule "dwm/scripts"]
 	path = dwm/scripts
 	url = https://github.com/zlowram/scripts.git
