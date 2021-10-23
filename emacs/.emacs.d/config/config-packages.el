@@ -1,4 +1,4 @@
-;;; Set up package management, adding various sources to search
+;; Set up package management, adding various sources to search
 (package-initialize nil)
 
 (add-to-list
@@ -128,6 +128,8 @@
 (define-key evil-normal-state-map (kbd "C-r") 'xref-find-references)
 (define-key evil-normal-state-map (kbd "C-\\") 'find-tag)
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
+(define-key evil-normal-state-map (kbd "C-+") 'text-scale-increase)
+(define-key evil-normal-state-map (kbd "C--") 'text-scale-decrease)
 
 ;; ccls
 (use-package ccls
