@@ -193,12 +193,12 @@
   :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 ;; Load in environment variables to shells we use
-(use-package exec-path-from-shell
-  :config
-  (when (memq window-system '(mac ns x))
-    (mapc 'exec-path-from-shell-copy-env
-          '("LD_LIBRARY_PATH" "DYLD_LIBRARY_PATH" "CAML_LD_LIBRARY_PATH"))
-    (exec-path-from-shell-initialize)))
+; (use-package exec-path-from-shell
+  ; :config
+  ; (when (memq window-system '(mac ns x))
+    ; (mapc 'exec-path-from-shell-copy-env
+          ; '("LD_LIBRARY_PATH" "DYLD_LIBRARY_PATH" "CAML_LD_LIBRARY_PATH"))
+    ; (exec-path-from-shell-initialize)))
 
 ;; Go back to where you were if you close a file
 (use-package saveplace :config (setq-default save-place t))
@@ -223,6 +223,12 @@
 ; (add-hook 'rust-mode-hook #'lsp)
 ; (add-hook 'rust-mode-hook 'cargo-minor-mode)
 (add-hook 'rust-mode-hook #'hs-minor-mode)
+
+(add-hook 'rust-mode-hook
+      (lambda ()
+        (setq rust-indent-offset 4)
+        (setq rust-indent-level 4)
+        (setq tab-width 4)))
 
 ; (setq lsp-rust-server 'rust-analyzer)
 ;
