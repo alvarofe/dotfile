@@ -1,22 +1,22 @@
 export PATH=/home/alvaro/.local/bin:$PATH
-source $HOME/.cargo/env
 
 alias ta="tmux -2 attach -t"
 alias ts="tmux -2 new-session -s"
 alias tl="tmux -2 list-sessions"
 alias less="less -R"
 alias grep="grep --color"
-alias ssd="cd /mnt/ssd"
 
 function cs() {
-        find -L . -name "*.c" -o -name "*.cc" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" > cscope.files
-        cscope -b -q
+        find . -type f -iname "*.[chS|cc|cpp]" > cscope.files
         ctags -L cscope.files
 }
 
 function fixed() {
         echo -e "\033]710;fixed\033\\"
 }
+
+alias sd="pushd ."
+alias rd="popd"
 
 export EDITOR=nvim
 export PAGER=less
@@ -36,4 +36,3 @@ alias ls='ls --color=auto'
 export TERM=xterm-256color
 
 PROMPT='%B%F{cyan}%n%f%b@%B%F{yellow}%1d%f%b:~$ '
-export PATH=$PATH:/home/alvaro/tools/android-unpackbootimg

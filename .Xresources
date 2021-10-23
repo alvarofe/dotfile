@@ -27,7 +27,7 @@ URxvt.keysym.F11:      perl:fullscreen:switch
 URxvt.saveLines:             20000
 URxvt.scrollstyle:           plain
 URxvt.searchable-scrollback: Meta-Shift-S
-!URxvt.font:                  xft:InputMono Light:size=8:antialias=true:hinting=false:minspace=true
+!URxvt.font:                  xft:Source Code Pro:size=10:antialias=true:hinting=false:minspace=true
 
 #define base00 #151515
 #define base01 #202020
