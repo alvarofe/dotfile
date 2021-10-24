@@ -45,6 +45,9 @@
           helm-M-x-fuzzy-match t)
     (helm-mode)))
 
+(use-package rg)
+(use-package helm-rg)
+
 
 (use-package lsp-mode
   :diminish "L"
