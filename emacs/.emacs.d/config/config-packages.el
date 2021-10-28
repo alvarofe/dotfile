@@ -48,6 +48,68 @@
 (use-package rg)
 (use-package helm-rg)
 
+(use-package ggtags)
+
+(defun gtags-root-dir ()
+"Returns GTAGS root directory or nil if doesn't exist."
+(with-temp-buffer
+    (if (zerop (call-process "global" nil t nil "-pr"))
+        (buffer-substring (point-min) (1- (point-max)))
+    nil)))
+
+(defun gtags-update-single(filename)  
+    "Update Gtags database for changes in a single file"
+    (interactive)
+    (start-process "update-gtags" "update-gtags" "bash" "-c" (concat "cd " (gtags-root-dir) " ; gtags --single-update " filename )))
+
+(defun gtags-update-current-file()
+    (interactive)
+    (defvar filename)
+    (setq filename (replace-regexp-in-string (gtags-root-dir) "." (buffer-file-name (current-buffer))))
+    (gtags-update-single filename)
+    (message "Gtags updated for %s" filename))
+
+(defun gtags-update-hook()
+    "Update GTAGS file incrementally upon saving a file"
+    (when helm-gtags-mode
+    (when (gtags-root-dir)
+      (gtags-update-current-file))))
+
+(with-eval-after-load 'ggtags
+  (add-hook 'c-mode-hook   'ggtags-mode)
+  (add-hook 'c++-mode-hook 'ggtags-mode)
+  (add-hook 'after-save-hook #'gtags-update-hook)
+)
+
+(use-package helm-gtags)
+
+(use-package bm)
+
+(global-set-key (kbd "<C-f2>") 'bm-toggle)
+(global-set-key (kbd "<f2>")   'bm-next)
+(global-set-key (kbd "<S-f2>") 'bm-previous)
+
+(use-package helm-bm)
+(global-set-key (kbd "M-*")  'helm-bm)
+
+(autoload 'bm-toggle   "bm" "Toggle bookmark in current buffer." t)
+(autoload 'bm-next     "bm" "Goto bookmark."                     t)
+(autoload 'bm-previous "bm" "Goto previous bookmark."            t)
+
+(setq bm-highlight-style 'bm-highlight-only-fringe)
+(setq bm-cycle-all-buffers t)
+
+(autoload 'helm-bm "helm-bm" "List All Bookmarks with helm.el." t)
+(autoload 'bm-bookmark-add "bm" "Add bookmark at current line.")
+
+(with-eval-after-load 'helm-gtags
+  (add-hook 'helm-gtags-goto-line-before-hook 'bm-bookmark-add)
+  (add-hook 'helm-gtags-quit-or-no-candidates-hook 'bm-bookmark-remove)
+  (add-hook 'helm-gtags-goto-line-after-hook 'bm-bookmark-remove)
+)
+
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+(add-hook 'c++-mode-hook 'helm-gtags-mode)
 
 (use-package lsp-mode
   :diminish "L"
@@ -73,6 +135,7 @@
         (setq tab-width 8)))
 
 (use-package lsp-ui
+  :after lsp
   :ensure t
   :config
   (require 'lsp-ui)
@@ -82,8 +145,15 @@
          lsp-ui-sideline-show-symbol nil)
   )
 
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(with-eval-after-load 'lsp-ui
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
 
+  )
+
+
+(use-package evil-nerd-commenter)
 ;; evil
 (use-package evil
   :init
@@ -101,19 +171,21 @@
           "b" 'helm-buffers-list
           "f" 'helm-find-files
           "g" 'magit-status
-          "x" 'helm-M-x)
+          "x" 'helm-M-x
           "e" 'helm-projectile
-          "b" 'helm-mini
-          "s" 'helm-projectile-grep
+          "m" 'helm-mini
+          "s" 'helm-projectile-rg
           "z" 'previous-buffer
-          "x" 'next-buffer
           "c" 'kill-buffer
+          "d" 'cd
           "v" 'split-window-below
           "h" 'split-window-right
           "w" 'other-window
-          "t" 'term
+          "t" 'multi-term
+          "n" 'multi-term-next
+          "p" 'multi-term-prev
           "r" 'term-char-mode
-          "a" 'org-agenda)))
+          "a" 'org-agenda))))
         :config
           (evil-set-undo-system 'undo-tree)
     (evil-mode t))
@@ -124,19 +196,18 @@
   :config
   (evil-collection-init))
 
-(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-
 (define-key evil-normal-state-map (kbd "C-]") 'xref-find-definitions)
 (define-key evil-normal-state-map (kbd "C-r") 'xref-find-references)
-(define-key evil-normal-state-map (kbd "C-\\") 'find-tag)
+(define-key evil-normal-state-map (kbd "C-\\") 'helm-gtags-find-tag)
+(define-key evil-normal-state-map (kbd "<f1>") 'helm-gtags-pop-stack)
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
 (define-key evil-normal-state-map (kbd "C-+") 'text-scale-increase)
 (define-key evil-normal-state-map (kbd "C--") 'text-scale-decrease)
 
 ;; ccls
 (use-package ccls
-  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+  :after lsp
+  :hook ((c-mode c++-mode) .
          (lambda () (require 'ccls) (lsp)))
   :config
   (dolist (dir '(".ccls-cache" "build"))
@@ -161,6 +232,28 @@
   :bind (("C-x f" . helm-projectile-find-file)
          ("C-x g" . helm-projectile-grep))
   :config (helm-projectile-on))
+
+(use-package swiper-helm
+  :bind (("C-s" . my/isearch-forward)
+         ("C-r " . my/isearch-backward))
+  :config
+  (setq swiper-helm-display-function 'display-buffer)
+  (defun my/isearch-forward (&optional regexp-p no-recursive-edit)
+    (interactive "P\np")
+    (cond ((equal current-prefix-arg nil)
+           (if (minibufferp)
+               (isearch-forward)
+             (swiper-helm)))
+          ((equal current-prefix-arg '(4)) (isearch-forward-regexp))
+          (t (isearch-forward))))
+  (defun my/isearch-backward (&optional regexp-p no-recursive-edit)
+    (interactive "P\np")
+    (cond ((equal current-prefix-arg nil)
+           (if (minibufferp)
+               (isearch-backward)
+             (swiper-helm)))
+          ((equal current-prefix-arg '(4)) (isearch-backward-regexp))
+          (t (isearch-backward)))))
 
 
 ;; ripgrep-search-mode
@@ -209,20 +302,10 @@
   :diminish whitespace-mode
   :config
   (progn
-    (setq whitespace-line-column 120)
+    (setq whitespace-line-column 80)
     (setq whitespace-style '(face lines-tail))
     (add-hook 'prog-mode-hook 'whitespace-mode)))
 
-;; Language-specific syntax highlighting
-; (use-package rust-mode
-  ; :mode ("\\.rs$" . rust-mode)
-  ; :config
-  ; (progn
-    ; (setq rust-indent-offset 4
-          ; rust-indent-level 4)))
-
-; (add-hook 'rust-mode-hook #'lsp)
-; (add-hook 'rust-mode-hook 'cargo-minor-mode)
 (add-hook 'rust-mode-hook #'hs-minor-mode)
 
 (add-hook 'rust-mode-hook
@@ -252,7 +335,9 @@
 
   ;; comment to disable rustfmt on save
   ;; (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook)
+  )
+
 
 (defun rk/rustic-mode-hook ()
   ;; so that run C-c C-c C-r works without having to confirm, but don't try to
@@ -266,17 +351,26 @@
 
 (use-package c++-mode
   :ensure nil
-  :mode ("\\.h$"   . c++-mode)
-  :mode ("\\.inl$" . c++-mode)
+  :mode ("\\.hpp$"   . c++-mode)
   :config
   (progn
-    (setq c-default-style "linux")
     (c-set-offset 'innamespace 0) ; No indent in namespace
     (c-set-offset 'arglist-intro '+)
     (c-set-offset 'arglist-close 0)
-    (setq c-basic-offset 8
-          c-indent-level 8)))
+    (setq c-basic-offset 2
+          c-indent-level 2)))
 
+(add-hook 'c-mode-hook
+          '(lambda()
+             (c-set-style "linux")
+             (setq c-basic-offset 8)
+             (setq tab-width c-basic-offset)
+             (setq indent-tabs-mode nil)
+             (setq comment-start "/* ")
+             (setq comment-end "*/")
+             (define-key c-mode-base-map (kbd "C-c c")   'compile)
+             (define-key c-mode-base-map (kbd "C-c C-c") 'quickrun)
+             ))
 ;; undo-tree
 (use-package undo-tree
   :config
@@ -304,11 +398,13 @@
   :ensure t)
 
 (use-package fzf
+  :commands fzf-find-file
   :ensure t)
 
 (global-set-key (kbd "C-c p p") 'fzf-find-file)
 
 (use-package term
+  :commands term
   :config
   (setq explicit-shell-file-name "zsh") ;; Change this to zsh, etc
   ;;(setq explicit-zsh-args '())         ;; Use 'explicit-<shell>-args for shell-specific args
@@ -317,6 +413,10 @@
   (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
 (add-hook 'term-mode-hook (lambda () (read-only-mode -1)))
+
+(use-package multi-term
+  :commands multi-term
+  )
 
 ;; clipboard
 (use-package xclip)
@@ -351,12 +451,6 @@
         (flymake-mode))
       (untabify (point-min) (point-max)))
 
-(require 'whitespace)
-(setq whitespace-line-column 80) ;; limit line length
-(setq whitespace-style '(face lines-tail))
-
-(add-hook 'prog-mode-hook 'whitespace-mode)
-
 (use-package all-the-icons)
 
 (use-package dired
@@ -369,12 +463,15 @@
     "h" 'dired-single-up-directory
     "l" 'dired-single-buffer))
 
-(use-package dired-single)
+(use-package dired-single
+  :after dired
+  )
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package dired-open
+  :after dired
   :config
   ;; Doesn't work as expected!
   ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
@@ -382,10 +479,25 @@
                                 ("mkv" . "mpv"))))
 
 (use-package dired-hide-dotfiles
+  :after dired
   :hook (dired-mode . dired-hide-dotfiles-mode)
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
 
-;;;; Language-specific extensions
+(use-package ace-window
+  :commands ace-window
+  :ensure t
+  :init
+  (progn
+    (global-set-key [remap other-window] 'ace-window)
+    ))
+
+(use-package which-key
+  :defer 0
+  :diminish which-key-mode
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 1))
+
 (provide 'config-packages)

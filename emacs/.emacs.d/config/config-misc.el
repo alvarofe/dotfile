@@ -4,24 +4,18 @@
 ;; Don't need to display anything on startup
 (setq inhibit-startup-message t)
 
-;; Replacement for other-window (C-x o) that splits the window if it doesn't exist yet
-(defun other-window-or-split ()
-  (interactive)
-  (when (one-window-p) (split-window-horizontally))
-  (other-window 1))
+(defun efs/display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                   (time-subtract after-init-time before-init-time)))
+           gcs-done))
 
-(defun switch-to-eshell ()
-  (interactive)
-  (let ((name (eshell-curr-name)))
-    (unless (get-buffer name)
-      (make-shell name))
-    (switch-to-buffer name)))
+(add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
-(global-set-key (kbd "C-x o") 'other-window-or-split)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-c g") 'rgrep)
-(global-set-key (kbd "C-x m") 'switch-to-eshell)
 
 ;; Org-mode indents with headings
 (add-hook 'org-mode-hook 'org-indent-mode)
@@ -36,8 +30,14 @@
 ;; Disable audible alarm
 (setq ring-bell-function 'ignore)
 
-;; text mode
-(setq set-fill-column 80)
+;; Fill column
+(add-hook 'c-mode-hook (lambda () (set-fill-column 80)))
+(add-hook 'c-mode-hook 'auto-fill-mode)
+(add-hook 'c++-mode-hook (lambda () (set-fill-column 80)))
+(add-hook 'c++-mode-hook 'auto-fill-mode)
+
+;; About having backups file all over the places
+(setq make-backup-files nil)
 
 (provide 'config-misc)
 
