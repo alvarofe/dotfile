@@ -131,8 +131,16 @@
 (add-hook 'c-mode-hook
       (lambda ()
         (setq c-indent-offset 8)
+        (setq indent-tabs-mode nil)
         (setq c-indent-level 8)
         (setq tab-width 8)))
+
+(add-hook 'c++-mode-hook
+      (lambda ()
+        (setq c-indent-offset 2)
+        (setq indent-tabs-mode nil)
+        (setq c-indent-level 2)
+        (setq tab-width 2)))
 
 (use-package lsp-ui
   :after lsp
@@ -167,7 +175,7 @@
         (evil-leader/set-leader ",")
         (setq evil-leader/in-all-states t)
         (evil-leader/set-key
-          "ci" 'evilnc-comment-or-uncomment-lines
+          "c" 'evilnc-comment-or-uncomment-lines
           "b" 'helm-buffers-list
           "f" 'helm-find-files
           "g" 'magit-status
@@ -176,8 +184,8 @@
           "m" 'helm-mini
           "s" 'helm-projectile-rg
           "z" 'previous-buffer
-          "c" 'kill-buffer
           "d" 'cd
+	  "k" 'kill-buffer
           "v" 'split-window-below
           "h" 'split-window-right
           "w" 'other-window
@@ -186,8 +194,6 @@
           "p" 'multi-term-prev
           "r" 'term-char-mode
           "a" 'org-agenda))))
-        :config
-          (evil-set-undo-system 'undo-tree)
     (evil-mode t))
 
 (use-package evil-collection
@@ -312,6 +318,7 @@
       (lambda ()
         (setq rust-indent-offset 4)
         (setq rust-indent-level 4)
+        (setq indent-tabs-mode nil)
         (setq tab-width 4)))
 
 ; (setq lsp-rust-server 'rust-analyzer)
