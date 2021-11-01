@@ -118,15 +118,31 @@
               lsp-enable-on-type-formatting nil
               lsp-enable-indentation nil
               lsp-diagnostic-package :none)
-
   :hook ((c-mode-common . lsp-deferred)
          (python-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
 
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-tramp-connection "ccls")
+    :major-modes '(c++-mode)
+    :remote? t
+    ))
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-tramp-connection "ccls")
+    :major-modes '(c-mode)
+    :remote? t
+    ))
+  )
 
 (setq lsp-file-watch-threshold nil)
-(add-hook 'c++-mode-hook 'lsp)
-(add-hook 'c-mode-hook 'lsp)
+
+(with-eval-after-load 'lsp
+        (add-hook 'c++-mode-hook 'lsp)
+        (add-hook 'c-mode-hook 'lsp)
+)
 
 (add-hook 'c-mode-hook
       (lambda ()
@@ -185,7 +201,7 @@
           "s" 'helm-projectile-rg
           "z" 'previous-buffer
           "d" 'cd
-	  "k" 'kill-buffer
+          "k" 'kill-buffer
           "v" 'split-window-below
           "h" 'split-window-right
           "w" 'other-window
@@ -232,6 +248,7 @@
   (progn
     (projectile-global-mode t)
     (setq projectile-completion-system 'helm)
+    (setq projectile-mode-line " Projectile")
     (setq projectile-enable-caching t)))
 
 (use-package helm-projectile
@@ -464,7 +481,7 @@
   :ensure nil
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :custom ((dired-listing-switches "-agXlho --group-directories-first"))
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-single-up-directory
@@ -506,5 +523,12 @@
   :config
   (which-key-mode)
   (setq which-key-idle-delay 1))
+
+(use-package tramp
+  :custom
+  (tramp-use-ssh-controlmaster-options nil) ; Don't override SSH config.
+  (tramp-default-method "ssh")    ; ssh is faster than scp and supports ports.
+  )
+
 
 (provide 'config-packages)
