@@ -1,4 +1,10 @@
 ;; Disable a bunch of bars
+
+(use-package vscode-dark-plus-theme
+  :ensure t
+  :config
+  (load-theme 'vscode-dark-plus t))
+
 (when (functionp 'menu-bar-mode)
   (menu-bar-mode -1))
 (when (functionp 'set-scroll-bar-mode)
@@ -17,8 +23,8 @@
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
 
-(when (member "Source Code Pro" (font-family-list))
-  (set-frame-font "Source Code Pro-8" t t))
+(when (member "Inconsolata Nerd Font" (font-family-list))
+  (set-frame-font "Inconsolata Nerd Font-10" t))
 
 ;; Fancy mode line
 (use-package smart-mode-line
@@ -37,9 +43,6 @@
                         :box nil
                         :underline nil)))
 
-(use-package vscode-dark-plus-theme
-  :ensure t
-  :config
-  (load-theme 'vscode-dark-plus t))
+(set-cursor-color "#b60900")
 
 (provide 'config-theme)

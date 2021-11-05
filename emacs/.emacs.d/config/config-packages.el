@@ -57,7 +57,7 @@
         (buffer-substring (point-min) (1- (point-max)))
     nil)))
 
-(defun gtags-update-single(filename)  
+(defun gtags-update-single(filename)
     "Update Gtags database for changes in a single file"
     (interactive)
     (start-process "update-gtags" "update-gtags" "bash" "-c" (concat "cd " (gtags-root-dir) " ; gtags --single-update " filename )))
@@ -156,7 +156,14 @@
         (setq c-indent-offset 2)
         (setq indent-tabs-mode nil)
         (setq c-indent-level 2)
-        (setq tab-width 2)))
+        (setq tab-width 2)
+        (c-set-offset 'arglist-intro 4)
+        (c-set-offset 'arglist-cont-nonempty 4)
+        (c-set-offset 'arglist-close 4)
+        (c-set-offset 'stream-op 4)
+        (c-set-offset 'template-args-cont 4)
+      )
+      )
 
 (use-package lsp-ui
   :after lsp
@@ -380,7 +387,6 @@
   (progn
     (c-set-offset 'innamespace 0) ; No indent in namespace
     (c-set-offset 'arglist-intro '+)
-    (c-set-offset 'arglist-close 0)
     (setq c-basic-offset 2
           c-indent-level 2)))
 
@@ -528,6 +534,14 @@
   :custom
   (tramp-use-ssh-controlmaster-options nil) ; Don't override SSH config.
   (tramp-default-method "ssh")    ; ssh is faster than scp and supports ports.
+  )
+
+(use-package neotree
+  :config
+  (setq neo-theme(if (display-graphic-p) 'icons 'arrow))
+  :init
+  (progn
+    (global-set-key [f8] 'neotree-toggle))
   )
 
 
