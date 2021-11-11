@@ -433,7 +433,27 @@
 
 (global-set-key (kbd "C-c p p") 'fzf-find-file)
 
+
+(defadvice term-send-input (after update-current-directory)
+  (run-at-time "0.1 sec" nil 'term-update-dir)
+  )
+
+(defadvice term-send-return (after update-current-directory)
+  (run-at-time "0.1 sec" nil 'term-update-dir)
+  )
+
+(defun term-update-dir ()
+  (let* ((pid (process-id (get-buffer-process (current-buffer))))
+         (cwd (file-truename (format "/proc/%d/cwd" pid))))
+    (unless (equal (file-name-as-directory cwd) default-directory)
+      (cd cwd)))
+  )
+
 (use-package term
+  (progn
+    (ad-activate 'term-send-return)
+    (ad-activate 'term-send-input)
+    )
   :commands term
   :config
   (setq explicit-shell-file-name "zsh") ;; Change this to zsh, etc
@@ -466,6 +486,7 @@
     :config
     (remove-hook 'elpy-modules 'elpy-module-flymake) ;; <- This removes flymake from elpy
     (setq elpy-rpc-backend "jedi")
+    (setq elpy-rpc-python-command "python")
     :bind (:map elpy-mode-map
               ("M-." . elpy-goto-definition)
               ("M-," . pop-tag-mark))
@@ -543,6 +564,25 @@
   (progn
     (global-set-key [f8] 'neotree-toggle))
   )
+
+(use-package js2-mode
+  :mode ("\\.js" . js2-mode)
+  :config
+    (setq-default js2-basic-offset 2)
+    (setq js-indent-level 2))
+
+(use-package prettier-js
+  :hook (
+         (typescript-mode . prettier-js-mode)
+         (js-mode . prettier-js-mode)
+         (json-mode . prettier-js-mode)))
+
+(add-hook 'js-mode-hook 'js2-minor-mode)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'typescript-mode-hook 'prettier-mode)
+(add-hook 'js2-mode-hook 'lsp)
+(add-hook 'typescript-mode-hook 'lsp)
+
 
 
 (provide 'config-packages)

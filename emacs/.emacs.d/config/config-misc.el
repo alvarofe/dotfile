@@ -3,6 +3,8 @@
 
 (display-time)
 
+(winner-mode 1)
+
 ;; Don't need to display anything on startup
 (setq inhibit-startup-message t)
 
