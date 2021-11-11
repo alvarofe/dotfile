@@ -450,10 +450,6 @@
   )
 
 (use-package term
-  (progn
-    (ad-activate 'term-send-return)
-    (ad-activate 'term-send-input)
-    )
   :commands term
   :config
   (setq explicit-shell-file-name "zsh") ;; Change this to zsh, etc
@@ -462,7 +458,13 @@
   ;; Match the default Bash shell prompt.  Update this if you have a custom prompt
   (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
-(add-hook 'term-mode-hook (lambda () (read-only-mode -1)))
+(add-hook 'term-mode-hook
+	  (lambda ()
+	    (read-only-mode -1)
+	    (ad-activate 'term-send-return)
+	    (ad-activate 'term-send-input)
+	    )
+	  )
 
 (use-package multi-term
   :commands multi-term
