@@ -22,7 +22,78 @@
 (global-set-key (kbd "C-c g") 'rgrep)
 
 ;; Org-mode indents with headings
-(add-hook 'org-mode-hook 'org-indent-mode)
+(setq org-directory "~/org")
+
+(defun org-file-path (filename)
+  "Return the absolute address of an org file, given its relative name."
+  (concat (file-name-as-directory org-directory) filename))
+
+(setq org-default-notes-file "~/org/tasks.org")
+
+(setq org-index-file (org-file-path "tasks.org"))
+(setq org-agenda-files (list org-index-file
+			     (org-file-path "work.org")
+			     (org-file-path "research.org")
+			     (org-file-path "home.org")
+			     (org-file-path "events.org")))
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+;;  C-c C-x C-s will mark a task as done, move it to an appropriate
+;;  place in the archive, and save all the Org buffers.
+(defun hrs/mark-done-and-archive ()
+  "Mark the state of an org-mode item as DONE, archive it, and
+save the Org buffers."
+  (interactive)
+  (org-todo 'done)
+  (org-archive-subtree)
+  (org-save-all-org-buffers))
+
+(define-key org-mode-map (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+
+(setq org-enforce-todo-dependencies t)
+(setq org-enforce-todo-checkbox-dependencies t)
+
+(defun hrs/dashboard ()
+  (interactive)
+  (call-process-shell-command "daily-checklist")
+  (delete-other-windows)
+  (find-file org-index-file)
+  (org-agenda nil "p"))
+
+(global-set-key (kbd "C-c d") 'hrs/dashboard)
+
+(defun hrs/open-work-file ()
+  "Open the work TODO list."
+  (interactive)
+  (find-file (org-file-path "work.org"))
+  (flycheck-mode -1)
+  (end-of-buffer))
+
+(global-set-key (kbd "C-c w") 'hrs/open-work-file)
+
+(defun hrs/open-research-file ()
+  "Open the work TODO list."
+  (interactive)
+  (find-file (org-file-path "research.org"))
+  (flycheck-mode -1)
+  (end-of-buffer))
+
+(global-set-key (kbd "C-c r") 'hrs/open-research-file)
+
+(defun hrs/open-index-file ()
+  "Open the master org TODO list."
+  (interactive)
+  (find-file org-index-file)
+  (flycheck-mode -1)
+  (end-of-buffer))
+
+(global-set-key (kbd "C-c i") 'hrs/open-index-file)
+
+(defun org-capture-todo ()
+  (interactive)
+  (org-capture :keys "t"))
+
+(global-set-key (kbd "C-c t") 'org-capture-todo)
 
 ;; Show line/column numbers in tool bar
 (line-number-mode t)
@@ -105,6 +176,8 @@ middle"
 (global-set-key [C-M-down] 'win-resize-minimize-horiz)
 (global-set-key [C-M-left] 'win-resize-enlarge-vert)
 (global-set-key [C-M-right] 'win-resize-minimize-vert)
+
+(global-hl-line-mode)
 
 (provide 'config-misc)
 

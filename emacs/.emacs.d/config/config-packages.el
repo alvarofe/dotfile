@@ -14,6 +14,8 @@
 (require 'use-package)
 (setq load-prefer-newer t)
 
+(use-package diminish)
+
 ;; Company-mode for autocompletion
 (use-package company
   :demand t
@@ -47,6 +49,28 @@
 
 (use-package rg)
 (use-package helm-rg)
+(use-package bpr)
+
+(require 'vc)
+
+(defun gtags-reindex ()
+    "Kick off gtags reindexing."
+    (interactive)
+    (let* ((root-path (expand-file-name (vc-git-root (buffer-file-name))))
+           (gtags-filename (expand-file-name "GTAGS" root-path)))
+      (if (file-exists-p gtags-filename)
+          (gtags-index-update root-path)
+        (gtags-index-initial root-path))))
+
+  (defun gtags-index-initial (path)
+    "Generate initial GTAGS files for PATH."
+    (let ((bpr-process-directory path))
+      (bpr-spawn "gtags")))
+
+  (defun gtags-index-update (path)
+    "Update GTAGS in PATH."
+    (let ((bpr-process-directory path))
+      (bpr-spawn "global -uv")))
 
 (use-package ggtags)
 
@@ -147,8 +171,8 @@
 (add-hook 'c-mode-hook
       (lambda ()
         (setq c-indent-offset 8)
-        (setq indent-tabs-mode nil)
-        (setq c-indent-level 8)
+        (setq indent-tabs-mode t)
+        (setq c-basic-offset 8)
         (setq tab-width 8)))
 
 (add-hook 'c++-mode-hook
@@ -183,10 +207,17 @@
 
   )
 
+;; undo-tree
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode)
+  (evil-set-undo-system 'undo-tree))
 
 (use-package evil-nerd-commenter)
 ;; evil
 (use-package evil
+  :diminish evil-mode
   :init
   (setq evil-want-integration nil)
   (setq evil-want-keybinding nil)
@@ -194,6 +225,7 @@
     (use-package evil-leader
       :init (global-evil-leader-mode)
       :config
+      (evil-set-undo-system 'undo-tree)
       (progn
         (evil-leader/set-leader ",")
         (setq evil-leader/in-all-states t)
@@ -212,7 +244,8 @@
           "v" 'split-window-below
           "h" 'split-window-right
           "w" 'other-window
-          "t" 'multi-term
+          "t" 'gtags-reindex
+          "T" 'multi-term
           "n" 'multi-term-next
           "p" 'multi-term-prev
           "r" 'term-char-mode
@@ -334,7 +367,9 @@
   (progn
     (setq whitespace-line-column 80)
     (setq whitespace-style '(face lines-tail))
-    (add-hook 'prog-mode-hook 'whitespace-mode)))
+    (add-hook 'c-mode-hook 'whitespace-mode)
+    (add-hook 'c++-mode-hook 'whitespace-mode)
+    ))
 
 (add-hook 'rust-mode-hook #'hs-minor-mode)
 
@@ -401,10 +436,6 @@
              (define-key c-mode-base-map (kbd "C-c c")   'compile)
              (define-key c-mode-base-map (kbd "C-c C-c") 'quickrun)
              ))
-;; undo-tree
-(use-package undo-tree
-  :config
-  (global-undo-tree-mode))
 
 ;; enable mouse
 (require 'mouse)
@@ -413,6 +444,7 @@
 
 ;; yasnippet
 (use-package yasnippet
+  :diminish yas-minor-mode
   :ensure t
   :config
   (yas-reload-all)
@@ -501,7 +533,9 @@
         (setq indent-tabs-mode nil)
         (setq python-indent 4)
         (setq tab-width 4)
-        (flymake-mode))
+        (flymake-mode)
+	(hs-minor-mode)
+	)
       (untabify (point-min) (point-max)))
 
 (use-package all-the-icons)
@@ -559,14 +593,6 @@
   (tramp-default-method "ssh")    ; ssh is faster than scp and supports ports.
   )
 
-(use-package neotree
-  :config
-  (setq neo-theme(if (display-graphic-p) 'icons 'arrow))
-  :init
-  (progn
-    (global-set-key [f8] 'neotree-toggle))
-  )
-
 (use-package js2-mode
   :mode ("\\.js" . js2-mode)
   :config
@@ -585,6 +611,154 @@
 (add-hook 'js2-mode-hook 'lsp)
 (add-hook 'typescript-mode-hook 'lsp)
 
+;;; Code:
+(defface my-pl-segment1-active
+  '((t (:foreground "#000000" :background "#E1B61A")))
+  "Powerline first segment active face.")
+(defface my-pl-segment1-inactive
+  '((t (:foreground "#FFFFFF" :background "#224488")))
+  "Powerline first segment inactive face.")
+(defface my-pl-segment2-active
+  '((t (:foreground "#F5E39F" :background "#8A7119")))
+  "Powerline second segment active face.")
+(defface my-pl-segment2-inactive
+  '((t (:foreground "#FFFFFF" :background "#224488")))
+  "Powerline second segment inactive face.")
+(defface my-pl-segment3-active
+  '((t (:foreground "#FFFFFF" :background "#224488")))
+  "Powerline third segment active face.")
+(defface my-pl-segment3-inactive
+  '((t (:foreground "#FFFFFF" :background "#224488")))
+  "Powerline third segment inactive face.")
 
+(defun air--powerline-default-theme ()
+  "Set up my custom Powerline with Evil indicators."
+  (setq-default mode-line-format
+                '("%e"
+                  (:eval
+                   (let* ((active (powerline-selected-window-active))
+                          (seg1 (if active 'my-pl-segment1-active 'my-pl-segment1-inactive))
+                          (seg2 (if active 'my-pl-segment2-active 'my-pl-segment2-inactive))
+                          (seg3 (if active 'my-pl-segment3-active 'my-pl-segment3-inactive))
+                          (separator-left (intern (format "powerline-%s-%s"
+                                                          (powerline-current-separator)
+                                                          (car powerline-default-separator-dir))))
+                          (separator-right (intern (format "powerline-%s-%s"
+                                                           (powerline-current-separator)
+                                                           (cdr powerline-default-separator-dir))))
+                          (lhs (list (let ((evil-face (powerline-evil-face)))
+                                       (if evil-mode
+                                           (powerline-raw (powerline-evil-tag) evil-face)
+                                         ))
+                                     (if evil-mode
+                                         (funcall separator-left (powerline-evil-face) seg1))
+                                     (powerline-buffer-id seg1 'l)
+                                     (powerline-raw "[%*]" seg1 'l)
+                                     (when (and (boundp 'which-func-mode) which-func-mode)
+                                       (powerline-raw which-func-format seg1 'l))
+                                     (powerline-raw " " seg1)
+                                     (funcall separator-left seg1 seg2)
+                                     (when (boundp 'erc-modified-channels-object)
+                                       (powerline-raw erc-modified-channels-object seg2 'l))
+                                     (powerline-major-mode seg2 'l)
+                                     (powerline-process seg2)
+                                     (powerline-minor-modes seg2 'l)
+                                     (powerline-narrow seg2 'l)
+                                     (powerline-raw " " seg2)
+                                     (funcall separator-left seg2 seg3)
+                                     (powerline-vc seg3 'r)
+                                     (when (bound-and-true-p nyan-mode)
+                                       (powerline-raw (list (nyan-create)) seg3 'l))))
+                          (rhs (list (powerline-raw global-mode-string seg3 'r)
+                                     (funcall separator-right seg3 seg2)
+                                     (unless window-system
+                                       (powerline-raw (char-to-string #xe0a1) seg2 'l))
+                                     (powerline-raw "%4l" seg2 'l)
+                                     (powerline-raw ":" seg2 'l)
+                                     (powerline-raw "%3c" seg2 'r)
+                                     (funcall separator-right seg2 seg1)
+                                     (powerline-raw " " seg1)
+                                     (powerline-raw "%6p" seg1 'r)
+                                     (when powerline-display-hud
+                                       (powerline-hud seg1 seg3)))))
+                     (concat (powerline-render lhs)
+                             (powerline-fill seg3 (powerline-width rhs))
+                             (powerline-render rhs)))))))
+  
+(use-package powerline
+  :ensure t
+  :config
+  (setq powerline-default-separator (if (display-graphic-p) 'arrow
+                                      nil))
+  (air--powerline-default-theme))
+
+(use-package powerline-evil
+  :ensure t)
+
+
+(diminish 'which-key-mode)
+(diminish 'evil-collection-unimpaired-mode)
+(diminish 'lisp-interaction-mode)
+(diminish 'eldoc-mode)
+(diminish 'helm-gtags-mode)
+(diminish 'ggtags-mode)
+(diminish 'abbrev-mode)
+(diminish 'auto-fill-mode)
+(diminish 'auto-revert-mode)
+(diminish 'hs-minor-mode)
+
+(use-package org)
+(use-package org-bullets)
+
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode t)))
+(setq org-hide-leading-stars t)
+(setq org-src-fontify-natively t)
+
+(use-package dockerfile-mode)
+
+(use-package engine-mode)
+(engine-mode t)
+(engine/set-keymap-prefix (kbd "C-c s"))
+
+(defengine github
+  "https://github.com/search?ref=simplesearch&q=%s"
+  :keybinding "g")
+
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s"
+  :keybinding "d")
+
+(defengine stack-overflow
+  "https://stackoverflow.com/search?q=%s"
+  :keybinding "s")
+
+(use-package typescript-mode
+  :ensure t)
+
+(use-package tide
+  :ensure t
+  :hook (typescript-mode . tide-setup)
+        (typescript-mode . tide-hl-identifier-mode)
+        (typescript-mode . flycheck-mode)
+        (typescript-mode . company-mode)
+        (js2-mode . tide-setup)
+        (js2-mode . tide-hl-identifier-mode)
+        (js2-mode . flycheck-mode)
+        (js2-mode . company-mode)
+        )
+
+(use-package deno-fmt
+  :ensure t
+  :hook (js2-mode typescript-mode))
+
+(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
+(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+(use-package dap-java :ensure nil)
+(use-package helm-lsp)
+
+(add-hook 'java-mode-hook
+      (lambda ()
+        (setq indent-tabs-mode t)
+        (setq tab-width 4)))
 
 (provide 'config-packages)
