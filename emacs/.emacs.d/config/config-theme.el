@@ -5,6 +5,8 @@
   :config
   (load-theme 'vscode-dark-plus t))
 
+(use-package color-theme-sanityinc-tomorrow)
+
 (when (functionp 'menu-bar-mode)
   (menu-bar-mode -1))
 (when (functionp 'set-scroll-bar-mode)

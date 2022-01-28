@@ -1,19 +1,3 @@
-;; Set up package management, adding various sources to search
-(package-initialize nil)
-
-(add-to-list
- 'package-archives
- '("melpa" . "http://melpa.org/packages/") t)
-
-;; Get the "use-package" package for simple package configuration
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(setq use-package-verbose t)
-(setq use-package-always-ensure t)
-(require 'use-package)
-(setq load-prefer-newer t)
-
 (use-package diminish)
 
 ;; Company-mode for autocompletion
@@ -114,6 +98,7 @@
 (global-set-key (kbd "<S-f2>") 'bm-previous)
 
 (use-package helm-bm)
+
 (global-set-key (kbd "M-*")  'helm-bm)
 
 (autoload 'bm-toggle   "bm" "Toggle bookmark in current buffer." t)
@@ -141,6 +126,7 @@
               lsp-enable-file-watchers nil
               lsp-enable-on-type-formatting nil
               lsp-enable-indentation nil
+              lsp-enable-lenses nil
               lsp-diagnostic-package :none)
   :hook ((c-mode-common . lsp-deferred)
          (python-mode . lsp-deferred))
@@ -162,6 +148,7 @@
   )
 
 (setq lsp-file-watch-threshold nil)
+(setq lsp-lens-enable nil)
 
 (with-eval-after-load 'lsp
         (add-hook 'c++-mode-hook 'lsp)
@@ -211,8 +198,7 @@
 (use-package undo-tree
   :diminish undo-tree-mode
   :config
-  (global-undo-tree-mode)
-  (evil-set-undo-system 'undo-tree))
+  (global-undo-tree-mode))
 
 (use-package evil-nerd-commenter)
 ;; evil
@@ -237,7 +223,8 @@
           "x" 'helm-M-x
           "e" 'helm-projectile
           "m" 'helm-mini
-          "s" 'helm-projectile-rg
+          "M" 'minimap-mode
+          "s" 'ace-swap-window
           "z" 'previous-buffer
           "d" 'cd
           "k" 'kill-buffer
@@ -259,12 +246,19 @@
   (evil-collection-init))
 
 (define-key evil-normal-state-map (kbd "C-]") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "C-,") 'xref-pop-marker-stack)
 (define-key evil-normal-state-map (kbd "C-r") 'xref-find-references)
 (define-key evil-normal-state-map (kbd "C-\\") 'helm-gtags-find-tag)
 (define-key evil-normal-state-map (kbd "<f1>") 'helm-gtags-pop-stack)
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
 (define-key evil-normal-state-map (kbd "C-+") 'text-scale-increase)
 (define-key evil-normal-state-map (kbd "C--") 'text-scale-decrease)
+
+
+(add-hook 'org-mode-hook
+          '(lambda()
+             (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
+             ))
 
 ;; ccls
 (use-package ccls
@@ -491,12 +485,12 @@
   (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
 (add-hook 'term-mode-hook
-	  (lambda ()
-	    (read-only-mode -1)
-	    (ad-activate 'term-send-return)
-	    (ad-activate 'term-send-input)
-	    )
-	  )
+          (lambda ()
+            (read-only-mode -1)
+            (ad-activate 'term-send-return)
+            (ad-activate 'term-send-input)
+            )
+          )
 
 (use-package multi-term
   :commands multi-term
@@ -534,8 +528,8 @@
         (setq python-indent 4)
         (setq tab-width 4)
         (flymake-mode)
-	(hs-minor-mode)
-	)
+        (hs-minor-mode)
+        )
       (untabify (point-min) (point-max)))
 
 (use-package all-the-icons)
@@ -684,7 +678,7 @@
                      (concat (powerline-render lhs)
                              (powerline-fill seg3 (powerline-width rhs))
                              (powerline-render rhs)))))))
-  
+
 (use-package powerline
   :ensure t
   :config
@@ -760,5 +754,9 @@
       (lambda ()
         (setq indent-tabs-mode t)
         (setq tab-width 4)))
+
+(use-package minimap)
+
+(use-package dts-mode)
 
 (provide 'config-packages)
