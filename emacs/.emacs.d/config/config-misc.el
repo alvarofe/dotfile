@@ -177,7 +177,10 @@ middle"
 (global-set-key [C-M-left] 'win-resize-enlarge-vert)
 (global-set-key [C-M-right] 'win-resize-minimize-vert)
 
-(global-hl-line-mode)
+;; (global-hl-line-mode)
+
+;; (set-face-background 'hl-line "#1f7fbe")
+;; (set-face-foreground 'hl-line "#f3ee2a")
 
 (provide 'config-misc)
 

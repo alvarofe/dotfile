@@ -16,13 +16,20 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
 (setq use-package-verbose t)
 (setq use-package-always-ensure t)
 (require 'use-package)
 (setq load-prefer-newer t)
 
-(require 'config-theme)
 (require 'config-packages)
 (require 'config-prelude)
+(require 'config-theme)
 (require 'config-misc)
+
+;; enable mouse
+(require 'mouse)
+(xterm-mouse-mode 1)
+(mouse-wheel-mode 1)
+
 ; (require 'config-eshell)

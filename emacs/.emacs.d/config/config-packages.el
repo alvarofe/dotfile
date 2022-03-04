@@ -1,5 +1,7 @@
 (use-package diminish)
 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 ;; Company-mode for autocompletion
 (use-package company
   :demand t
@@ -86,7 +88,7 @@
 (with-eval-after-load 'ggtags
   (add-hook 'c-mode-hook   'ggtags-mode)
   (add-hook 'c++-mode-hook 'ggtags-mode)
-  (add-hook 'after-save-hook #'gtags-update-hook)
+  ;;(add-hook 'after-save-hook #'gtags-update-hook)
 )
 
 (use-package helm-gtags)
@@ -128,8 +130,7 @@
               lsp-enable-indentation nil
               lsp-enable-lenses nil
               lsp-diagnostic-package :none)
-  :hook ((c-mode-common . lsp-deferred)
-         (python-mode . lsp-deferred))
+  :hook (((c-mode-common python-mode c++-mode) . lsp-deferred))
   :commands (lsp lsp-deferred))
 
 (with-eval-after-load 'lsp-mode
@@ -175,24 +176,51 @@
         (c-set-offset 'template-args-cont 4)
       )
       )
-
 (use-package lsp-ui
-  :after lsp
   :ensure t
+  :after (lsp-mode)
+  :commands lsp-ui-mode
+  :bind (:map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references)
+              ("C-c u" . lsp-ui-imenu))
+  :init (setq
+	      lsp-ui-doc-enable t
+	      lsp-ui-doc-position 'at-point
+              lsp-ui-doc-use-webkit nil
+              lsp-ui-doc-header nil
+              lsp-ui-doc-delay 0.1
+              lsp-ui-doc-frame 'frame
+              ;; lsp-ui-doc-show-with-cursor t
+              lsp-ui-doc-include-signature t
+              lsp-ui-doc-alignment 'frame
+              lsp-ui-doc-use-childframe t
+              ;; lsp-ui-doc-border (face-foreground 'default)
+              lsp-ui-peek-enable t
+              lsp-ui-peek-show-directory t
+              lsp-ui-sideline-update-mode 'line
+              ;; lsp-ui-sideline-enable t
+              ;; lsp-ui-sideline-show-code-actions t
+              ;; lsp-ui-sideline-show-diagnostics t
+              ;; lsp-ui-sideline-show-hover t
+              ;; lsp-ui-sideline-ignore-duplicate t)
   :config
-  (require 'lsp-ui)
-  (setq lsp-ui-doc-position 'at-point
-         lsp-ui-doc-alignment 'window
-         lsp-ui-doc-include-signature nil
-         lsp-ui-sideline-show-symbol nil)
+  (add-to-list 'lsp-ui-doc-frame-parameters '(right-fringe . 8))
+
+  ;; Reset `lsp-ui-doc-background' after loading theme
+  (add-hook 'after-load-theme-hook
+            (lambda ()
+              (setq lsp-ui-doc-border (face-foreground 'default))
+              (set-face-background 'lsp-ui-doc-background
+                                   (face-background 'tooltip))))
+  ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+  ;; @see https://github.com/emacs-lsp/lsp-ui/issues/243
+  (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+    (setq mode-line-format nil)))
   )
 
-(with-eval-after-load 'lsp-ui
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-
-  )
+(with-eval-after-load 'lsp-ui-doc
+  (lsp-ui-doc-frame-mode +1))
 
 ;; undo-tree
 (use-package undo-tree
@@ -217,7 +245,11 @@
         (setq evil-leader/in-all-states t)
         (evil-leader/set-key
           "c" 'evilnc-comment-or-uncomment-lines
+          "C" 'emacs-workspaces/create-workspace
+          "n" 'emacs-worskpaces/switch-workspace
           "b" 'helm-buffers-list
+          "B" 'pdf-history-backward
+          "l" 'align-regexp
           "f" 'helm-find-files
           "g" 'magit-status
           "x" 'helm-M-x
@@ -225,15 +257,15 @@
           "m" 'helm-mini
           "M" 'minimap-mode
           "s" 'ace-swap-window
-          "z" 'previous-buffer
-          "d" 'cd
+          "z" 'sr-speedbar-toggle
+          "d" 'lsp-ui-doc-show
+          "D" 'lsp-ui-doc-hide
           "k" 'kill-buffer
           "v" 'split-window-below
           "h" 'split-window-right
           "w" 'other-window
           "t" 'gtags-reindex
           "T" 'multi-term
-          "n" 'multi-term-next
           "p" 'multi-term-prev
           "r" 'term-char-mode
           "a" 'org-agenda))))
@@ -253,6 +285,7 @@
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
 (define-key evil-normal-state-map (kbd "C-+") 'text-scale-increase)
 (define-key evil-normal-state-map (kbd "C--") 'text-scale-decrease)
+(define-key evil-normal-state-map "u" 'undo-tree-undo)
 
 
 (add-hook 'org-mode-hook
@@ -365,6 +398,9 @@
     (add-hook 'c++-mode-hook 'whitespace-mode)
     ))
 
+;; (setq whitespace-style '(tabs tab-mark))
+(setq whitespace-style '(tabs))
+
 (add-hook 'rust-mode-hook #'hs-minor-mode)
 
 (add-hook 'rust-mode-hook
@@ -430,11 +466,6 @@
              (define-key c-mode-base-map (kbd "C-c c")   'compile)
              (define-key c-mode-base-map (kbd "C-c C-c") 'quickrun)
              ))
-
-;; enable mouse
-(require 'mouse)
-(xterm-mouse-mode t)
-(mouse-wheel-mode t)
 
 ;; yasnippet
 (use-package yasnippet
@@ -532,6 +563,12 @@
         )
       (untabify (point-min) (point-max)))
 
+(use-package lsp-pyright
+  :hook (python-mode . (lambda () (require 'lsp-pyright)))
+  :init (when (executable-find "python3")
+	  (setq lsp-pyright-python-executable-cmd "python3")))
+
+
 (use-package all-the-icons)
 
 (use-package dired
@@ -605,89 +642,6 @@
 (add-hook 'js2-mode-hook 'lsp)
 (add-hook 'typescript-mode-hook 'lsp)
 
-;;; Code:
-(defface my-pl-segment1-active
-  '((t (:foreground "#000000" :background "#E1B61A")))
-  "Powerline first segment active face.")
-(defface my-pl-segment1-inactive
-  '((t (:foreground "#FFFFFF" :background "#224488")))
-  "Powerline first segment inactive face.")
-(defface my-pl-segment2-active
-  '((t (:foreground "#F5E39F" :background "#8A7119")))
-  "Powerline second segment active face.")
-(defface my-pl-segment2-inactive
-  '((t (:foreground "#FFFFFF" :background "#224488")))
-  "Powerline second segment inactive face.")
-(defface my-pl-segment3-active
-  '((t (:foreground "#FFFFFF" :background "#224488")))
-  "Powerline third segment active face.")
-(defface my-pl-segment3-inactive
-  '((t (:foreground "#FFFFFF" :background "#224488")))
-  "Powerline third segment inactive face.")
-
-(defun air--powerline-default-theme ()
-  "Set up my custom Powerline with Evil indicators."
-  (setq-default mode-line-format
-                '("%e"
-                  (:eval
-                   (let* ((active (powerline-selected-window-active))
-                          (seg1 (if active 'my-pl-segment1-active 'my-pl-segment1-inactive))
-                          (seg2 (if active 'my-pl-segment2-active 'my-pl-segment2-inactive))
-                          (seg3 (if active 'my-pl-segment3-active 'my-pl-segment3-inactive))
-                          (separator-left (intern (format "powerline-%s-%s"
-                                                          (powerline-current-separator)
-                                                          (car powerline-default-separator-dir))))
-                          (separator-right (intern (format "powerline-%s-%s"
-                                                           (powerline-current-separator)
-                                                           (cdr powerline-default-separator-dir))))
-                          (lhs (list (let ((evil-face (powerline-evil-face)))
-                                       (if evil-mode
-                                           (powerline-raw (powerline-evil-tag) evil-face)
-                                         ))
-                                     (if evil-mode
-                                         (funcall separator-left (powerline-evil-face) seg1))
-                                     (powerline-buffer-id seg1 'l)
-                                     (powerline-raw "[%*]" seg1 'l)
-                                     (when (and (boundp 'which-func-mode) which-func-mode)
-                                       (powerline-raw which-func-format seg1 'l))
-                                     (powerline-raw " " seg1)
-                                     (funcall separator-left seg1 seg2)
-                                     (when (boundp 'erc-modified-channels-object)
-                                       (powerline-raw erc-modified-channels-object seg2 'l))
-                                     (powerline-major-mode seg2 'l)
-                                     (powerline-process seg2)
-                                     (powerline-minor-modes seg2 'l)
-                                     (powerline-narrow seg2 'l)
-                                     (powerline-raw " " seg2)
-                                     (funcall separator-left seg2 seg3)
-                                     (powerline-vc seg3 'r)
-                                     (when (bound-and-true-p nyan-mode)
-                                       (powerline-raw (list (nyan-create)) seg3 'l))))
-                          (rhs (list (powerline-raw global-mode-string seg3 'r)
-                                     (funcall separator-right seg3 seg2)
-                                     (unless window-system
-                                       (powerline-raw (char-to-string #xe0a1) seg2 'l))
-                                     (powerline-raw "%4l" seg2 'l)
-                                     (powerline-raw ":" seg2 'l)
-                                     (powerline-raw "%3c" seg2 'r)
-                                     (funcall separator-right seg2 seg1)
-                                     (powerline-raw " " seg1)
-                                     (powerline-raw "%6p" seg1 'r)
-                                     (when powerline-display-hud
-                                       (powerline-hud seg1 seg3)))))
-                     (concat (powerline-render lhs)
-                             (powerline-fill seg3 (powerline-width rhs))
-                             (powerline-render rhs)))))))
-
-(use-package powerline
-  :ensure t
-  :config
-  (setq powerline-default-separator (if (display-graphic-p) 'arrow
-                                      nil))
-  (air--powerline-default-theme))
-
-(use-package powerline-evil
-  :ensure t)
 
 
 (diminish 'which-key-mode)
@@ -759,4 +713,105 @@
 
 (use-package dts-mode)
 
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(use-package emacs-workspaces
+  :straight (:type git :host github :repo "mclear-tools/emacs-workspaces")
+  :commands (emacs-workspaces/create-workspace
+             emacs-workspaces/create-new-project-and-workspace
+             emacs-workspaces/open-existing-project-and-workspace
+             emacs-workspaces/switch-workspace))
+
+(use-package sr-speedbar
+  :ensure t
+  :defer t
+  :init
+  (setq sr-speedbar-right-side nil)
+  (setq sr-speedbar-left-side t)
+  (setq speedbar-show-unknown-files t)
+  (setq sr-speedbar-width 34)
+  (setq sr-speedbar-max-width 35)
+  (setq speedbar-use-images t)
+  )
+
+(use-package pdf-tools
+  :quelpa (pdf-tools :fetcher github :repo "vedang/pdf-tools" :files ("lisp/*" "server/*"))
+  :hook ((pdf-view-mode . disable-line-numbers)
+         (pdf-view-mode . pdf-sync-minor-mode)
+         (pdf-view-mode . pdf-links-minor-mode)
+         (pdf-view-mode . pdf-history-minor-mode)
+         (pdf-view-mode . pdf-annot-minor-mode)
+         (pdf-view-mode . pdf-view-themed-minor-mode))
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :custom
+  (pdf-view-display-size 'fit-page)
+  (pdf-annot-activate-created-annotations nil)
+  (pdf-view-resize-factor 1.1)
+  :bind
+  (:map pdf-view-mode-map
+        ("M-w" . pdf-view-kill-ring-save)
+        ("o"   . pdf-outline)
+        ("b"   . pdf-history-backward)
+        ("C-c p g" . pdf-view-goto-page)
+  ))
+
+  (with-eval-after-load 'pdf-tools
+  (pdf-tools-install))
+
+(use-package org-noter
+  :config
+  ;; Your org-noter config ........
+  (require 'org-noter-pdftools))
+
+(use-package org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
+
+(use-package org-noter-pdftools
+  :after org-noter
+  :config
+  ;; Add a function to ensure precise note is inserted
+  (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
+    (interactive "P")
+    (org-noter--with-valid-session
+     (let ((org-noter-insert-note-no-questions (if toggle-no-questions
+                                                   (not org-noter-insert-note-no-questions)
+                                                 org-noter-insert-note-no-questions))
+           (org-pdftools-use-isearch-link t)
+           (org-pdftools-use-freestyle-annot t))
+       (org-noter-insert-note (org-noter--get-precise-info)))))
+
+  ;; fix https://github.com/weirdNox/org-noter/pull/93/commits/f8349ae7575e599f375de1be6be2d0d5de4e6cbf
+  (defun org-noter-set-start-location (&optional arg)
+    "When opening a session with this document, go to the current location.
+With a prefix ARG, remove start location."
+    (interactive "P")
+    (org-noter--with-valid-session
+     (let ((inhibit-read-only t)
+           (ast (org-noter--parse-root))
+           (location (org-noter--doc-approx-location (when (called-interactively-p 'any) 'interactive))))
+       (with-current-buffer (org-noter--session-notes-buffer session)
+         (org-with-wide-buffer
+          (goto-char (org-element-property :begin ast))
+          (if arg
+              (org-entry-delete nil org-noter-property-note-location)
+            (org-entry-put nil org-noter-property-note-location
+                           (org-noter--pretty-print-location location))))))))
+  (with-eval-after-load 'pdf-annot
+    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+
+(global-set-key (kbd "<f5>") (lambda ()
+                               (interactive)
+                               (setq-local compilation-read-command nil)
+                               (call-interactively 'compile)))
 (provide 'config-packages)
