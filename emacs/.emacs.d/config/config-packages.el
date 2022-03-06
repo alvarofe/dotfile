@@ -8,6 +8,8 @@
   :bind (("C-." . company-complete))
   :diminish company-mode)
 
+(use-package quelpa)
+
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; Helm for file navigation and autocomplete UI
