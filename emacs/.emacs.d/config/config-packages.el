@@ -551,7 +551,9 @@
               ("M-," . pop-tag-mark))
   )
   (elpy-enable)
-)
+  )
+
+(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 
 (add-hook 'python-mode-hook
       (lambda ()

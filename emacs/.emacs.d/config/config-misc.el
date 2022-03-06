@@ -182,6 +182,8 @@ middle"
 ;; (set-face-background 'hl-line "#1f7fbe")
 ;; (set-face-foreground 'hl-line "#f3ee2a")
 
+(set-language-environment "UTF-8")
+
 (provide 'config-misc)
 
 
