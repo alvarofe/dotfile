@@ -180,7 +180,8 @@ middle"
 ;; (global-hl-line-mode)
 
 ;; (set-face-background 'hl-line "#1f7fbe")
-;; (set-face-foreground 'hl-line "#f3ee2a")
+;; (set-face-foreground 'hl-line "#b4eeb4")
+;; (set-face-attribute 'region nil :background "#b4eeb4")
 
 (set-language-environment "UTF-8")
 
