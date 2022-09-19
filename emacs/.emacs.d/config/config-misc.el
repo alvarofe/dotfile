@@ -5,6 +5,17 @@
 
 (winner-mode 1)
 
+;; navigate between visible buffers (windows in emacs speak)
+(defun other-window-backward (&optional n)
+  (interactive "p")
+  (if n
+      (other-window (- n))
+    (other-frame -1)))
+(global-set-key "\C-x\C-n" 'other-window)
+(global-set-key "\C-x\C-p" 'other-window-backward)
+
+(global-auto-revert-mode 1)
+
 ;; Don't need to display anything on startup
 (setq inhibit-startup-message t)
 
@@ -110,6 +121,7 @@ save the Org buffers."
 (add-hook 'c-mode-hook 'auto-fill-mode)
 (add-hook 'c++-mode-hook (lambda () (set-fill-column 80)))
 (add-hook 'c++-mode-hook 'auto-fill-mode)
+(add-hook 'rust-mode-hook (lambda () (set-fill-column 80)))
 
 ;; About having backups file all over the places
 (setq make-backup-files nil)
@@ -168,22 +180,30 @@ middle"
    ((equal "right" (win-resize-left-or-right)) (enlarge-window-horizontally -5))
    ((equal "mid" (win-resize-left-or-right)) (enlarge-window-horizontally 5))))
 
-(global-set-key [C-M-down] 'win-resize-minimize-vert)
-(global-set-key [C-M-up] 'win-resize-enlarge-vert)
-(global-set-key [C-M-left] 'win-resize-minimize-horiz)
-(global-set-key [C-M-right] 'win-resize-enlarge-horiz)
-(global-set-key [C-M-up] 'win-resize-enlarge-horiz)
-(global-set-key [C-M-down] 'win-resize-minimize-horiz)
-(global-set-key [C-M-left] 'win-resize-enlarge-vert)
-(global-set-key [C-M-right] 'win-resize-minimize-vert)
+(global-set-key [C-S-down] 'win-resize-minimize-vert)
+(global-set-key [C-S-up] 'win-resize-enlarge-vert)
+(global-set-key [C-S-left] 'win-resize-minimize-horiz)
+(global-set-key [C-S-right] 'win-resize-enlarge-horiz)
+(global-set-key [C-S-up] 'win-resize-enlarge-horiz)
+(global-set-key [C-S-down] 'win-resize-minimize-horiz)
+(global-set-key [C-S-left] 'win-resize-enlarge-vert)
+(global-set-key [C-S-right] 'win-resize-minimize-vert)
 
-;; (global-hl-line-mode)
 
 ;; (set-face-background 'hl-line "#1f7fbe")
 ;; (set-face-foreground 'hl-line "#b4eeb4")
 ;; (set-face-attribute 'region nil :background "#b4eeb4")
 
 (set-language-environment "UTF-8")
+(pixel-scroll-precision-mode)
+
+(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+(setq mode-line-end-spaces nil)
+
+(use-package xclip
+  :ensure t)
+
+(unless (display-graphic-p) (xclip-mode 1))
 
 (provide 'config-misc)
 

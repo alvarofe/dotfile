@@ -16,14 +16,16 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
 Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'ervandew/supertab'
 Plug 'rust-lang/rust.vim'
-Plug 'togglebyte/togglerust'
+"Plug 'togglebyte/togglerust'
 Plug 'romainl/vim-qf'
+Plug 'ntk148v/vim-horizon'
+Plug 'vivien/vim-linux-coding-style'
 
 call plug#end()
 
@@ -93,7 +95,7 @@ set background=dark
 set termguicolors
 set tw=80
 set t_Co=256
-color codedark
+color torte
 set showmatch           " show matching brackets
 set mat=5               " how many tenths of a second to blink matching brackets for
 set incsearch           " search as you type
@@ -181,8 +183,8 @@ set statusline+=%=                       " alignment separator
 set statusline+=[%{&ft}]                 " filetype
 set statusline+=%-14.([%l/%L],%c%V%)     " cursor info
 
-set number
-set relativenumber
+"set number
+"set relativenumber
 set ruler
 set diffopt+=vertical,iwhite,algorithm:patience,indent-heuristic
 set linebreak showbreak=+
@@ -197,6 +199,8 @@ set termguicolors
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
+
+let g:lsp_experimental_workspace_folders = 1
 
 if executable('ccls')
    au User lsp_setup call lsp#register_server({

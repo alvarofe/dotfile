@@ -8,9 +8,18 @@
   :bind (("C-." . company-complete))
   :diminish company-mode)
 
+
+(setq evil-want-keybinding nil)
+
+(require 'use-package)
+(require 'quelpa-use-package)
 (use-package quelpa)
 
 (add-hook 'after-init-hook 'global-company-mode)
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+(setq tab-bar-show nil)
 
 ;; Helm for file navigation and autocomplete UI
 (use-package helm
@@ -90,16 +99,15 @@
 (with-eval-after-load 'ggtags
   (add-hook 'c-mode-hook   'ggtags-mode)
   (add-hook 'c++-mode-hook 'ggtags-mode)
-  ;;(add-hook 'after-save-hook #'gtags-update-hook)
+  (add-hook 'asm-mode-hook 'ggtags-mode)
 )
 
 (use-package helm-gtags)
 
 (use-package bm)
 
-(global-set-key (kbd "<C-f2>") 'bm-toggle)
-(global-set-key (kbd "<f2>")   'bm-next)
-(global-set-key (kbd "<S-f2>") 'bm-previous)
+(global-set-key (kbd "<f2>") 'bm-toggle)
+(global-set-key (kbd "<S-f2>")   'bm-next)
 
 (use-package helm-bm)
 
@@ -124,6 +132,10 @@
 (add-hook 'c-mode-hook 'helm-gtags-mode)
 (add-hook 'c++-mode-hook 'helm-gtags-mode)
 
+;; (use-package eglot)
+
+;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+
 (use-package lsp-mode
   :diminish "L"
   :init (setq lsp-keymap-prefix "C-l"
@@ -135,20 +147,20 @@
   :hook (((c-mode-common python-mode c++-mode) . lsp-deferred))
   :commands (lsp lsp-deferred))
 
-(with-eval-after-load 'lsp-mode
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-tramp-connection "ccls")
-    :major-modes '(c++-mode)
-    :remote? t
-    ))
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-tramp-connection "ccls")
-    :major-modes '(c-mode)
-    :remote? t
-    ))
-  )
+ (with-eval-after-load 'lsp-mode
+   (lsp-register-client
+    (make-lsp-client
+     :new-connection (lsp-tramp-connection "ccls")
+     :major-modes '(c++-mode)
+     :remote? t
+     ))
+   (lsp-register-client
+    (make-lsp-client
+     :new-connection (lsp-tramp-connection "ccls")
+     :major-modes '(c-mode)
+     :remote? t
+     ))
+   )
 
 (setq lsp-file-watch-threshold nil)
 (setq lsp-lens-enable nil)
@@ -156,14 +168,19 @@
 (with-eval-after-load 'lsp
         (add-hook 'c++-mode-hook 'lsp)
         (add-hook 'c-mode-hook 'lsp)
-)
+        )
+
+;; (add-hook 'c-mode-hook 'eglot-ensure)
+;; (add-hook 'c++-mode-hook 'eglot-ensure)
 
 (add-hook 'c-mode-hook
       (lambda ()
         (setq c-indent-offset 8)
         (setq indent-tabs-mode t)
         (setq c-basic-offset 8)
-        (setq tab-width 8)))
+        (setq tab-width 8)
+        (tree-sitter-hl-mode)
+        ))
 
 (add-hook 'c++-mode-hook
       (lambda ()
@@ -176,6 +193,7 @@
         (c-set-offset 'arglist-close 4)
         (c-set-offset 'stream-op 4)
         (c-set-offset 'template-args-cont 4)
+        (tree-sitter-hl-mode)
       )
       )
 (use-package lsp-ui
@@ -183,12 +201,13 @@
   :after (lsp-mode)
   :commands lsp-ui-mode
   :bind (:map lsp-ui-mode-map
-              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-              ([remap xref-find-references] . lsp-ui-peek-find-references)
-              ("C-c u" . lsp-ui-imenu))
+              ([remap xref-find-definitions] . lsp-find-definitions)
+              ([remap xref-find-references] . lsp-find-references)
+              ;; ("C-c u" . lsp-ui-imenu))
+              )
   :init (setq
-	      lsp-ui-doc-enable t
-	      lsp-ui-doc-position 'at-point
+              lsp-ui-doc-enable t
+              lsp-ui-doc-position 'at-point
               lsp-ui-doc-use-webkit nil
               lsp-ui-doc-header nil
               lsp-ui-doc-delay 0.1
@@ -207,7 +226,7 @@
               ;; lsp-ui-sideline-show-hover t
               ;; lsp-ui-sideline-ignore-duplicate t)
   :config
-  (add-to-list 'lsp-ui-doc-frame-parameters '(right-fringe . 8))
+  ;; (add-to-list 'lsp-ui-doc-frame-parameters '(right-fringe . 8))
 
   ;; Reset `lsp-ui-doc-background' after loading theme
   (add-hook 'after-load-theme-hook
@@ -221,16 +240,22 @@
     (setq mode-line-format nil)))
   )
 
-(with-eval-after-load 'lsp-ui-doc
-  (lsp-ui-doc-frame-mode +1))
+;; (with-eval-after-load 'lsp-ui-doc
+;;   (lsp-ui-doc-frame-mode +1))
+
 
 ;; undo-tree
 (use-package undo-tree
   :diminish undo-tree-mode
   :config
+  (progn
+    (setq undo-tree-enable-undo-in-region t)
+    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+    )
   (global-undo-tree-mode))
 
 (use-package evil-nerd-commenter)
+
 ;; evil
 (use-package evil
   :diminish evil-mode
@@ -250,8 +275,10 @@
           "C" 'emacs-workspaces/create-workspace
           "n" 'emacs-worskpaces/switch-workspace
           "b" 'helm-buffers-list
-          "B" 'pdf-history-backward
-          "l" 'align-regexp
+          "B" 'helm-bm
+          "h" 'jpt-toggle-mark-word-at-point
+          ;; "L" 'align-regexp
+          "l" 'tab-list
           "f" 'helm-find-files
           "g" 'magit-status
           "x" 'helm-M-x
@@ -263,15 +290,20 @@
           "d" 'lsp-ui-doc-show
           "D" 'lsp-ui-doc-hide
           "k" 'kill-buffer
-          "v" 'split-window-below
-          "h" 'split-window-right
-          "w" 'other-window
+          "v" 'async-shell-command
+          ;; "w" 'other-window
           "t" 'gtags-reindex
           "T" 'multi-term
           "p" 'multi-term-prev
           "r" 'term-char-mode
-          "a" 'org-agenda))))
-    (evil-mode t))
+          "a" 'align-regexp))))
+  (evil-mode t))
+
+(evil-global-set-key 'normal
+                     (kbd "q") nil)
+(evil-global-set-key 'normal
+                     (kbd "Q") 'evil-record-macro)
+
 
 (use-package evil-collection
   :after evil
@@ -309,43 +341,115 @@
 
 (add-hook 'c-mode-common-hook #'hs-minor-mode)
 
-;; Projectile for large project utilities
+
 (use-package projectile
   :demand t
   :diminish projectile-mode
+  :init
+  (progn
+    (setq projectile-enable-caching t)
+    (setq projectile-tags-command "/usr/bin/ctags -Re -f \"%s\" %s")
+    (setq projectile-cache-file
+          (expand-file-name "cache/projectile.cache" user-emacs-directory)))
+    (setq projectile-mode-line '(:eval (format " [%s]" (projectile-project-name))))
+
   :config
   (progn
+
     (projectile-global-mode t)
-    (setq projectile-completion-system 'helm)
-    (setq projectile-mode-line " Projectile")
-    (setq projectile-enable-caching t)))
+    ;; Use faster search tools: ripgrep or the silver search
+    (let ((command
+           (cond
+            ((executable-find "rg")
+             "rg -0 --files --color=never --hidden --sort-files"))))
+      (setq projectile-generic-command command))
+
+    (setq-default projectile-mode-line nil)
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-indexing-method 'alien)
+    (setq projectile-switch-project-action 'projectile-dired)
+    (defadvice projectile-dired (after xah-wrapper-dired-commands activate)
+      (xah-wrapper-dired-commands))
+    (setq projectile-globally-ignored-directories
+          '(".idea"
+            ".ccls-cache"
+            ".git"
+            ".hg"
+            ".svn"
+            "build"))
+
+    (add-to-list 'projectile-globally-ignored-files "*.pyc")
+    (add-to-list 'projectile-globally-ignored-files "*.python-version")
+    (add-to-list 'projectile-globally-ignored-files "*.egg-info")
+    (add-to-list 'projectile-globally-ignored-files "*.class")
+    (add-to-list 'projectile-globally-ignored-files "*.jar")
+    (add-to-list 'projectile-globally-ignored-files "*.tar")
+    (add-to-list 'projectile-globally-ignored-files "*.tar.gz")
+    (add-to-list 'projectile-globally-ignored-files "*.zip")
+    (add-to-list 'projectile-globally-ignored-files "*.el~")
+    (add-to-list 'projectile-globally-ignored-files "*.swp")
+    (add-to-list 'projectile-globally-ignored-files "compile_commands.json")
+    (setq projectile-globally-ignored-files (append '(".ensime"
+                                                      ".gitignore"
+                                                      ".bintray"
+                                                      ".travis.yml"
+                                                      ".mode"
+                                                      ".cask")
+                                                    projectile-globally-ignored-files))
+
+    (add-to-list 'projectile-globally-ignored-directories "__pycache__")
+    (add-to-list 'projectile-globally-ignored-directories ".env")
+    (add-to-list 'projectile-globally-ignored-directories ".venv")
+    (add-to-list 'projectile-globally-ignored-directories ".cask")
+    (add-to-list 'projectile-globally-ignored-directories ".cache")
+    (add-to-list 'projectile-globally-ignored-directories "elpa")
+    (add-to-list 'projectile-globally-ignored-directories ".node_modules")
+    (add-to-list 'projectile-globally-ignored-directories ".m2")
+    (setq projectile-sort-order 'recently-active)
+
+    (projectile-mode)))
+
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (use-package helm-projectile
   :bind (("C-x f" . helm-projectile-find-file)
          ("C-x g" . helm-projectile-grep))
   :config (helm-projectile-on))
 
-(use-package swiper-helm
-  :bind (("C-s" . my/isearch-forward)
-         ("C-r " . my/isearch-backward))
-  :config
-  (setq swiper-helm-display-function 'display-buffer)
-  (defun my/isearch-forward (&optional regexp-p no-recursive-edit)
-    (interactive "P\np")
-    (cond ((equal current-prefix-arg nil)
-           (if (minibufferp)
-               (isearch-forward)
-             (swiper-helm)))
-          ((equal current-prefix-arg '(4)) (isearch-forward-regexp))
-          (t (isearch-forward))))
-  (defun my/isearch-backward (&optional regexp-p no-recursive-edit)
-    (interactive "P\np")
-    (cond ((equal current-prefix-arg nil)
-           (if (minibufferp)
-               (isearch-backward)
-             (swiper-helm)))
-          ((equal current-prefix-arg '(4)) (isearch-backward-regexp))
-          (t (isearch-backward)))))
+(add-to-list 'projectile-globally-ignored-directories ".cache")
+(add-to-list 'projectile-globally-ignored-directories ".pytest_cache")
+(add-to-list 'projectile-globally-ignored-directories "__pycache__")
+(add-to-list 'projectile-globally-ignored-directories "build")
+(add-to-list 'projectile-globally-ignored-directories "dist")
+(add-to-list 'projectile-globally-ignored-directories "docsets")
+(add-to-list 'projectile-globally-ignored-directories "elpa")
+(add-to-list 'projectile-globally-ignored-directories "man")
+(add-to-list 'projectile-globally-ignored-directories "node_modules")
+(add-to-list 'projectile-globally-ignored-directories "venv")
+(add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
+
+;; (use-package swiper-helm
+;;   ;; :bind (("C-s" . my/isearch-forward)
+;;   ;;        ("C-r " . my/isearch-backward))
+;;   :config
+;;   (setq swiper-helm-display-function 'display-buffer)
+;;   (defun my/isearch-forward (&optional regexp-p no-recursive-edit)
+;;     (interactive "P\np")
+;;     (cond ((equal current-prefix-arg nil)
+;;            (if (minibufferp)
+;;                (isearch-forward)
+;;              (swiper-helm)))
+;;           ((equal current-prefix-arg '(4)) (isearch-forward-regexp))
+;;           (t (isearch-forward))))
+;;   (defun my/isearch-backward (&optional regexp-p no-recursive-edit)
+;;     (interactive "P\np")
+;;     (cond ((equal current-prefix-arg nil)
+;;            (if (minibufferp)
+;;                (isearch-backward)
+;;              (swiper-helm)))
+;;           ((equal current-prefix-arg '(4)) (isearch-backward-regexp))
+;;           (t (isearch-backward)))))
 
 
 ;; ripgrep-search-mode
@@ -398,6 +502,7 @@
     (setq whitespace-style '(face lines-tail))
     (add-hook 'c-mode-hook 'whitespace-mode)
     (add-hook 'c++-mode-hook 'whitespace-mode)
+    (add-hook 'rust-mode-hook 'whitespace-mode)
     ))
 
 ;; (setq whitespace-style '(tabs tab-mark))
@@ -417,7 +522,7 @@
 (use-package rustic
   :ensure
   :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
+              ;; ("M-j" . lsp-ui-imenu)
               ("M-?" . lsp-find-references)
               ("C-c C-c l" . flycheck-list-errors)
               ("C-c C-c a" . lsp-execute-code-action)
@@ -459,7 +564,7 @@
 
 (add-hook 'c-mode-hook
           '(lambda()
-             (c-set-style "linux")
+             (setq c-default-style "linux")
              (setq c-basic-offset 8)
              (setq tab-width c-basic-offset)
              (setq indent-tabs-mode nil)
@@ -490,7 +595,7 @@
   :commands fzf-find-file
   :ensure t)
 
-(global-set-key (kbd "C-c p p") 'fzf-find-file)
+(global-set-key (kbd "C-x p p") 'fzf-find-file)
 
 
 (defadvice term-send-input (after update-current-directory)
@@ -534,7 +639,10 @@
 
 (xclip-mode 1)
 
-;; python
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Python
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package python
   :mode ("\\.py" . python-mode)
   :ensure t
@@ -549,9 +657,9 @@
     (setq elpy-rpc-backend "jedi")
     (setq elpy-rpc-python-command "python")
     :bind (:map elpy-mode-map
-              ("M-." . elpy-goto-definition)
-              ("M-," . pop-tag-mark))
-  )
+                ("M-." . elpy-goto-definition)
+                ("M-," . pop-tag-mark))
+    )
   (elpy-enable)
   )
 
@@ -564,13 +672,14 @@
         (setq tab-width 4)
         (flymake-mode)
         (hs-minor-mode)
+        (tree-sitter-hl-mode)
         )
       (untabify (point-min) (point-max)))
 
 (use-package lsp-pyright
   :hook (python-mode . (lambda () (require 'lsp-pyright)))
   :init (when (executable-find "python3")
-	  (setq lsp-pyright-python-executable-cmd "python3")))
+          (setq lsp-pyright-python-executable-cmd "python3")))
 
 
 (use-package all-the-icons)
@@ -666,23 +775,15 @@
 (setq org-hide-leading-stars t)
 (setq org-src-fontify-natively t)
 
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
 (use-package dockerfile-mode)
-
-(use-package engine-mode)
-(engine-mode t)
-(engine/set-keymap-prefix (kbd "C-c s"))
-
-(defengine github
-  "https://github.com/search?ref=simplesearch&q=%s"
-  :keybinding "g")
-
-(defengine duckduckgo
-  "https://duckduckgo.com/?q=%s"
-  :keybinding "d")
-
-(defengine stack-overflow
-  "https://stackoverflow.com/search?q=%s"
-  :keybinding "s")
 
 (use-package typescript-mode
   :ensure t)
@@ -818,4 +919,309 @@ With a prefix ARG, remove start location."
                                (interactive)
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
+
+(use-package redacted)
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/n/roam/")
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-setup))
+
+(use-package pulsar
+  :straight (pulsar :type git :host gitlab :repo "protesilaos/pulsar")
+  :custom
+  (pulsar-pulse-functions ; Read the doc string for why not `setq'
+   '(recenter-top-bottom
+     move-to-window-line-top-bottom
+     reposition-window
+     bookmark-jump
+     other-window
+     delete-window
+     delete-other-windows
+     forward-page
+     backward-page
+     scroll-up-command
+     scroll-down-command
+     windmove-right
+     windmove-left
+     windmove-up
+     windmove-down
+     windmove-swap-states-right
+     windmove-swap-states-left
+     windmove-swap-states-up
+     windmove-swap-states-down
+     tab-new
+     tab-close
+     tab-next
+     org-next-visible-heading
+     org-previous-visible-heading
+     org-forward-heading-same-level
+     org-backward-heading-same-level
+     outline-backward-same-level
+     outline-forward-same-level
+     outline-next-visible-heading
+     outline-previous-visible-heading
+     outline-up-heading))
+  :config
+  (setq pulsar-face 'pulsar-blue)
+  (setq pulsar-delay 0.055)
+  (setq pulsar-pulse-on-window-change t)
+  (setq pulsar-pulse t)
+  (setq pulsar-iterations 10)
+  )
+
+;; integration with the `consult' package:
+(add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
+(add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+
+;; integration with the built-in `imenu':
+(add-hook 'imenu-after-jump-hook #'pulsar-recenter-top)
+(add-hook 'imenu-after-jump-hook #'pulsar-reveal-entry)
+
+(let ((map global-map))
+  (define-key map (kbd "C-x l") #'pulsar-pulse-line)
+  (define-key map (kbd "C-x L") #'pulsar-highlight-line))
+
+(use-package tree-sitter
+  :ensure t
+  :init
+  (global-tree-sitter-mode))
+
+(use-package tree-sitter-langs
+  :after (tree-sitter)
+  :ensure t)
+
+(use-package tree-sitter-hl
+  :after (tree-sitter)
+  :ensure t
+  :hook (tree-sitter-after-on))
+
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+
+;; (use-package dtrt-indent)
+
+(use-package iedit)
+
+(use-package anzu)
+
+(use-package php-mode)
+
+(use-package dtrt-indent
+  :ensure t
+  :config (dtrt-indent-mode t))
+
+(use-package counsel
+  :bind
+  (("M-x" . counsel-M-x)
+   ("M-y" . counsel-yank-pop)
+   :map ivy-minibuffer-map
+   ("M-y" . ivy-next-line)))
+
+(use-package swiper
+  ;;    :pin melpa-stable
+  :diminish ivy-mode
+
+  :bind*
+  (("C-s" . swiper)
+   ("C-c C-r" . ivy-resume)
+   ("C-x C-f" . counsel-find-file)
+   ("C-c h f" . counsel-describe-function)
+   ("C-c h v" . counsel-describe-variable)
+   ("C-c i u" . counsel-unicode-char)
+   ("M-i" . counsel-imenu)
+   ("C-c g" . counsel-git)
+   ("C-c j" . counsel-git-grep)
+   ("C-c k" . counsel-rg)
+   ("C-x b" . counsel-switch-buffer)
+
+   )
+  :custom
+  (ivy-use-virtual-buffers t)
+  (counsel-switch-buffer-preview-virtual-buffers nil)
+  :config
+  (progn
+    (ivy-mode 1)
+
+    (define-key read-expression-map (kbd "C-r") #'counsel-expression-history)
+    (ivy-set-actions
+     'counsel-find-file
+     '(("d" (lambda (x) (delete-file (expand-file-name x)))
+        "delete"
+        )))
+    (ivy-set-actions
+     'ivy-switch-buffer
+     '(("k"
+        (lambda (x)
+          (kill-buffer x)
+          (ivy--reset-state ivy-last))
+        "kill")
+       ("j"
+        ivy--switch-buffer-other-window-action
+        "other window")))))
+
+(use-package counsel-projectile
+  :init
+  (counsel-projectile-mode))
+
+;; for use in selections, press C-o and select multiple
+(use-package ivy-hydra )
+
+(use-package ibuffer
+  :ensure nil
+  :bind ("C-x C-b" . ibuffer)
+  :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
+  :config
+  ;; Display icons for buffers
+  (use-package all-the-icons-ibuffer
+    :init
+    ;;(setq all-the-icons-ibuffer-icon centaur-icon)
+    (all-the-icons-ibuffer-mode 1))
+
+  (with-eval-after-load 'counsel
+    (with-no-warnings
+      (defun my-ibuffer-find-file ()
+        (interactive)
+        (let ((default-directory (let ((buf (ibuffer-current-buffer)))
+                                   (if (buffer-live-p buf)
+                                       (with-current-buffer buf
+                                         default-directory)
+                                     default-directory))))
+          (counsel-find-file default-directory)))
+      (advice-add #'ibuffer-find-file :override #'my-ibuffer-find-file))))
+
+;; Group ibuffer's list by project root
+(use-package ibuffer-projectile
+  :functions all-the-icons-octicon ibuffer-do-sort-by-alphabetic
+  :hook ((ibuffer . (lambda ()
+                      (ibuffer-projectile-set-filter-groups)
+                      (unless (eq ibuffer-sorting-mode 'alphabetic)
+                        (ibuffer-do-sort-by-alphabetic)))))
+  :config
+  (setq ibuffer-projectile-prefix
+        (concat
+         (all-the-icons-octicon "file-directory"
+                                :face ibuffer-filter-group-name-face
+                                :v-adjust 0.0
+                                :height 1.0)
+         " ")
+          ))
+
+;; Show the version control status of the buffer
+(use-package ibuffer-vc
+  :config
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic)))))
+
+(use-package yaml-mode)
+
+(use-package gn-mode
+  :mode ("BUILD.gn" "\\.gni\\'"))
+
+(use-package vterm)
+(use-package multi-vterm)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Minibuffer
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Enhanced M-x
+(use-package counsel
+  :ensure t
+  :bind
+  (("M-x" . counsel-M-x)))
+
+;; IDO
+(use-package ido
+  :init
+  (setq ido-everywhere nil
+        ido-enable-flex-matching t
+        ido-create-new-buffer 'always
+        ido-file-extensions-order '(".java" ".js" ".el" ".xml")
+        ido-use-filename-at-point 'guess
+        ido-use-faces t)
+
+  :config
+  (ido-mode 'buffer)
+
+  :bind ("C-x b" . ido-switch-buffer)
+  )
+
+;; Improved flex matching
+(use-package flx-ido)
+
+;; Vertical completion menu
+(use-package ido-vertical-mode
+  :init
+  (setq ido-vertical-indicator ">>"
+        ido-vertical-show-count nil
+        ido-vertical-define-keys 'C-n-C-p-up-and-down)
+  :config
+  (ido-vertical-mode)
+  (ido-vertical-mode nil))
+
+;; If not using ido-vertical-mode, make the minibuff stay still,
+;; i.e. never change height, set this to nil.
+;; (setq resize-mini-windows 'grow-only)
+
+;; IDO support pretty much everwhere, including eclim-java-implement
+(use-package ido-completing-read+
+  :config
+  (ido-ubiquitous-mode))
+
+;; Sub word support
+(add-hook 'minibuffer-setup-hook 'subword-mode)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Shell
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun spawn-shell (name)
+  "Create a new shell buffer
+taken from http://stackoverflow.com/a/4116113/446256"
+
+  (interactive "MName of shell buffer to create: ")
+  (pop-to-buffer (get-buffer-create (generate-new-buffer-name name)))
+  (shell (current-buffer)))
+
+(defun my-shell-mode-hook ()
+  (process-send-string (get-buffer-process (current-buffer))
+                       "export PAGER=cat\n")
+  (process-send-string (get-buffer-process (current-buffer))
+                       "uprompt\n\n\n"))(
+  add-hook 'shell-mode-hook 'my-shell-mode-hook)
+
+(setq-default explicit-shell-file-name "/bin/zsh")
+
+(use-package multi-line)
+(global-set-key (kbd "C-;") 'multi-line)
+
+(use-package git-gutter
+  :hook (prog-mode . git-gutter-mode)
+  :config
+  (setq git-gutter:update-interval 0.02))
+
+(use-package git-gutter-fringe
+  :config
+  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240] nil nil 'bottom))
+
+(global-set-key (kbd "<backspace>")
+                '(lambda () (interactive) (backward-delete-char-untabify 1 nil)))
+
+(require 'hi-lock)
+(defun jpt-toggle-mark-word-at-point ()
+  (interactive)
+  (if hi-lock-interactive-patterns
+      (unhighlight-regexp (car (car hi-lock-interactive-patterns)))
+    (highlight-symbol-at-point)))
+
 (provide 'config-packages)

@@ -26,6 +26,7 @@
 (require 'config-prelude)
 (require 'config-theme)
 (require 'config-misc)
+(require 'soong-mode)
 
 ;; enable mouse
 (require 'mouse)
